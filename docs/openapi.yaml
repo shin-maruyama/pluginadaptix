@@ -1,0 +1,687 @@
+openapi: 3.0.3
+
+info:
+  title: kintone Plugin License Platform API
+  version: 1.0.0
+  description: kintoneプラグイン認証システム API仕様書
+
+servers:
+  - url: https://api.example.com/v1
+    description: Production
+  - url: http://localhost:3000/v1
+    description: Local
+
+security:
+  - ApiKeyAuth: []
+
+tags:
+  - name: Health
+  - name: Licenses
+  - name: Plugins
+  - name: Contracts
+  - name: Logs
+
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: ヘルスチェック
+      operationId: getHealth
+      responses:
+        "200":
+          description: 正常
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+
+  /licenses/authenticate:
+    post:
+      tags:
+        - Licenses
+      summary: ライセンス初回認証
+      operationId: authenticateLicense
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LicenseAuthenticateRequest"
+      responses:
+        "200":
+          description: 認証成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LicenseAuthenticateResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /licenses/status:
+    get:
+      tags:
+        - Licenses
+      summary: ライセンス状態確認
+      operationId: getLicenseStatus
+      parameters:
+        - $ref: "#/components/parameters/LicenseKey"
+        - $ref: "#/components/parameters/PluginId"
+        - $ref: "#/components/parameters/KintoneDomain"
+      responses:
+        "200":
+          description: 状態取得成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LicenseStatusResponse"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /licenses/deactivate:
+    post:
+      tags:
+        - Licenses
+      summary: ライセンス解除
+      operationId: deactivateLicense
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LicenseDeactivateRequest"
+      responses:
+        "200":
+          description: 解除成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LicenseDeactivateResponse"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /plugins/version:
+    get:
+      tags:
+        - Plugins
+      summary: プラグイン更新確認
+      operationId: getPluginVersion
+      parameters:
+        - $ref: "#/components/parameters/PluginId"
+        - name: currentVersion
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "1.0.0"
+      responses:
+        "200":
+          description: バージョン確認成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PluginVersionResponse"
+
+  /plugins:
+    get:
+      tags:
+        - Plugins
+      summary: 利用可能プラグイン一覧取得
+      operationId: listPlugins
+      parameters:
+        - name: memberId
+          in: query
+          required: true
+          schema:
+            type: string
+          example: mem_001
+      responses:
+        "200":
+          description: 一覧取得成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PluginListResponse"
+
+  /plugins/download-token:
+    post:
+      tags:
+        - Plugins
+      summary: プラグインダウンロードURL発行
+      operationId: createDownloadToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DownloadTokenRequest"
+      responses:
+        "200":
+          description: ダウンロードURL発行成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DownloadTokenResponse"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /contracts/status:
+    get:
+      tags:
+        - Contracts
+      summary: 契約情報取得
+      operationId: getContractStatus
+      parameters:
+        - name: memberId
+          in: query
+          required: true
+          schema:
+            type: string
+          example: mem_001
+      responses:
+        "200":
+          description: 契約情報取得成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContractStatusResponse"
+
+  /auth-logs:
+    post:
+      tags:
+        - Logs
+      summary: 認証ログ登録
+      operationId: createAuthLog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthLogRequest"
+      responses:
+        "200":
+          description: ログ登録成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthLogResponse"
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+  parameters:
+    LicenseKey:
+      name: licenseKey
+      in: query
+      required: true
+      schema:
+        type: string
+      example: LIC-XXXX-XXXX-XXXX
+
+    PluginId:
+      name: pluginId
+      in: query
+      required: true
+      schema:
+        type: string
+      example: plugin_001
+
+    KintoneDomain:
+      name: kintoneDomain
+      in: query
+      required: true
+      schema:
+        type: string
+      example: sample.cybozu.com
+
+  responses:
+    Unauthorized:
+      description: 認証エラー
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    Forbidden:
+      description: 利用不可
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    NotFound:
+      description: データなし
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+  schemas:
+    ApiResponseBase:
+      type: object
+      required:
+        - success
+        - code
+        - message
+      properties:
+        success:
+          type: boolean
+        code:
+          type: string
+        message:
+          type: string
+
+    ErrorResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiResponseBase"
+        - type: object
+          properties:
+            success:
+              type: boolean
+              example: false
+            code:
+              type: string
+              example: LICENSE_EXPIRED
+            message:
+              type: string
+              example: ライセンスの有効期限が切れています。
+            data:
+              nullable: true
+              example: null
+
+    HealthResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiResponseBase"
+        - type: object
+          properties:
+            success:
+              example: true
+            code:
+              example: HEALTHY
+            message:
+              example: API is running.
+            data:
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: ok
+                timestamp:
+                  type: string
+                  format: date-time
+
+    LicenseAuthenticateRequest:
+      type: object
+      required:
+        - licenseKey
+        - pluginId
+        - pluginVersion
+        - kintoneDomain
+      properties:
+        licenseKey:
+          type: string
+          example: LIC-XXXX-XXXX-XXXX
+        pluginId:
+          type: string
+          example: plugin_001
+        pluginVersion:
+          type: string
+          example: "1.0.0"
+        kintoneDomain:
+          type: string
+          example: sample.cybozu.com
+        companyName:
+          type: string
+          example: 株式会社サンプル
+        appId:
+          type: string
+          example: "123"
+        environment:
+          type: string
+          enum:
+            - production
+            - sandbox
+          example: production
+
+    LicenseAuthenticateResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiResponseBase"
+        - type: object
+          properties:
+            success:
+              example: true
+            code:
+              example: LICENSE_ACTIVE
+            message:
+              example: ライセンス認証に成功しました。
+            data:
+              type: object
+              properties:
+                licenseId:
+                  type: string
+                  example: lic_001
+                licenseStatus:
+                  type: string
+                  example: active
+                contractStatus:
+                  type: string
+                  example: active
+                pluginId:
+                  type: string
+                  example: plugin_001
+                pluginName:
+                  type: string
+                  example: サンプルプラグイン
+                expireDate:
+                  type: string
+                  format: date
+                  example: "2026-12-31"
+                registeredDomain:
+                  type: string
+                  example: sample.cybozu.com
+                maxDomains:
+                  type: integer
+                  example: 1
+                currentDomains:
+                  type: integer
+                  example: 1
+
+    LicenseStatusResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiResponseBase"
+        - type: object
+          properties:
+            success:
+              example: true
+            code:
+              example: LICENSE_ACTIVE
+            message:
+              example: ライセンスは有効です。
+            data:
+              type: object
+              properties:
+                licenseStatus:
+                  type: string
+                  example: active
+                expireDate:
+                  type: string
+                  format: date
+                  example: "2026-12-31"
+                daysRemaining:
+                  type: integer
+                  example: 120
+                available:
+                  type: boolean
+                  example: true
+
+    LicenseDeactivateRequest:
+      type: object
+      required:
+        - licenseKey
+        - pluginId
+        - kintoneDomain
+      properties:
+        licenseKey:
+          type: string
+          example: LIC-XXXX-XXXX-XXXX
+        pluginId:
+          type: string
+          example: plugin_001
+        kintoneDomain:
+          type: string
+          example: sample.cybozu.com
+        reason:
+          type: string
+          example: user_deactivated
+
+    LicenseDeactivateResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiResponseBase"
+        - type: object
+          properties:
+            success:
+              example: true
+            code:
+              example: LICENSE_DEACTIVATED
+            message:
+              example: ライセンス登録を解除しました。
+            data:
+              type: object
+              properties:
+                licenseStatus:
+                  type: string
+                  example: inactive
+                deactivatedAt:
+                  type: string
+                  format: date-time
+
+    PluginVersionResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiResponseBase"
+        - type: object
+          properties:
+            success:
+              example: true
+            code:
+              example: VERSION_CHECKED
+            message:
+              example: バージョン確認が完了しました。
+            data:
+              type: object
+              properties:
+                pluginId:
+                  type: string
+                  example: plugin_001
+                currentVersion:
+                  type: string
+                  example: "1.0.0"
+                latestVersion:
+                  type: string
+                  example: "1.2.0"
+                updateRequired:
+                  type: boolean
+                  example: true
+                forceUpdate:
+                  type: boolean
+                  example: false
+                releaseNote:
+                  type: string
+                  example: 軽微な不具合を修正しました。
+                releasedAt:
+                  type: string
+                  format: date
+                  example: "2026-01-10"
+
+    PluginListResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiResponseBase"
+        - type: object
+          properties:
+            success:
+              example: true
+            code:
+              example: PLUGIN_LIST_FOUND
+            message:
+              example: プラグイン一覧を取得しました。
+            data:
+              type: array
+              items:
+                type: object
+                properties:
+                  pluginId:
+                    type: string
+                    example: plugin_001
+                  pluginName:
+                    type: string
+                    example: サンプルプラグイン
+                  latestVersion:
+                    type: string
+                    example: "1.2.0"
+                  licenseStatus:
+                    type: string
+                    example: active
+                  downloadAvailable:
+                    type: boolean
+                    example: true
+
+    DownloadTokenRequest:
+      type: object
+      required:
+        - memberId
+        - pluginId
+        - licenseKey
+      properties:
+        memberId:
+          type: string
+          example: mem_001
+        pluginId:
+          type: string
+          example: plugin_001
+        licenseKey:
+          type: string
+          example: LIC-XXXX-XXXX-XXXX
+
+    DownloadTokenResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiResponseBase"
+        - type: object
+          properties:
+            success:
+              example: true
+            code:
+              example: DOWNLOAD_TOKEN_CREATED
+            message:
+              example: ダウンロードURLを発行しました。
+            data:
+              type: object
+              properties:
+                downloadUrl:
+                  type: string
+                  format: uri
+                  example: https://api.example.com/v1/plugins/download?token=xxxxx
+                expiresIn:
+                  type: integer
+                  example: 300
+
+    ContractStatusResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiResponseBase"
+        - type: object
+          properties:
+            success:
+              example: true
+            code:
+              example: CONTRACT_FOUND
+            message:
+              example: 契約情報を取得しました。
+            data:
+              type: object
+              properties:
+                memberId:
+                  type: string
+                  example: mem_001
+                contractStatus:
+                  type: string
+                  example: active
+                planName:
+                  type: string
+                  example: Standard
+                contractStartDate:
+                  type: string
+                  format: date
+                  example: "2026-01-01"
+                contractEndDate:
+                  type: string
+                  format: date
+                  example: "2026-12-31"
+                licenses:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      licenseKey:
+                        type: string
+                        example: LIC-XXXX-XXXX-XXXX
+                      pluginId:
+                        type: string
+                        example: plugin_001
+                      pluginName:
+                        type: string
+                        example: サンプルプラグイン
+                      status:
+                        type: string
+                        example: active
+                      expireDate:
+                        type: string
+                        format: date
+                        example: "2026-12-31"
+
+    AuthLogRequest:
+      type: object
+      required:
+        - eventType
+        - result
+      properties:
+        licenseKey:
+          type: string
+          example: LIC-XXXX-XXXX-XXXX
+        pluginId:
+          type: string
+          example: plugin_001
+        kintoneDomain:
+          type: string
+          example: sample.cybozu.com
+        eventType:
+          type: string
+          enum:
+            - authenticate
+            - status
+            - deactivate
+            - download
+            - error
+          example: authenticate
+        result:
+          type: string
+          enum:
+            - success
+            - failure
+            - warning
+          example: success
+        message:
+          type: string
+          example: ライセンス認証成功
+        ipAddress:
+          type: string
+          example: 203.0.113.10
+        userAgent:
+          type: string
+          example: Mozilla/5.0
+
+    AuthLogResponse:
+      allOf:
+        - $ref: "#/components/schemas/ApiResponseBase"
+        - type: object
+          properties:
+            success:
+              example: true
+            code:
+              example: LOG_CREATED
+            message:
+              example: ログを登録しました。
+            data:
+              type: object
+              properties:
+                logId:
+                  type: string
+                  example: log_001
+```
