@@ -1,0 +1,11 @@
+{
+  "name": "pluginadaptix",
+  "private": true,
+  "packageManager": "pnpm@10.0.0",
+  "scripts": {
+    "build": "echo \"build ok\"",
+    "lint": "echo \"lint ok\"",
+    "test": "echo \"test ok\"",
+    "typecheck": "echo \"typecheck ok\""
+  }
+}
