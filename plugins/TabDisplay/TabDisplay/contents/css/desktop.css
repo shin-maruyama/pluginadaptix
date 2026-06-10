@@ -1,0 +1,34 @@
+.plugin-space-heading {
+  font-size: 1.5rem;
+  margin: 0.8rem;
+}
+.plugin-space-message {
+  display: inline-block;
+  font-size: 1.2em;
+  margin: 0.8rem;
+  margin-top: 0;
+}
+
+.tab {
+  display: inline-block;
+  font-size: 14px;
+  color: rgb(70, 70, 70);
+  text-decoration: none;
+  padding: 10px 24px;
+  border-radius: 3px;
+  margin-left: 1px;
+  margin-bottom: 1px;
+  background-color: rgb(228, 230, 231);
+}
+
+.tab:hover {
+  cursor: pointer;
+}
+
+.my-popup-class {
+  width: 530px; 
+  height: 500px; 
+}
+
+
+

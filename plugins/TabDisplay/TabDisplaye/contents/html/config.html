@@ -1,0 +1,89 @@
+<!-- Copyright (C) All in one Allright Reserved.  -->
+
+
+<section class="settings">
+  <div class="common-setting">
+    <p style="color:#333;">TABタイトル表示スペース選択</p>
+    <div class="space-container">
+      <select class="space-field-id select2">
+        <!-- <option value="none"></option> -->
+      </select>
+    </div>
+
+    <p style="color:#333;">TABタイトル配色</p>
+  <div style="height: 55px;width:290px;white-space: nowrap;">
+    <select id="title-color" class="title-color select2 otherSelect">
+      <option value="none" selected></option>
+      <option value="#ffffff">白</option>
+      <option value="#3498db">青</option>
+      <option value="#b2b2ff">青 白系</option>
+      <option value="#ffa300">黄</option>
+      <option value="#ffffb2">黄 白系</option>
+      <option value="#ff6347">赤</option>
+      <option value="#ffb2b2">赤 白系</option>
+      <option value="#009966">緑</option>
+      <option value="#b2ffb2">緑 白系</option>
+      <option value="#ff6600">橙</option>
+      <option value="#ffd8b2">橙 白系</option>
+    </select>
+    <div id="demo-color" style="display: inline-block; height: 53px; width: 53px; border: 1px solid #e2e1e1;"></div>
+  </div>
+    <p style="color:#333;">TAB表示幅（px）</p>
+    <div class="kintoneplugin-input-outer" style="height:55px;width:290px;">
+      <input id="tab-width" class="kintoneplugin-input-text tab-width" placeholder="タブの表示幅（数字のみ）" value="1000">
+    </div>
+
+    <p style="color:#333;"><input type="checkbox" id="button-hide"><span> </span>全表示TABタイトルを表示しない</p>
+    <p style="color:#333;"><input type="checkbox" id="fieldname-hide"><span> </span>グループフィールド名を表示しない</p>
+  </div>
+
+
+  <div id="parent">
+    <div class="main-contents">
+
+      <p style="color:#333;">TABタイトル</p>
+      <div class="kintoneplugin-input-outer">
+        <input style="height: 55px;width:290px;" class="kintoneplugin-input-text tab-name" type="text" placeholder="TABタイトル名" maxlength="20">
+      </div>
+
+      <p style="color:#333;">グループまたはサブテーブル設定</p>
+      <p style="color:#333;">フィールド選択</p>
+
+      <div class="field-select-contents">
+
+        <div class="field-select-area" style="display: flex;margin-bottom: 10px;">
+
+          <div class="field-container" style="width:295px;">
+            <select class="field select2">
+              <!-- <option value="none"></option> -->
+            </select>
+          </div>
+
+
+          <div class="kintoneplugin-table-td-operation" style="z-index: 1;">
+            <button type="button" class="kintoneplugin-button-add-row-image add-field" title="Add row"></button>
+            <button type="button" class="kintoneplugin-button-remove-row-image remove-field"
+              title="Delete this row"></button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!--<p style="margin-bottom: 15px;">-------------------------------------------------</p>-->
+
+
+      <!-- 追加・削除ボタン -->
+      <div class="kintoneplugin-table-td-operation" style="margin: 5px 0 0 -15px;">
+        <button type="button" class="kintoneplugin-button-add-row-image add-row" title="Add row"></button>
+        <button type="button" class="kintoneplugin-button-remove-row-image remove-row" title="Delete this row"></button>
+      </div>
+
+    </div>
+  </div>
+
+  <p class="kintoneplugin-row">
+    <button type="button" class="js-cancel-button kintoneplugin-button-dialog-cancel">キャンセル</button>
+    <button id="submit" class="kintoneplugin-button-dialog-ok">保存</button>
+  </p>
+</section>
