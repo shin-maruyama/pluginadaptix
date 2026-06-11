@@ -1,0 +1,227 @@
+.settings-heading {
+  padding: 1em 0;
+}
+
+.kintoneplugin-input-text {
+  width: 20em;
+}
+
+.app-list {
+  padding-bottom: 20px;
+  /* background-color: rgb(221, 251, 255); */
+}
+
+.category-name {
+  padding-top: 30px;
+  padding-right: 30px;
+  padding-bottom: 50px;
+  /* border-top: 2px solid #52a9e2; */
+  /* background-color: rgb(221, 251, 255); */
+}
+
+.category {
+  margin-bottom: 50px;
+}
+
+.radio-title {
+  font-size: 16px;
+  position: relative;
+  width: 125px;
+  background-color: white;
+}
+
+.kintoneplugin-input-radio {
+  /*border: solid rgb(113, 222, 226) 10px;*/
+  /*border-radius: 15px;*/
+  width: 350px;
+  padding: 30px 0px 20px 30px;
+  margin-bottom: 20px;
+}
+
+.select-container{
+  box-sizing: unset;
+  border-bottom: unset;
+}
+
+.kintoneplugin-select{
+  padding: 0;
+  border: 0;
+}
+
+.kintoneplugin-input-radio-item {
+  font-size: 16px;
+  margin-bottom: 30px;
+}
+
+.select2-container--open .select2-dropdown--above{
+  border-bottom: 1px solid #aaa;
+}
+
+.select2-container--open .select2-dropdown--below{
+  border-top: 1px solid #aaa;
+}
+
+.select2-results__option{
+  height: 30px;
+}
+
+#kintoneplugin-treename-input{
+  margin-left: 51px;
+}
+
+#kintoneplugin-select-outer {
+  margin-left: 51px;
+  margin-top: 10px;
+}
+
+#kintoneplugin-select-outer1 {
+  margin-left: 51px;
+  margin-top: 10px;
+}
+
+#kintoneplugin-select-outer2 {
+  margin-left: 51px;
+  margin-top: 10px;
+}
+
+#kintoneplugin-select-outer-tree {
+  margin-left: 51px;
+  margin-top: 10px;
+}
+
+.otherSelect + .select2-container{
+  width: 220px !important;
+  display: inline-block;
+  vertical-align: unset;
+}
+
+.otherSelect + .select2-container *{
+  max-width: 220px !important;
+}
+
+.app-name + .select2-container{
+  width: 300px !important;
+  display: inline-block;
+}
+
+.app-name + .select2-container *{
+  max-width: 300px !important;
+}
+
+.otherSelect + .select2-container .select2-selection__arrow{
+  left: 200px !important;
+}
+
+#radio-margin-left {
+  margin-left: 51px;
+}
+
+#img {
+  background-color: rgb(236, 236, 236);
+  width: 20px;
+  height: 40px;
+}
+
+#main-tbody {
+  border: solid rgb(113, 222, 226) 10px;
+  padding: 30px 0px 20px 50px;
+  border-radius: 15px;
+  display: block;
+}
+
+#default-option{
+  color: #52a9e2;
+  font-size: 20px;
+}
+
+#aohuzi-option{
+  color: #84a2d4;
+  font-size: 20px;
+}
+
+#red-option{
+  color: #e95744;
+  font-size: 20px;
+}
+
+#azuki-option{
+  color: #96514d;
+  font-size: 20px;
+}
+
+#zinzamomi-option{
+  color: #ee827c;
+  font-size: 20px;
+}
+
+#green-option{
+  color: #66CC99;
+  font-size: 20px;
+}
+
+#moegi-option{
+  color: #006e54;
+  font-size: 20px;
+}
+
+#aomidori-option{
+  color: #00a497;
+  font-size: 20px;
+}
+
+#yellow-option{
+  color: #d6d500;
+  font-size: 20px;
+}
+
+#kikuchiba-option{
+  color: #d3a243;
+  font-size: 20px;
+}
+
+#nataneyu-option{
+  color: #a69425;
+  font-size: 20px;
+}
+
+#purple-option{
+  color: #e065f6;
+  font-size: 20px;
+}
+
+#benihuzi-option{
+  color: #c59ab6;
+  font-size: 20px;
+}
+
+#murasakitobi-option{
+  color: #5f414b;
+  font-size: 20px;
+}
+
+#orange-option{
+  color: #ffad00;
+  font-size: 20px;
+}
+
+#shu-option{
+  color: #eb6101;
+  font-size: 20px;
+}
+
+#hai-option{
+  color: #7d7d7d;
+  font-size: 20px;
+}
+
+#black-option{
+  color: #222222;
+  font-size: 20px;
+}
+
+#picker-option{
+  color: #222222;
+  font-size: 20px;
+}
+
+

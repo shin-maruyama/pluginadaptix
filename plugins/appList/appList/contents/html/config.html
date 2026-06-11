@@ -1,0 +1,161 @@
+<!-- Copyright (C) All in one Allright Reserved.  -->
+
+<section class="settings">
+  <form class="js-submit-settings">
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            <div class="kintoneplugin-input-radio">
+              <p class="radio-title">メニュー形式</p>
+              <span class="kintoneplugin-input-radio-item" id="radio-margin-left">
+               <input type="radio" name="radio" value="0" id="radio-0" checked="">
+                <label for="radio-0">ボタン型</label>
+              </span>
+              <span class="kintoneplugin-input-radio-item">
+               <input type="radio" name="radio" value="1" id="radio-1">
+               <label for="radio-1">ツリー型</label>
+              </span>
+              <div id="kintoneplugin-treename-input" style="width:290px;height:100px">
+                <p>ツリーの名前(ツリー型選択時)</p>
+                <input id="tree-name-input" class="kintoneplugin-input-text" type="text" placeholder="ツリー名" maxlength="20" style="width:290px;height:55px"> 
+              </div>
+
+              <div id="kintoneplugin-select-outer-tree">
+                <p>色（ツリー型）
+                  <input type="color" name="color" id="color-picker-tree">
+                </p>
+                <div style="width:290px;height:55px;white-space: nowrap;">
+                   <select id="color-select-tree" class="select2 otherSelect">
+                     <option id="default-option">デフォルト</option>
+                     <option id="aohuzi-option">青藤色</option>
+                     <option id="red-option">赤色</option>
+                     <option id="azuki-option">小豆色</option>
+                     <option id="zinzamomi-option">甚三紅</option>
+                     <option id="green-option">緑色</option>
+                     <option id="moegi-option">萌葱色</option>
+                     <option id="aomidori-option">青緑</option>
+                     <option id="yellow-option">黄色</option>
+                     <option id="kikuchiba-option">黄朽葉色</option>
+                     <option id="nataneyu-option">菜種油色</option>
+                     <option id="purple-option">紫色</option>
+                     <option id="benihuzi-option">紅藤色</option>
+                     <option id="murasakitobi-option">紫鳶</option>
+                     <option id="orange-option">橙色</option>
+                     <option id="shu-option">朱色</option>
+                     <option id="hai-option">灰色</option>
+                     <option id="black-option">黒色</option>
+                     <option id="picker-option">抽出色</option>
+                   </select>
+                <div id="show-color-tree" style="height: 54px; width: 54px; display: inline-block;"></div>
+              </div>
+            </div>
+
+              <div id="kintoneplugin-select-outer">
+                <p>色（ボタン型）
+                  <input type="color" name="color" id="color-picker">
+                </p>
+                <div style="width:290px;height:55px;white-space: nowrap;">
+                   <select id="color-select" class="select2 otherSelect">
+                     <option id="default-option">デフォルト</option>
+                     <option id="aohuzi-option">青藤色</option>
+                     <option id="red-option">赤色</option>
+                     <option id="azuki-option">小豆色</option>
+                     <option id="zinzamomi-option">甚三紅</option>
+                     <option id="green-option">緑色</option>
+                     <option id="moegi-option">萌葱色</option>
+                     <option id="aomidori-option">青緑</option>
+                     <option id="yellow-option">黄色</option>
+                     <option id="kikuchiba-option">黄朽葉色</option>
+                     <option id="nataneyu-option">菜種油色</option>
+                     <option id="purple-option">紫色</option>
+                     <option id="benihuzi-option">紅藤色</option>
+                     <option id="murasakitobi-option">紫鳶</option>
+                     <option id="orange-option">橙色</option>
+                     <option id="shu-option">朱色</option>
+                     <option id="hai-option">灰色</option>
+                     <option id="black-option">黒色</option>
+                     <option id="picker-option">抽出色</option>
+                   </select>
+                <div id="show-color" style="height: 54px; width: 54px; display: inline-block;"></div>
+               </div>
+              </div>
+
+              <!-- ---------------------------------------------------- -->
+              <div id="kintoneplugin-select-outer1">
+                <p>アプリ名の大きさ(PC)</p>
+                <div>
+                   <select id="size-select" class="select2">
+                     <option>大</option>
+                     <option>中</option>
+                     <option>小</option>
+                   </select>
+                </div>
+              </div>
+              <div id="kintoneplugin-select-outer2">
+                <p>アプリ名の大きさ(モバイル版)</p>
+              <div>                   
+                <select id="size-select-mobile" class="select2">
+                     <option>大</option>
+                     <option>中</option>
+                     <option>小</option>
+                   </select>
+                </div>
+              </div>
+               <!-- ---------------------------------------------------- -->
+            </div>
+          </td>         
+        </tr>
+      </tbody>
+    </table>
+    
+    <table id="table" class="table">
+      <tbody id="main-tbody" class="category">
+          <tr>
+            <td class="category-name">
+              <div class="kintoneplugin-input-outer">
+                <p></p>
+                <input id="category-name-input" class="kintoneplugin-input-text" type="text" placeholder="カテゴリー名" maxlength="20" style="width:290px;height:55px">
+                <input type="checkbox" class="subcategory-check">サブカテゴリ 
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="app-list">
+              <table class="kintoneplugin-table">
+                <tbody  class="select-tbody" id="select-tbody">
+                  <tr class="select-class">
+                    <td>
+                      <div>
+                        <div>
+                          <select id="app-name" class="app-name select2">
+                          </select>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="kintoneplugin-table-td-operation">
+                      <button type="button" class="kintoneplugin-button-add-row-image" title="Add row"></button>
+                      <button type="button" class="kintoneplugin-button-remove-row-image" title="Delete this row"></button>
+                      <img src="https://static.cybozu.com/contents/k/image/argo/uiparts/table/draggable.png" id="img" title="この画像をドラッグすると、フィールドの並び替えができます。">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <td class="kintoneplugin-table-td-operation">
+            <button type="button" class="kintoneplugin-button-add-category-image" title="Add row"></button>
+            <button type="button" class="kintoneplugin-button-remove-category-image" title="Delete this row"></button>
+            <img src="https://static.cybozu.com/contents/k/image/argo/uiparts/table/draggable.png" id="img" title="この画像をドラッグすると、カテゴリーの並び替えができます。">
+          </td>
+      </tbody>
+    </table>
+    
+    <p class="kintoneplugin-row">
+        <button type="button" class="js-cancel-button kintoneplugin-button-dialog-cancel">キャンセル</button>
+        <button class="kintoneplugin-button-dialog-ok">保存</button>
+    </p>
+  </form>
+</section>
+
+
