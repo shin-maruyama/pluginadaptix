@@ -1,0 +1,26 @@
+.settings-heading {
+  padding: 1em 0;
+}
+
+.kintoneplugin-table {
+  margin-bottom: 0;
+}
+
+.select2 {
+  margin-right: 15px;
+}
+
+.settings {
+  border: solid rgb(113, 222, 226) 10px;
+  border-radius: 15px;
+  padding: 30px 0px 20px 50px;
+  width: 700px;
+  color: #333;
+  font-size: 16px;
+  text-align: center;
+}
+
+.select2-results__option{
+  height: 36px;
+  width: 278px;
+}
