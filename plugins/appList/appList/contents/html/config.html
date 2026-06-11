@@ -16,6 +16,92 @@
                <input type="radio" name="radio" value="1" id="radio-1">
                <label for="radio-1">ツリー型</label>
               </span>
+              <span class="kintoneplugin-input-radio-item">
+               <input type="radio" name="radio" value="2" id="radio-2">
+               <label for="radio-2">ポータル型</label>
+              </span>
+              <div id="kintoneplugin-design-theme">
+                <p>デザインテーマ</p>
+                <select id="design-theme-select" class="select2">
+                  <option value="modern">modern</option>
+                  <option value="simple">simple</option>
+                  <option value="classic">classic</option>
+                  <option value="iconic">iconic</option>
+                </select>
+              </div>
+              <div id="kintoneplugin-frame-style">
+                <p>全体枠デザイン</p>
+                <select id="frame-style-select" class="select2">
+                  <option value="card">card</option>
+                  <option value="shadow">shadow</option>
+                  <option value="leftBorder">leftBorder</option>
+                  <option value="outline">outline</option>
+                  <option value="none">none</option>
+                </select>
+              </div>
+              <div id="kintoneplugin-button-style">
+                <p>全体ボタンデザイン</p>
+                <select id="button-style-select" class="select2">
+                  <option value="outline">outline</option>
+                  <option value="solid">solid</option>
+                  <option value="soft">soft</option>
+                  <option value="pill">pill</option>
+                  <option value="square">square</option>
+                  <option value="underline">underline</option>
+                </select>
+              </div>
+              <div id="kintoneplugin-portal-settings">
+                <p>ポータル型 列数（PC）</p>
+                <select id="portal-column-count-select" class="select2">
+                  <option value="4">4列</option>
+                  <option value="5">5列</option>
+                  <option value="6">6列</option>
+                </select>
+                <p>ポータル型 列数（モバイル）</p>
+                <select id="portal-mobile-column-count-select" class="select2">
+                  <option value="1">1列</option>
+                  <option value="2">2列</option>
+                </select>
+                <p>ポータル型 説明文行数</p>
+                <select id="portal-description-lines-select" class="select2">
+                  <option value="1">1行</option>
+                  <option value="2">2行</option>
+                  <option value="3">3行</option>
+                  <option value="4">4行</option>
+                  <option value="5">5行</option>
+                </select>
+                <p>ポータル型 カテゴリー名サイズ</p>
+                <select id="portal-title-font-size-select" class="select2">
+                  <option value="24">24px</option>
+                  <option value="26">26px</option>
+                  <option value="28">28px</option>
+                  <option value="30">30px</option>
+                  <option value="32">32px</option>
+                </select>
+                <p>ポータル型 説明文サイズ</p>
+                <select id="portal-description-font-size-select" class="select2">
+                  <option value="14">14px</option>
+                  <option value="16">16px</option>
+                  <option value="18">18px</option>
+                  <option value="20">20px</option>
+                </select>
+                <p>ポータル型 アプリ名サイズ</p>
+                <select id="portal-app-font-size-select" class="select2">
+                  <option value="14">14px</option>
+                  <option value="15">15px</option>
+                  <option value="16">16px</option>
+                  <option value="17">17px</option>
+                  <option value="18">18px</option>
+                  <option value="19">19px</option>
+                </select>
+                <p>ポータル型 サブカテゴリ名サイズ</p>
+                <select id="portal-subcategory-font-size-select" class="select2">
+                  <option value="16">16px</option>
+                  <option value="18">18px</option>
+                  <option value="20">20px</option>
+                  <option value="22">22px</option>
+                </select>
+              </div>
               <div id="kintoneplugin-treename-input" style="width:290px;height:100px">
                 <p>ツリーの名前(ツリー型選択時)</p>
                 <input id="tree-name-input" class="kintoneplugin-input-text" type="text" placeholder="ツリー名" maxlength="20" style="width:290px;height:55px"> 
@@ -27,58 +113,59 @@
                 </p>
                 <div style="width:290px;height:55px;white-space: nowrap;">
                    <select id="color-select-tree" class="select2 otherSelect">
-                     <option id="default-option">デフォルト</option>
-                     <option id="aohuzi-option">青藤色</option>
-                     <option id="red-option">赤色</option>
-                     <option id="azuki-option">小豆色</option>
-                     <option id="zinzamomi-option">甚三紅</option>
-                     <option id="green-option">緑色</option>
-                     <option id="moegi-option">萌葱色</option>
-                     <option id="aomidori-option">青緑</option>
-                     <option id="yellow-option">黄色</option>
-                     <option id="kikuchiba-option">黄朽葉色</option>
-                     <option id="nataneyu-option">菜種油色</option>
-                     <option id="purple-option">紫色</option>
-                     <option id="benihuzi-option">紅藤色</option>
-                     <option id="murasakitobi-option">紫鳶</option>
-                     <option id="orange-option">橙色</option>
-                     <option id="shu-option">朱色</option>
-                     <option id="hai-option">灰色</option>
-                     <option id="black-option">黒色</option>
-                     <option id="picker-option">抽出色</option>
+                     <option class="default-option">デフォルト</option>
+                     <option class="aohuzi-option">青藤色</option>
+                     <option class="red-option">赤色</option>
+                     <option class="azuki-option">小豆色</option>
+                     <option class="zinzamomi-option">甚三紅</option>
+                     <option class="green-option">緑色</option>
+                     <option class="moegi-option">萌葱色</option>
+                     <option class="aomidori-option">青緑</option>
+                     <option class="yellow-option">黄色</option>
+                     <option class="kikuchiba-option">黄朽葉色</option>
+                     <option class="nataneyu-option">菜種油色</option>
+                     <option class="purple-option">紫色</option>
+                     <option class="benihuzi-option">紅藤色</option>
+                     <option class="murasakitobi-option">紫鳶</option>
+                     <option class="orange-option">橙色</option>
+                     <option class="shu-option">朱色</option>
+                     <option class="hai-option">灰色</option>
+                     <option class="black-option">黒色</option>
+                     <option class="picker-option">抽出色</option>
                    </select>
                 <div id="show-color-tree" style="height: 54px; width: 54px; display: inline-block;"></div>
               </div>
             </div>
 
               <div id="kintoneplugin-select-outer">
-                <p>色（ボタン型）
+                <p>色（ボタン/ポータル型）
                   <input type="color" name="color" id="color-picker">
                 </p>
                 <div style="width:290px;height:55px;white-space: nowrap;">
                    <select id="color-select" class="select2 otherSelect">
-                     <option id="default-option">デフォルト</option>
-                     <option id="aohuzi-option">青藤色</option>
-                     <option id="red-option">赤色</option>
-                     <option id="azuki-option">小豆色</option>
-                     <option id="zinzamomi-option">甚三紅</option>
-                     <option id="green-option">緑色</option>
-                     <option id="moegi-option">萌葱色</option>
-                     <option id="aomidori-option">青緑</option>
-                     <option id="yellow-option">黄色</option>
-                     <option id="kikuchiba-option">黄朽葉色</option>
-                     <option id="nataneyu-option">菜種油色</option>
-                     <option id="purple-option">紫色</option>
-                     <option id="benihuzi-option">紅藤色</option>
-                     <option id="murasakitobi-option">紫鳶</option>
-                     <option id="orange-option">橙色</option>
-                     <option id="shu-option">朱色</option>
-                     <option id="hai-option">灰色</option>
-                     <option id="black-option">黒色</option>
-                     <option id="picker-option">抽出色</option>
+                     <option class="default-option">デフォルト</option>
+                     <option class="aohuzi-option">青藤色</option>
+                     <option class="red-option">赤色</option>
+                     <option class="azuki-option">小豆色</option>
+                     <option class="zinzamomi-option">甚三紅</option>
+                     <option class="green-option">緑色</option>
+                     <option class="moegi-option">萌葱色</option>
+                     <option class="aomidori-option">青緑</option>
+                     <option class="yellow-option">黄色</option>
+                     <option class="kikuchiba-option">黄朽葉色</option>
+                     <option class="nataneyu-option">菜種油色</option>
+                     <option class="purple-option">紫色</option>
+                     <option class="benihuzi-option">紅藤色</option>
+                     <option class="murasakitobi-option">紫鳶</option>
+                     <option class="orange-option">橙色</option>
+                     <option class="shu-option">朱色</option>
+                     <option class="hai-option">灰色</option>
+                     <option class="black-option">黒色</option>
+                     <option class="picker-option">抽出色</option>
                    </select>
-                <div id="show-color" style="height: 54px; width: 54px; display: inline-block;"></div>
-               </div>
+                 <div id="show-color" style="height: 54px; width: 54px; display: inline-block;"></div>
+                </div>
+                <button type="button" class="kintoneplugin-button-normal apply-category-color-button" data-role="apply-menu-color-to-categories">全カテゴリーへ適用</button>
               </div>
 
               <!-- ---------------------------------------------------- -->
@@ -110,33 +197,165 @@
     </table>
     
     <table id="table" class="table">
-      <tbody id="main-tbody" class="category">
+      <tbody class="category">
           <tr>
             <td class="category-name">
               <div class="kintoneplugin-input-outer">
                 <p></p>
-                <input id="category-name-input" class="kintoneplugin-input-text" type="text" placeholder="カテゴリー名" maxlength="20" style="width:290px;height:55px">
-                <input type="checkbox" class="subcategory-check">サブカテゴリ 
+                <input class="kintoneplugin-input-text category-name-input" data-role="category-name" type="text" placeholder="カテゴリー名" maxlength="20" style="width:290px;height:55px">
+                <input type="checkbox" class="subcategory-check" data-role="subcategory-check">サブカテゴリ
+                <div class="category-style-settings">
+                  <p>カテゴリー説明文（ポータル型）</p>
+                  <textarea class="category-description-input" data-role="category-description" placeholder="カテゴリー説明文" maxlength="120"></textarea>
+                  <p>カテゴリーアイコン</p>
+                  <select class="category-icon-select" data-role="category-icon">
+                    <option value="none">none</option>
+                    <option value="clock">clock</option>
+                    <option value="calendar">calendar</option>
+                    <option value="money">money</option>
+                    <option value="people">people</option>
+                    <option value="document">document</option>
+                     <option value="chart">chart</option>
+                     <option value="gear">gear</option>
+                     <option value="app">app</option>
+                     <option value="phone">phone</option>
+                     <option value="train">train</option>
+                     <option value="home">home</option>
+                     <option value="suitcase">suitcase</option>
+                     <option value="bank">bank</option>
+                     <option value="transfer">transfer</option>
+                     <option value="warning">warning</option>
+                     <option value="lock">lock</option>
+                     <option value="chat">chat</option>
+                     <option value="gift">gift</option>
+                     <option value="checklist">checklist</option>
+                     <option value="idCard">idCard</option>
+                     <option value="shield">shield</option>
+                     <option value="heart">heart</option>
+                     <option value="lightbulb">lightbulb</option>
+                     <option value="yen">yen</option>
+                     <option value="stamp">stamp</option>
+                     <option value="umbrella">umbrella</option>
+                     <option value="bus">bus</option>
+                   </select>
+                  <p>カテゴリー色</p>
+                  <select class="category-color-mode" data-role="category-color-mode">
+                    <option value="">全体色を使用</option>
+                    <option value="custom">個別色を使用</option>
+                  </select>
+                  <select class="category-color-select" data-role="category-color-select">
+                    <option class="default-option">デフォルト</option>
+                    <option class="aohuzi-option">青藤色</option>
+                    <option class="red-option">赤色</option>
+                    <option class="azuki-option">小豆色</option>
+                    <option class="zinzamomi-option">甚三紅</option>
+                    <option class="green-option">緑色</option>
+                    <option class="moegi-option">萌葱色</option>
+                    <option class="aomidori-option">青緑</option>
+                    <option class="yellow-option">黄色</option>
+                    <option class="kikuchiba-option">黄朽葉色</option>
+                    <option class="nataneyu-option">菜種油色</option>
+                    <option class="purple-option">紫色</option>
+                    <option class="benihuzi-option">紅藤色</option>
+                    <option class="murasakitobi-option">紫鳶</option>
+                    <option class="orange-option">橙色</option>
+                    <option class="shu-option">朱色</option>
+                    <option class="hai-option">灰色</option>
+                    <option class="black-option">黒色</option>
+                    <option class="picker-option">抽出色</option>
+                  </select>
+                  <input type="color" class="category-color-input" data-role="category-color" value="#52a9e2">
+                  <span class="category-color-preview" data-role="category-color-preview">全体色</span>
+                  <div class="category-color-palette" data-role="category-color-palette">
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="デフォルト" style="background-color:#52a9e2" title="デフォルト"></button>
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="青藤色" style="background-color:#84a2d4" title="青藤色"></button>
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="赤色" style="background-color:#e95744" title="赤色"></button>
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="小豆色" style="background-color:#96514d" title="小豆色"></button>
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="甚三紅" style="background-color:#ee827c" title="甚三紅"></button>
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="緑色" style="background-color:#66CC99" title="緑色"></button>
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="萌葱色" style="background-color:#006e54" title="萌葱色"></button>
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="青緑" style="background-color:#00a497" title="青緑"></button>
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="黄色" style="background-color:#d6d500" title="黄色"></button>
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="黄朽葉色" style="background-color:#d3a243" title="黄朽葉色"></button>
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="菜種油色" style="background-color:#a69425" title="菜種油色"></button>
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="紫色" style="background-color:#e065f6" title="紫色"></button>
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="紅藤色" style="background-color:#c59ab6" title="紅藤色"></button>
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="紫鳶" style="background-color:#5f414b" title="紫鳶"></button>
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="橙色" style="background-color:#ffad00" title="橙色"></button>
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="朱色" style="background-color:#eb6101" title="朱色"></button>
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="灰色" style="background-color:#7d7d7d" title="灰色"></button>
+                    <button type="button" class="category-color-swatch" data-role="category-color-preset" data-color="黒色" style="background-color:#222222" title="黒色"></button>
+                  </div>
+                  <p>カテゴリー枠デザイン</p>
+                  <select class="category-frame-style-select" data-role="category-frame-style">
+                    <option value="">全体設定を使用</option>
+                    <option value="card">card</option>
+                    <option value="shadow">shadow</option>
+                    <option value="leftBorder">leftBorder</option>
+                    <option value="outline">outline</option>
+                    <option value="none">none</option>
+                  </select>
+                  <p>カテゴリーボタンデザイン</p>
+                  <select class="category-button-style-select" data-role="category-button-style">
+                    <option value="">全体設定を使用</option>
+                    <option value="outline">outline</option>
+                    <option value="solid">solid</option>
+                    <option value="soft">soft</option>
+                    <option value="pill">pill</option>
+                    <option value="square">square</option>
+                    <option value="underline">underline</option>
+                  </select>
+                </div>
               </div>
             </td>
           </tr>
           <tr>
             <td class="app-list">
               <table class="kintoneplugin-table">
-                <tbody  class="select-tbody" id="select-tbody">
+                <tbody class="select-tbody">
                   <tr class="select-class">
                     <td>
                       <div>
-                        <div>
-                          <select id="app-name" class="app-name select2">
-                          </select>
+                        <div class="app-row-controls">
+                           <select class="app-name select2" data-role="app-name">
+                           </select>
+                           <select class="app-icon-select" data-role="app-icon">
+                             <option value="none">icon: category</option>
+                             <option value="clock">clock</option>
+                             <option value="calendar">calendar</option>
+                             <option value="money">money</option>
+                             <option value="people">people</option>
+                             <option value="document">document</option>
+                             <option value="chart">chart</option>
+                             <option value="gear">gear</option>
+                             <option value="app">app</option>
+                             <option value="phone">phone</option>
+                             <option value="train">train</option>
+                             <option value="home">home</option>
+                             <option value="suitcase">suitcase</option>
+                             <option value="bank">bank</option>
+                             <option value="transfer">transfer</option>
+                             <option value="warning">warning</option>
+                             <option value="lock">lock</option>
+                             <option value="chat">chat</option>
+                             <option value="gift">gift</option>
+                             <option value="checklist">checklist</option>
+                             <option value="idCard">idCard</option>
+                             <option value="shield">shield</option>
+                             <option value="heart">heart</option>
+                             <option value="lightbulb">lightbulb</option>
+                             <option value="yen">yen</option>
+                             <option value="stamp">stamp</option>
+                             <option value="umbrella">umbrella</option>
+                             <option value="bus">bus</option>
+                           </select>
                         </div>
                       </div>
                     </td>
                     <td class="kintoneplugin-table-td-operation">
                       <button type="button" class="kintoneplugin-button-add-row-image" title="Add row"></button>
                       <button type="button" class="kintoneplugin-button-remove-row-image" title="Delete this row"></button>
-                      <img src="https://static.cybozu.com/contents/k/image/argo/uiparts/table/draggable.png" id="img" title="この画像をドラッグすると、フィールドの並び替えができます。">
+                      <img src="https://static.cybozu.com/contents/k/image/argo/uiparts/table/draggable.png" class="drag-handle-image" title="この画像をドラッグすると、フィールドの並び替えができます。">
                     </td>
                   </tr>
                 </tbody>
@@ -146,10 +365,18 @@
           <td class="kintoneplugin-table-td-operation">
             <button type="button" class="kintoneplugin-button-add-category-image" title="Add row"></button>
             <button type="button" class="kintoneplugin-button-remove-category-image" title="Delete this row"></button>
-            <img src="https://static.cybozu.com/contents/k/image/argo/uiparts/table/draggable.png" id="img" title="この画像をドラッグすると、カテゴリーの並び替えができます。">
+            <img src="https://static.cybozu.com/contents/k/image/argo/uiparts/table/draggable.png" class="drag-handle-image" title="この画像をドラッグすると、カテゴリーの並び替えができます。">
           </td>
       </tbody>
     </table>
+
+    <section id="portal-preview-section" class="portal-preview-section">
+      <div class="portal-preview-toolbar">
+        <p class="portal-preview-title">ポータル型プレビュー</p>
+        <button type="button" class="kintoneplugin-button-normal" data-role="portal-preview-refresh">プレビュー更新</button>
+      </div>
+      <div id="portal-preview-root" class="portal-preview-grid"></div>
+    </section>
     
     <p class="kintoneplugin-row">
         <button type="button" class="js-cancel-button kintoneplugin-button-dialog-cancel">キャンセル</button>
