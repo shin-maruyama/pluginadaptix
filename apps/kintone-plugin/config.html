@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>kintone Plugin License Auth</title>
+    <style>
+      body {
+        color: #1f2937;
+        font-family: sans-serif;
+        margin: 24px;
+      }
+
+      .plugin-adaptix-config {
+        max-width: 720px;
+      }
+
+      .plugin-adaptix-field {
+        margin: 0 0 16px;
+      }
+
+      .plugin-adaptix-field label {
+        display: block;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+
+      .plugin-adaptix-field input {
+        border: 1px solid #9ca3af;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 14px;
+        padding: 8px;
+        width: 100%;
+      }
+
+      .plugin-adaptix-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 24px;
+      }
+
+      .plugin-adaptix-message {
+        margin-top: 16px;
+        min-height: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="plugin-adaptix-config">
+      <h1>License Auth</h1>
+      <div class="plugin-adaptix-field">
+        <label for="plugin-adaptix-api-base-url">API Base URL</label>
+        <input id="plugin-adaptix-api-base-url" type="url" placeholder="https://api.example.com/v1">
+      </div>
+      <div class="plugin-adaptix-field">
+        <label for="plugin-adaptix-api-key">API Key</label>
+        <input id="plugin-adaptix-api-key" type="password">
+      </div>
+      <div class="plugin-adaptix-field">
+        <label for="plugin-adaptix-plugin-id">Plugin ID</label>
+        <input id="plugin-adaptix-plugin-id" type="text" placeholder="plugin_001">
+      </div>
+      <div class="plugin-adaptix-field">
+        <label for="plugin-adaptix-license-key">License Key</label>
+        <input id="plugin-adaptix-license-key" type="password" placeholder="LIC-XXXX-XXXX-XXXX">
+      </div>
+      <div class="plugin-adaptix-actions">
+        <button id="plugin-adaptix-authenticate" type="button">Authenticate</button>
+      </div>
+      <p id="plugin-adaptix-message" class="plugin-adaptix-message"></p>
+    </main>
+  </body>
+</html>
