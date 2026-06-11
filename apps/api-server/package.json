@@ -1,0 +1,24 @@
+{
+  "name": "@pluginadaptix/api-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@pluginadaptix/kintone-client": "workspace:*",
+    "@pluginadaptix/shared": "workspace:*",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/supertest": "^6.0.3",
+    "supertest": "^7.1.1"
+  }
+}

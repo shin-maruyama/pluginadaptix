@@ -1,0 +1,17 @@
+{
+  "name": "@pluginadaptix/kintone-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/desktop/index.js",
+  "types": "./dist/desktop/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && node scripts/build-plugin-zip.mjs",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@pluginadaptix/shared": "workspace:*"
+  }
+}

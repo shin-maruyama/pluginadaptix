@@ -4,3 +4,5 @@ coverage
 .env
 .env.local
 .DS_Store
+private.ppk
+apps/kintone-plugin/private.ppk

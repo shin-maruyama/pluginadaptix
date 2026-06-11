@@ -1,0 +1,32 @@
+{
+  "manifest_version": 1,
+  "version": "0.1.0",
+  "type": "APP",
+  "name": {
+    "ja": "kintoneプラグイン認証",
+    "en": "kintone Plugin License Auth"
+  },
+  "description": {
+    "ja": "kintoneプラグインのライセンス認証と状態確認を行います。",
+    "en": "Authenticates and checks license status for the kintone plugin."
+  },
+  "desktop": {
+    "js": [
+      "dist/api/license-client.js",
+      "dist/desktop/index.js"
+    ]
+  },
+  "config": {
+    "html": "config.html",
+    "js": [
+      "dist/api/license-client.js",
+      "dist/config/index.js"
+    ],
+    "required_params": [
+      "apiBaseUrl",
+      "apiKey",
+      "licenseKey",
+      "pluginId"
+    ]
+  }
+}
