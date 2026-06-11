@@ -1,0 +1,59 @@
+{
+  "manifest_version": 1,
+  "version": "2.0.10",
+  "type": "APP",
+  "desktop": {
+    "js": [
+      "https://js.cybozu.com/jquery/3.3.1/jquery.min.js",
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.js",
+      "js/certification.js",
+      "js/desktop.js"
+    ],
+    "css": [
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.css",
+      "css/51-modern-default.css",
+      "css/desktop.css"
+    ]
+  },
+  "icon": "image/icon.png",
+  "config": {
+    "html": "html/config.html",
+    "js": [
+      "https://js.cybozu.com/jquery/3.3.1/jquery.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/i18n/ja.js",
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.js",
+      "js/certification.js",
+      "js/config.js"
+    ],
+    "css": [
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.css",
+      "css/51-modern-default.css",
+      "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css",
+      "css/config.css"
+    ],
+    "required_params": [
+      "elementArray"
+    ]
+  },
+  "name": {
+    "en": "disabled",
+    "ja": "非表示プラグイン"
+  },
+  "description": {
+    "en": "[PluginAdaptiX] v2.0.10 disable",
+    "ja": "[PluginAdaptiX] v2.0.10 プラグインで指定したフィールド、グループ、サブテーブル等を非表示にすることが出来ます。"
+  },
+  "mobile": {
+    "js": [
+      "https://js.cybozu.com/jquery/3.3.1/jquery.min.js",
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.js",
+      "js/certification.js",
+      "js/mobile.js"
+    ],
+    "css": [
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.css",
+      "css/mobile.css"
+    ]
+  }
+}
