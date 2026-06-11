@@ -17,7 +17,7 @@ async function KNTP708010certification() {
     if (message) {
       swal.fire({
         title: 'エラー',
-        html: message,
+        text: String(message),
         icon: 'error',
         confirmButtonText: 'OK',
       });
@@ -28,7 +28,7 @@ async function KNTP708010certification() {
   } catch (error) {
     swal.fire({
       title: 'エラー',
-      html: '認証情報を取得できませんでした。',
+      text: '認証情報を取得できませんでした。',
       icon: 'error',
       confirmButtonText: 'OK',
     });

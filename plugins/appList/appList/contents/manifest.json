@@ -1,6 +1,6 @@
 {
   "manifest_version": 1,
-  "version": "1.0.6",
+  "version": "1.0.27",
   "type": "APP",
   "desktop": {
     "js": [
@@ -38,12 +38,12 @@
     ]
   },
   "name": {
-    "en": "applist",
-    "ja": "アプリ一覧プラグイン"
+    "en": "applist custom",
+    "ja": "アプリ一覧プラグイン（カスタム版）"
   },
   "description": {
-    "en": "[PluginAdaptiX] v1.0.6 applist",
-    "ja": "[PluginAdaptiX] v1.0.6 アプリの一覧を表示することができます。"
+    "en": "[PluginAdaptiX] v1.0.27-custom applist",
+    "ja": "[PluginAdaptiX] v1.0.27-custom アプリの一覧を表示することができます。"
   },
   "mobile": {
     "js": [
