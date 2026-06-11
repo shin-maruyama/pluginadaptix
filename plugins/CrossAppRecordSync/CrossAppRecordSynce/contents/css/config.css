@@ -1,0 +1,44 @@
+.settings-heading {
+  padding: 1em 0;
+}
+
+.kintoneplugin-input-text {
+  width: 20em;
+}
+
+.main-contents {
+  border: solid rgb(113, 222, 226) 10px;
+  border-radius: 15px;
+  width: 1000px;
+  padding: 30px 0px 20px 50px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.inline-container {
+ height: 55px;
+}
+.copy-condition-contents-row
+{
+  height: 60px;
+}
+
+/* .equal {
+  font-size: 40px;
+  font-weight: bold;
+  color: rgb(99, 99, 99);
+  margin: 0;
+} */
+
+ .copy-contents-row
+{
+ height: 60px;
+}
+
+
+.arrow {
+  font-size: 38px;
+  font-weight: bold;
+  color: rgb(99, 99, 99);
+  /* margin-left: 190px; */
+  margin: 0;
+}
