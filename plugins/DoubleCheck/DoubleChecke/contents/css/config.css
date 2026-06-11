@@ -1,0 +1,20 @@
+.settings-heading {
+  padding: 1em 0;
+}
+
+.kintoneplugin-input-text {
+  width: 20em;
+}
+
+#parent {
+  border: solid rgb(113, 222, 226) 10px;
+  border-radius: 15px;
+  width: 720px;
+  padding: 30px 0px 20px 50px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.select2 {
+  margin-bottom: 10px;
+}
