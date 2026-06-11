@@ -1,0 +1,19 @@
+.settings-heading {
+  padding: 1em 0;
+}
+
+.kintoneplugin-input-text {
+  width: 20em;
+}
+
+.main-contents {
+  border: solid rgb(113, 222, 226) 10px;
+  border-radius: 15px;
+  width: 250px;
+  padding: 30px 0px 20px 50px;
+  margin-bottom: 20px;
+}
+
+.item-name {
+  margin-top: 10px;
+}
