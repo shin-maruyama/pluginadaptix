@@ -1,0 +1,153 @@
+<!-- Copyright (C) All in one Allright Reserved.  -->
+
+
+<section class="settings">
+
+
+  <div id="parent">
+    <div class="main-contents">
+
+
+      <div class="item-name" style="display: flex;">
+        <div class="left-label" style="color:#333;width: 400px;">コピー元アプリ</div>
+        <div class="kintoneplugin-title" style="color:#333;">レコード番号のコピー先フィールド</div>
+      </div>
+      <div class="inline-container" style="display: flex;">
+        <div class="left-container" style="width: 400px;">
+          <select class="app-select select2">
+            <option value=""></option>
+          </select>
+        </div>
+
+        <div class="right-container">
+          <select class="recordId-copy-field select2"></select>
+        </div>
+      </div>
+
+      <div class="item-name" style="display: flex;">
+        <div class="left-container" style="width: 400px;"></div>
+        <p style="color:#333;"><input type="checkbox" class="isNumber">採番する</p>
+      </div>
+
+      <div class="item-name" style="display: flex;">
+        <div class="left-label" style="color:#333;width: 400px;">同期タイミング</div>
+        <div class="kintoneplugin-title right-label" style="color:#333;width: 290px;">採番フィールド</div>
+        <div class="kintoneplugin-title" style="color:#333;">桁数設定</div>
+      </div>
+      <div class="inline-container" style="display: flex;">
+        <div class="left-container" style="width: 400px;">
+          <select id="timing-select" class="timing-select select2">
+            <option></option>
+            <option value="1">一覧画面表示時</option>
+            <option value="2">一覧ボタンクリック時</option>
+          </select>
+        </div>
+
+        <div class="right-container" style="height: 55px;width: 290px;">
+          <select class="number-select select2"></select>
+        </div>
+        <div style="height: 55px;width: 100px;">
+          <input class="digit" style="border: 1px solid rgb(227,231,232);padding: 0px;width: 100px;height: 55px;text-align: center; background-color: #f7f9fa;color: #34a3db;">
+        </div>
+      </div>
+
+      <div class="kintoneplugin-title" style="margin-top:10px; width: 400px;color:#333;">同期条件フィールド </div>
+
+
+
+      <div class="copy-condition-contents" style="margin-bottom: 25px;">
+
+        <!-- <div class="item-name" style="display: flex;">
+          <div class="kintoneplugin-title" style="width: 400px;">コピー先</div>
+          <div class="kintoneplugin-title">コピー元</div>
+        </div> -->
+
+
+
+        <div class="copy-condition-contents-row" style="display: flex;">
+
+
+          <!-- <select class="copy-condition-destination-field select2"></select>
+
+          <div style="margin: 0 10px;position: absolute;left: 370px; display: inline-block;">
+            <p class="equal">=</p>
+          </div> -->
+
+          <div class="cond-container" style="width: 291px;">
+            <select class="copy-condition-source-field select2"></select>
+          </div>
+          <div style="width: 291px;">
+            <select class="copy-cond select2"></select>
+          </div>
+          <div class="blank-area">
+
+          </div>
+
+
+          <!-- 追加・削除ボタン -->
+          <div class="kintoneplugin-table-td-operation">
+            <button type="button" class="kintoneplugin-button-add-row-image add-condition-row" title="Add row"></button>
+            <button type="button" class="kintoneplugin-button-remove-row-image remove-condition-row"
+              title="Delete this row"></button>
+          </div>
+
+        </div>
+      </div>
+
+
+
+      <div class="kintoneplugin-title" style="margin-top: 40px; color:#333;">同期フィールド</div>
+      <div class="kintoneplugin-title" style="width: 400px;color:#333;">上書き許可</div>
+      <div class="left-container" style="width: 400px;">
+        <select class="rewrite-select select2"></select>
+      </div>
+
+      <div class="copy-contents" style="margin-bottom: 25px;margin-top: 10px;">
+
+        <div class="item-name" style="display: flex;">
+          <div class="left-label" style="width: 400px;color:#333;">コピー先</div>
+          <div class="kintoneplugin-title" style="color:#333;">コピー元</div>
+        </div>
+
+
+
+        <div class="copy-contents-row" style="display: flex;">
+
+          <div class="copy-container" style="width: 320px;">
+            <select class="copy-destination-field select2"></select>
+          </div>
+
+          <div style="margin: 0 10px;display: inline-block;width: 55px;">
+            <p class="arrow">←</p>
+          </div>
+
+          <div class="right-container" style="width: 290px;">
+            <select class="copy-source-field select2"></select>
+          </div>
+
+
+          <!-- 追加・削除ボタン -->
+          <div class="kintoneplugin-table-td-operation" style="z-index: 999;">
+            <button type="button" class="kintoneplugin-button-add-row-image add-field-row" title="Add row"></button>
+            <button type="button" class="kintoneplugin-button-remove-row-image remove-field-row"
+              title="Delete this row"></button>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- 追加・削除ボタン -->
+      <!-- <div class="kintoneplugin-table-td-operation" style="position: relative; right: 15px;">
+        <button type="button" class="kintoneplugin-button-add-row-image add-row" title="Add row"></button>
+        <button type="button" class="kintoneplugin-button-remove-row-image remove-row" title="Delete this row"></button>
+      </div> -->
+
+    </div>
+  </div>
+
+  <p class="kintoneplugin-row">
+    <button type="button" class="js-cancel-button kintoneplugin-button-dialog-cancel" id="cancel">キャンセル</button>
+    <button id="submit" class="kintoneplugin-button-dialog-ok">保存</button>
+  </p>
+</section>

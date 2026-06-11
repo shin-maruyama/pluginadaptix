@@ -1,0 +1,61 @@
+{
+  "manifest_version": 1,
+  "version": "2.0.5",
+  "type": "APP",
+  "desktop": {
+    "js": [
+      "https://js.cybozu.com/jquery/3.3.1/jquery.min.js",
+      "https://js.cybozu.com/luxon/2.3.0/luxon.min.js",
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.js",
+      "js/certification.js.obfuscated.js",
+      "js/desktop.js.obfuscated.js"
+    ],
+    "css": [
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.css",
+      "css/51-modern-default.css",
+      "css/desktop.css"
+    ]
+  },
+  "icon": "image/icon.png",
+  "config": {
+    "html": "html/config.html",
+    "js": [
+      "https://js.cybozu.com/jquery/3.3.1/jquery.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/i18n/ja.js",
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.js",
+      "js/certification.js.obfuscated.js",
+      "js/config.js.obfuscated.js"
+    ],
+    "css": [
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.css",
+      "css/51-modern-default.css",
+      "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css",
+      "css/config.css"
+    ],
+    "required_params": [
+      "settings"
+    ]
+  },
+  "name": {
+    "en": "period_acquisition",
+    "ja": "期間一括更新プラグイン"
+  },
+  "description": {
+    "en": "Period acquisition",
+    "ja": "v2.0.5 レコード一覧画面の期間更新ボタンをクリックすると現在から日付フィールドの期間を計算し、全レコードの計算結果が更新されます。"
+  },
+  "mobile": {
+    "js": [
+      "https://js.cybozu.com/jquery/3.3.1/jquery.min.js",
+      "https://js.cybozu.com/luxon/2.3.0/luxon.min.js",
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.js",
+      "js/certification.js.obfuscated.js",
+      "js/mobile.js.obfuscated.js"
+    ],
+    "css": [
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.css",
+      "css/mobile.css"
+    ]
+  }
+}

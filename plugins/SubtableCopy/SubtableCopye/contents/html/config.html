@@ -1,0 +1,98 @@
+<!-- Copyright (C) All in one Allright Reserved.  -->
+
+
+<section class="settings">
+
+
+  <div id="parent">
+    <div class="main-contents">
+
+
+      <div class="kintoneplugin-title">コピー元アプリ選択</div>
+      <div class="app-container">
+        <select class="apps select2"></select>
+      </div>
+
+
+      <div class="item-name" style="display: flex; margin-top:10px;">
+        <div class="left-label" style="color:#333;width: 400px;">コピー先テーブル選択</div>
+        <div class="kintoneplugin-title">コピー元テーブル選択</div>
+      </div>
+      <div class="inline-container" style="display: flex;">
+        <div class="left-container" style="width: 320px;">
+          <select class="destination-table select2"></select>
+        </div>
+        <div style="margin: 0 10px;width: 60px; display: inline-block;">
+          <p class="arrow">←</p>
+        </div>
+
+        <div class="right-container" style="width: 295px;">
+          <select class="source-table select2">
+          </select>
+        </div>
+
+
+        <!-- <div style="position: absolute; left: 450px;">
+            <select class="source-table select2"></select>
+          </div> -->
+      </div>
+
+
+
+      <div class="copy-contents" style="margin:10px 0 25px 0;">
+
+        <div class="item-name" style="display: flex;">
+          <div class="left-label" style="color:#333;width: 400px;">コピー先テーブル内フィールド選択</div>
+          <div class="kintoneplugin-title">コピー元テーブル内フィールド選択</div>
+        </div>
+
+
+
+        <div class="copy-contents-row" style="display: flex;">
+
+
+
+          <div class="left-container" style="width: 320px;">
+            <select class="destination-field select2"></select>
+          </div>
+
+          <div style="margin: 0 10px;width: 60px; display: inline-block;">
+            <p class="arrow">←</p>
+          </div>
+
+
+          <div class="right-container" style="width: 295px;">
+            <select class="source-field select2">
+            </select>
+          </div>
+
+          <!-- <div style="position: absolute;left: 450px;">
+              <select class="source-field select2"></select>
+            </div> -->
+
+
+          <!-- 追加・削除ボタン -->
+          <div class="kintoneplugin-table-td-operation" style="z-index: 1;">
+            <button type="button" class="kintoneplugin-button-add-row-image add-child-row" title="Add row"></button>
+            <button type="button" class="kintoneplugin-button-remove-row-image remove-child-row"
+              title="Delete this row"></button>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- 追加・削除ボタン -->
+      <div class="kintoneplugin-table-td-operation" style=" right: 15px;">
+        <button type="button" class="kintoneplugin-button-add-row-image add-row" title="Add row"></button>
+        <button type="button" class="kintoneplugin-button-remove-row-image remove-row" title="Delete this row"></button>
+      </div>
+
+    </div>
+  </div>
+
+  <p class="kintoneplugin-row">
+    <button type="button" class="js-cancel-button kintoneplugin-button-dialog-cancel">キャンセル</button>
+    <button id="submit" class="kintoneplugin-button-dialog-ok">保存</button>
+  </p>
+</section>
