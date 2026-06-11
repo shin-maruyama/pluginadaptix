@@ -1,0 +1,105 @@
+<!-- Copyright (C) All in one Allright Reserved.  -->
+
+
+<section class="settings">
+
+
+  <div id="parent">
+    <div class="main-contents">
+
+
+      <div class="kintoneplugin-title">関連付けるアプリ</div>
+      <div class="app-container"><select class="apps select2"></select></div>
+
+      <div class="kintoneplugin-title" style="margin-top: 40px; margin-bottom: 20px;">※検索ワードは1つでも可、複数の場合、AND検索</div>
+      <div class="item-name" style="display: flex;">
+        <div class="left-label" style="color:#333;width: 400px;">入力フィールド</div>
+        <div class="kintoneplugin-title">検索先フィールド</div>
+      </div>
+      <div class="inline-container" style="display: flex;">
+        <div class="input-container" style="width: 320px;">
+          <select class="input-field-1 select2"></select>
+        </div>
+        <div style="margin: 0 10px;width: 60px;display: inline-block;">
+          <p class="equal" style="color:#333;">=</p>
+        </div>
+        <div class="search-container">
+          <select class="search-field-1 select2"></select>
+        </div>
+      </div>
+
+      <div class="inline-container" style="display: flex;">
+        <div class="input-container" style="width: 320px;">
+          <select class="input-field-2 select2"></select>
+        </div>
+        <div style="margin: 0 10px;width: 60px;display: inline-block;">
+          <p class="equal" style="color:#333;">=</p>
+        </div>
+        <div class="search-container">
+          <select class="search-field-2 select2"></select>
+        </div>
+      </div>
+
+      <div class="inline-container" style="display: flex;">
+        <div class="input-container" style="width: 320px;">
+          <select class="input-field-3 select2"></select>
+        </div>
+        <div style="margin: 0 10px;width: 60px;display: inline-block;">
+          <p class="equal" style="color:#333;">=</p>
+        </div>
+        <div class="search-container">
+          <select class="search-field-3 select2"></select>
+        </div>
+      </div>
+
+      <div class="kintoneplugin-title" style="margin-top: 40px; margin-bottom: 20px;">フィールドのコピー</div>
+
+      <div class="copy-contents" style="margin-bottom: 25px;">
+
+        <div class="item-name" style="display: flex;">
+          <div class="left-label" style="color:#333;width: 400px;">コピー先</div>
+          <div class="kintoneplugin-title">コピー元</div>
+        </div>
+
+
+
+        <div class="copy-contents-row" style="display: flex;">
+
+          <div class="copy-destination-container" style="width: 320px;">
+          <select class="copy-destination-field select2"></select>
+          </div>
+
+          <div style="margin: 0 10px;width: 60px;display: inline-block;">
+            <p class="arrow" style="color:#333;">←</p>
+          </div>
+
+          <div class="copy-source-container" style="width: 295px;">
+            <select class="copy-source-field select2"></select>
+          </div>
+
+
+          <!-- 追加・削除ボタン -->
+          <div class="kintoneplugin-table-td-operation" style="position: relative;">
+            <button type="button" class="kintoneplugin-button-add-row-image add-child-row" title="Add row"></button>
+            <button type="button" class="kintoneplugin-button-remove-row-image remove-child-row"
+              title="Delete this row"></button>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- 追加・削除ボタン -->
+      <div class="kintoneplugin-table-td-operation" style="position: relative; right: 15px;">
+        <button type="button" class="kintoneplugin-button-add-row-image add-row" title="Add row"></button>
+        <button type="button" class="kintoneplugin-button-remove-row-image remove-row" title="Delete this row"></button>
+      </div>
+
+    </div>
+  </div>
+
+  <p class="kintoneplugin-row">
+    <button type="button" class="js-cancel-button kintoneplugin-button-dialog-cancel">キャンセル</button>
+    <button id="submit" class="kintoneplugin-button-dialog-ok">保存</button>
+  </p>
+</section>

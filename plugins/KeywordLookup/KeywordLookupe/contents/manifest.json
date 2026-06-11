@@ -1,0 +1,63 @@
+{
+  "manifest_version": 1,
+  "version": "2.0.8",
+  "type": "APP",
+  "desktop": {
+    "js": [
+      "https://js.cybozu.com/jquery/3.3.1/jquery.min.js",
+      "https://js.cybozu.com/kintone-rest-api-client/2.0.37/KintoneRestAPIClient.min.js",
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.js",
+      "js/certification.js.obfuscated.js",
+      "js/desktop.js.obfuscated.js"
+    ],
+    "css": [
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.css",
+      "css/51-modern-default.css",
+      "css/desktop.css"
+    ]
+  },
+  "icon": "image/icon.png",
+  "config": {
+    "html": "html/config.html",
+    "js": [
+      "https://js.cybozu.com/jquery/3.3.1/jquery.min.js",
+      "https://js.cybozu.com/jqueryui/1.13.1/jquery-ui.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/i18n/ja.js",
+      "https://js.cybozu.com/kintone-rest-api-client/2.0.37/KintoneRestAPIClient.min.js",
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.js",
+      "js/certification.js.obfuscated.js",
+      "js/config.js.obfuscated.js"
+    ],
+    "css": [
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.css",
+      "css/51-modern-default.css",
+      "https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css",
+      "css/config.css"
+    ],
+    "required_params": [
+      "settings"
+    ]
+  },
+  "name": {
+    "en": "Keyword lookup plug-in",
+    "ja": "キーワードルックアッププラグイン"
+  },
+  "description": {
+    "en": "[PluginAdaptiX] v2.0.8 Enter a code, and from that code, assign the contents of the data matching the code of the target application to the designated field code of the current application.",
+    "ja": "[PluginAdaptiX] v2.0.8 プラグインで指定した条件に当てはまったデータがある場合、プラグインで指定したフィールドのデータをコピーするプラグインです。"
+  },
+  "mobile": {
+    "js": [
+      "https://js.cybozu.com/jquery/3.3.1/jquery.min.js",
+      "https://js.cybozu.com/kintone-rest-api-client/2.0.37/KintoneRestAPIClient.min.js",
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.js",
+      "js/certification.js.obfuscated.js",
+      "js/mobile.js.obfuscated.js"
+    ],
+    "css": [
+      "https://js.cybozu.com/sweetalert2/v11.6.14/sweetalert2.min.css",
+      "css/mobile.css"
+    ]
+  }
+}

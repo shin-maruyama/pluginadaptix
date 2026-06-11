@@ -1,0 +1,35 @@
+.plugin-space-heading {
+  font-size: 1.5rem;
+  margin: 0.8rem;
+}
+.plugin-space-message {
+  display: inline-block;
+  font-size: 1.2em;
+  margin: 0.8rem;
+  margin-top: 0;
+}
+
+
+.kintoneplugin-button-normal {
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 0 16px;
+  min-width: 163px;
+  height: 48px;
+  outline: none;
+  border: 1px solid #e3e7e8;
+  background-color: #f05e24;
+  box-shadow: 1px 1px 1px #fff inset;
+  color: #f7f9fa;
+  text-align: center;
+  line-height: 48px;
+  position : relative; 
+  left : 375px;
+  top : 64px;
+}
+
+.kintoneplugin-button-normal:hover {
+  background-color: #af4116;
+  box-shadow: none;
+  cursor: pointer;
+}
