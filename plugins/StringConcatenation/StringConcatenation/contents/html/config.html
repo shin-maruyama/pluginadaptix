@@ -1,0 +1,81 @@
+<!-- Copyright (C) All in one Allright Reserved.  -->
+
+
+<section class="settings">
+  <form class="js-submit-settings">
+
+    <div id="parent">
+      <div class="main-contents">
+
+        <p style="color:#333">区切り文字</p>
+        <div class="delimiter-content" style="margin-bottom: 30px;">
+
+          <div class="kintoneplugin-input-outer">
+            <input class="kintoneplugin-input-text delimiter" type="text" style="width:290px;height: 55px;">
+          </div>
+
+        </div>
+
+        <p style="color:#333">連結するフィールド</p>
+        <p style="color:#333">------------------------------------------------</p>
+        <div class="field-content">
+          <div class="clone-class" style="display: flex;">
+            
+            <div class="tip-container">
+            <select class="field select2">
+              <!-- <option></option> -->
+            </select>
+            </div>
+
+            <div class="kintoneplugin-table-td-operation" style="position:absolute;left: 340px;">
+              <button type="button" class="kintoneplugin-button-add-row-image add-field" title="Add row"></button>
+              <button type="button" class="kintoneplugin-button-remove-row-image remove-field" title="Delete this row"></button>
+            </div>
+
+          </div>
+        </div>
+        <p style="color:#333">------------------------------------------------</p>
+
+        <p style="color:#333;margin-top: 30px;">数値フィールド0埋め・桁数<br><span style="color: red;">＊</span>実行する選択時のみ入力(半角数字)</p>
+        <div class="zero-pading-content" style="margin-bottom: 30px;display:flex">
+
+          <div style="width:190px">
+            <div>
+              <select id="padding-select" class="select2 otherSelect padding-select">
+                <option value="y" selected>実行する</option>
+                <option value="n">実行しない</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="kintoneplugin-input-outer" style="display: inline-block;margin-left: 8px;">
+            <input class="kintoneplugin-input-text digit" style="width: 85px; height:55px;display: inline-block;border: unset;margin-left: 8px;">
+          </div>
+
+        </div>
+
+        <p style="color:#333;">連結先フィールド</p>
+        <div class="connection-field-content" style="margin-bottom: 10px;">
+
+          <div class="tip-container">
+            <select class="connection-field select2">
+              <!-- <option></option> -->
+            </select>
+          </div>
+        </div>
+
+
+        <div class="kintoneplugin-table-td-operation" style="margin-left: -15px;">
+          <button type="button" class="kintoneplugin-button-add-row-image add-row" title="Add row"></button>
+          <button type="button" class="kintoneplugin-button-remove-row-image remove-row" title="Delete this row"></button>
+        </div>
+
+      </div>
+    </div>
+
+    <p class="kintoneplugin-row">
+        <button type="button" class="js-cancel-button kintoneplugin-button-dialog-cancel">キャンセル</button>
+        <button id="submit" class="kintoneplugin-button-dialog-ok">保存</button>
+    </p>
+  </form>
+</section>
