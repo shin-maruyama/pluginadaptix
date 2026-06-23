@@ -826,3 +826,243 @@ plugins/<プラグイン名>/codex/troubleshooting.md
 * テスト結果
 * 未解決事項
 * 次回作業
+
+---
+
+# 19. ビルド・難読化・ZIP化・配布物作成ルール
+
+kintoneプラグインの修正後に、元ソースから難読化済みファイルを生成し、kintoneにアップロード可能なZIP形式のプラグインファイルを作成する場合は、この章を必ず適用する。
+
+## 基本方針
+
+* 元ソースを正とする。
+* 難読化済みファイルとZIPファイルは生成物として扱う。
+* 生成物を修正する場合は、必ず元ソースに戻って修正する。
+
+## 対象パス
+
+各プラグインは以下に配置する。
+
+```text
+plugins/<プラグイン名>
+```
+
+元ソースは以下を基本とする。
+
+```text
+plugins/<プラグイン名>/<プラグイン名>
+```
+
+難読化済みファイルは以下を基本とする。
+
+```text
+plugins/<プラグイン名>/<プラグイン名>e
+```
+
+## 禁止事項
+
+以下は禁止する。
+
+* 難読化済みファイルを直接修正する。
+* ZIP内のファイルだけを直接修正する。
+* manifest.json の整合性を確認せずZIP化する。
+* 不要なファイルをZIPに含める。
+* `.env` をZIPに含める。
+* `node_modules` をZIPに含める。
+* `coverage` をZIPに含める。
+* `playwright-report` をZIPに含める。
+* `test-results` をZIPに含める。
+* OS生成ファイルをZIPに含める。
+
+## ビルド前確認
+
+ZIP化前に以下を確認する。
+
+```text
+AGENTS.md
+plugins/<プラグイン名>/specification.md
+plugins/<プラグイン名>/codex/work-instructions.md
+plugins/<プラグイン名>/codex/test-plan.md
+```
+
+確認項目:
+
+* 修正対象が元ソースであること。
+* 難読化済みファイルを直接編集していないこと。
+* manifest.json の参照先が存在すること。
+* 必要なJS/CSS/HTML/imageファイルが存在すること。
+* 不要な開発用ファイルが含まれないこと。
+
+## 難読化ルール
+
+難読化は元ソースから実行する。
+
+難読化前後で以下を確認する。
+
+* 元ソースの変更内容が反映されている。
+* 難読化済みファイルが更新されている。
+* manifest.json の参照先と一致している。
+* 不要な `console.log` が残っていない。
+* 構文エラーがない。
+
+## ZIP化ルール
+
+ZIPにはkintoneプラグインとして必要なファイルのみ含める。
+
+含める可能性があるもの:
+
+```text
+manifest.json
+html/
+css/
+js/
+image/
+icon.png
+```
+
+含めないもの:
+
+```text
+codex/
+decisions/
+specification.md
+README.md
+.env
+.env.example
+node_modules/
+coverage/
+playwright-report/
+test-results/
+dist/
+.git/
+.DS_Store
+Thumbs.db
+```
+
+## manifest.json確認
+
+ZIP化前に必ず以下を確認する。
+
+* manifest.json が存在する。
+* name が正しい。
+* version が正しい。
+* desktop.js の参照先が存在する。
+* mobile.js の参照先が存在する場合は存在確認する。
+* config.js の参照先が存在する。
+* CSS参照先が存在する。
+* icon参照先が存在する。
+* 不要な参照がない。
+
+## バージョン管理
+
+修正内容に応じてバージョンを更新する。
+
+目安:
+
+* 軽微な修正: patch
+* 機能追加: minor
+* 互換性に影響する変更: major
+
+例:
+
+```text
+1.0.0 -> 1.0.1
+1.0.1 -> 1.1.0
+1.1.0 -> 2.0.0
+```
+
+バージョン更新時は以下にも記録する。
+
+```text
+plugins/<プラグイン名>/codex/handover-YYYY-MM-DD.md
+plugins/<プラグイン名>/codex/next-tasks.md
+```
+
+## ZIPファイル名
+
+難読化していない通常版:
+
+```text
+<プラグイン名>-v<version>.zip
+```
+
+難読化版:
+
+```text
+<プラグイン名>-ev<version>.zip
+```
+
+難読化を行わない場合は通常版のみ作成する。
+
+```text
+<プラグイン名>-v<version>.zip
+```
+
+難読化を行う場合は通常版と難読化版の2種類を作成する。
+
+```text
+<プラグイン名>-v<version>.zip
+<プラグイン名>-ev<version>.zip
+```
+
+通常利用者へ提供するファイルは難読化版とする。
+
+```text
+<プラグイン名>-ev<version>.zip
+```
+
+開発・保守用として保管するファイルは通常版とする。
+
+```text
+<プラグイン名>-v<version>.zip
+```
+
+## 作成後確認
+
+ZIP作成後に以下を確認する。
+
+* ZIPが作成されている。
+* ZIP内にmanifest.jsonがある。
+* ZIP内に不要ファイルが入っていない。
+* ZIP内の参照パスがmanifest.jsonと一致している。
+* kintoneにアップロード可能な構成になっている。
+
+## 生成物の扱い
+
+以下は生成物として扱う。
+
+```text
+<プラグイン名>e
+<プラグイン名>-v<version>.zip
+<プラグイン名>-ev<version>.zip
+dist/
+```
+
+## 作業完了時の更新
+
+作業完了時は以下を更新する。
+
+```text
+plugins/<プラグイン名>/codex/handover-YYYY-MM-DD.md
+plugins/<プラグイン名>/codex/next-tasks.md
+```
+
+必要に応じて以下も更新する。
+
+```text
+plugins/<プラグイン名>/decisions/
+plugins/<プラグイン名>/codex/troubleshooting.md
+```
+
+## 作業完了報告
+
+以下のみ簡潔に報告する。
+
+* 対象プラグイン
+* 更新バージョン
+* 通常版ZIP
+* 難読化版ZIP
+* 更新した生成物
+* ZIP内確認結果
+* 未確認事項
+* 次回作業
