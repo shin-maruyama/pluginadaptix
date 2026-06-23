@@ -75,7 +75,9 @@ plugins/SubTableAutosorte/codex/next-tasks.md
 - 不要な命名変更
 - 不要なファイル移動
 - 不要なライブラリ変更
-- .env の作成
+- ZIP内のファイルだけを直接修正
+- manifest.json の整合性を確認しないZIP化
+- .env の作成またはZIP同梱
 - APIキー、トークン、Cookie、秘密鍵などの実値記載
 
 ## 変更ファイル記録テンプレート
@@ -138,6 +140,151 @@ plugins/SubTableAutosorte/codex/next-tasks.md
 4. Playwright確認: 画面動作を必要最小回数で確認します。
 5. 最終視覚確認: UI表示やレイアウト確認が必要な場合のみ実施します。
 
+## ビルド前確認
+
+ZIP化前に以下を確認します。
+
+```text
+AGENTS.md
+plugins/SubTableAutosorte/specification.md
+plugins/SubTableAutosorte/codex/work-instructions.md
+plugins/SubTableAutosorte/codex/test-plan.md
+```
+
+確認項目:
+
+- 修正対象が元ソース `plugins/SubTableAutosorte/SubTableAutosort` であること。
+- 難読化済みファイル `plugins/SubTableAutosorte/SubTableAutosorte` を直接編集していないこと。
+- `plugins/SubTableAutosorte/SubTableAutosort/contents/manifest.json` が存在すること。
+- manifest.json のJS/CSS/HTML/image参照先が存在すること。
+- ZIPに不要な開発用ファイルが含まれないこと。
+
+## ビルド手順
+
+- 要確認
+- 既存の package.json、ビルドスクリプト、README を確認してから実行します。
+- 不明な場合は推測で実行せず、next-tasks.md に確認事項として記録します。
+- ビルド結果は handover-YYYY-MM-DD.md に記録します。
+
+## 難読化手順
+
+- 要確認
+- 難読化は元ソース `plugins/SubTableAutosorte/SubTableAutosort` から実行します。
+- 難読化済みファイルは `plugins/SubTableAutosorte/SubTableAutosorte` に生成されるものとして扱います。
+- 難読化済みファイルは直接修正しません。
+
+難読化前後の確認項目:
+
+- 元ソースの変更内容が反映されている。
+- 難読化済みファイルが更新されている。
+- manifest.json の参照先と一致している。
+- 不要な `console.log` が残っていない。
+- 構文エラーがない。
+
+## ZIP化手順
+
+- 通常版ZIPは元ソース `plugins/SubTableAutosorte/SubTableAutosort` の `contents` 配下を基準に作成します。
+- 難読化版ZIPは難読化済み版 `plugins/SubTableAutosorte/SubTableAutosorte` の `contents` 配下を基準に作成します。
+- ZIPにはkintoneプラグインとして必要なファイルのみ含めます。
+
+含める可能性があるもの:
+
+```text
+manifest.json
+html/
+css/
+js/
+image/
+icon.png
+```
+
+含めないもの:
+
+```text
+codex/
+decisions/
+specification.md
+README.md
+.env
+.env.example
+node_modules/
+coverage/
+playwright-report/
+test-results/
+dist/
+.git/
+.DS_Store
+Thumbs.db
+```
+
+## manifest.json確認
+
+ZIP化前に必ず以下を確認します。
+
+- manifest.json が存在する。
+- name が正しい。
+- version が正しい。
+- desktop.js の参照先が存在する。
+- mobile.js の参照先が存在する場合は存在確認する。
+- config.js の参照先が存在する。
+- CSS参照先が存在する。
+- icon参照先が存在する。
+- 不要な参照がない。
+
+## バージョン管理
+
+修正内容に応じて manifest.json の version を更新します。
+
+- 軽微な修正: patch
+- 機能追加: minor
+- 互換性に影響する変更: major
+
+バージョン更新時は以下にも記録します。
+
+```text
+plugins/SubTableAutosorte/codex/handover-YYYY-MM-DD.md
+plugins/SubTableAutosorte/codex/next-tasks.md
+```
+
+## ZIPファイル名ルール
+
+通常版ZIP:
+
+```text
+SubTableAutosorte-v<version>.zip
+```
+
+難読化版ZIP:
+
+```text
+SubTableAutosorte-ev<version>.zip
+```
+
+難読化を行わない場合は通常版ZIPのみ作成します。
+難読化を行う場合は通常版ZIPと難読化版ZIPの2種類を作成します。
+通常利用者へ提供するファイルは難読化版ZIP、開発・保守用として保管するファイルは通常版ZIPとします。
+
+## ZIP作成後確認
+
+- ZIPが作成されている。
+- ZIP内に manifest.json がある。
+- ZIP内に不要ファイルが入っていない。
+- ZIP内の参照パスが manifest.json と一致している。
+- kintoneにアップロード可能な構成になっている。
+
+## 生成物の扱い
+
+以下は生成物として扱います。
+
+```text
+plugins/SubTableAutosorte/SubTableAutosorte
+SubTableAutosorte-v<version>.zip
+SubTableAutosorte-ev<version>.zip
+dist/
+```
+
+生成物を修正する場合は、必ず元ソースに戻って修正します。
+
 ## 完了時の更新
 
 作業完了時は以下を更新します。
@@ -163,15 +310,5 @@ plugins/SubTableAutosorte/codex/troubleshooting.md
 - 添付ファイルへ影響していないか
 - REST APIへ影響していないか
 - 設定保存へ影響していないか
-
-## ビルド手順
-
-- 要確認
-- 既存の package.json、ビルドスクリプト、README を確認してから実行します。
-- 不明な場合は推測で実行せず、next-tasks.md に確認事項として記録します。
-
-## 難読化手順
-
-- 要確認
-- 元ソースを修正した後、既存の難読化手順を確認して生成します。
-- 難読化後は元ソースとの対応関係と生成日時を引継ぎ資料へ記録します。
+- manifest.json とZIP内ファイルの参照が一致しているか
+- ZIPに不要ファイルが含まれていないか
