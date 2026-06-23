@@ -1226,3 +1226,313 @@ CSS全体は読まず、必要部分のみ確認する。
 * 必要イベントだけ読む。
 * 必要APIだけ読む。
 * 必要画面だけ確認する。
+
+---
+
+# 21. kintoneプラグイン共通コーディング規約
+
+全プラグインでコード品質を統一し、保守性、可読性、解析性を向上させる。
+実装はシンプルを優先し、既存実装との整合性を最優先する。
+
+## 基本方針
+
+* 複雑な実装を避ける。
+* 既存実装との整合性を優先する。
+* 要求された範囲のみ変更する。
+* 不要なリファクタリングを行わない。
+* 新規実装は最後の手段とする。
+
+## 実装優先順位
+
+実装時は以下を優先する。
+
+1. 既存関数利用
+2. 既存共通処理利用
+3. 既存UI利用
+4. 新規関数作成
+
+## JavaScript規約
+
+`var` は使用しない。
+
+禁止:
+
+```javascript
+var value = '';
+```
+
+使用:
+
+```javascript
+const value = '';
+let count = 0;
+```
+
+グローバル変数は作成しない。
+
+禁止:
+
+```javascript
+window.data = {};
+let globalValue = '';
+```
+
+必要な状態は即時実行関数内で管理する。
+
+基本構造:
+
+```javascript
+(function() {
+  'use strict';
+
+})(jQuery);
+```
+
+## 定数管理
+
+固定値、ステータス値、フィールドコード、イベント名は定数化する。
+
+禁止:
+
+```javascript
+if (status === '完了') {
+}
+
+record['顧客名'];
+```
+
+使用:
+
+```javascript
+const STATUS_COMPLETE = '完了';
+const FIELD_CUSTOMER_NAME = '顧客名';
+
+if (status === STATUS_COMPLETE) {
+}
+
+record[FIELD_CUSTOMER_NAME];
+```
+
+イベント名も定数化する。
+
+```javascript
+const EVENTS = [
+  'app.record.detail.show'
+];
+```
+
+## DOM規約
+
+同じDOMを複数回取得しない。
+
+禁止:
+
+```javascript
+document.querySelector('.btn');
+document.querySelector('.btn');
+document.querySelector('.btn');
+```
+
+使用:
+
+```javascript
+const button = document.querySelector('.btn');
+```
+
+大量のHTML文字列連結は禁止する。
+UI作成は `createElement()`、`appendChild()`、既存UIを優先する。
+
+## 関数規約
+
+1関数1責務を原則とする。
+関数長は100行以内を目安とし、50行以内を推奨する。
+ネストは最大3階層までとする。
+条件分岐は早期 `return` を優先する。
+
+禁止:
+
+```javascript
+function saveDataAndCreateUIAndCallApi() {
+}
+```
+
+使用:
+
+```javascript
+createUI();
+saveData();
+callApi();
+```
+
+## console規約
+
+`console.log()`、`console.error()`、`console.warn()` は開発中のみ使用する。
+リリース前、難読化前、ZIP化前には不要なconsole出力を削除する。
+
+## エラー処理
+
+以下は `try-catch` を使用する。
+
+* REST API
+* 添付ファイル
+* JSON処理
+* 外部通信
+
+例:
+
+```javascript
+try {
+} catch (error) {
+  console.error(error);
+}
+```
+
+## REST API規約
+
+REST APIは `kintone.api()` を使用する。
+同一API処理を複数箇所へ重複実装しない。
+API処理は既存関数または共通処理を優先して利用する。
+
+## Promise規約
+
+非同期処理は `async/await` を優先する。
+`.then()` の多重ネストは避ける。
+
+使用:
+
+```javascript
+const result = await apiCall();
+```
+
+## 配列処理
+
+配列処理は目的に応じて以下を優先する。
+
+```text
+map
+filter
+find
+some
+every
+```
+
+不要な `for` ループは避ける。
+
+## サブテーブル規約
+
+サブテーブルを扱う場合は必ず存在確認する。
+
+```javascript
+if (!record[TABLE_CODE]) {
+  return;
+}
+```
+
+## 添付ファイル規約
+
+添付ファイルを扱う場合は必ず存在確認する。
+
+```javascript
+if (!files.length) {
+  return;
+}
+```
+
+## CSS規約
+
+`!important` は必要最小限のみ使用する。
+インラインCSSは避け、class付与を優先する。
+
+禁止:
+
+```javascript
+element.style.color = 'red';
+```
+
+使用:
+
+```javascript
+element.classList.add('error');
+```
+
+## jQuery規約
+
+新規実装では原則としてjQueryを使用しない。
+既存プラグインがjQueryベースの場合のみ、既存実装との整合性を優先して利用できる。
+
+## kintone UI規約
+
+UIは以下の優先順位で実装する。
+
+```text
+kintone標準UI
+既存UI
+独自UI
+```
+
+## モバイル対応規約
+
+追加機能や修正はPCとモバイルの両方への影響を確認する。
+モバイル対象外の場合は、その理由を handover に記録する。
+
+## 設定保存規約
+
+プラグイン設定は必ず以下を使用する。
+
+```javascript
+kintone.plugin.app.getConfig()
+kintone.plugin.app.setConfig()
+```
+
+## バージョン管理規約
+
+修正時は `manifest.json` の version を確認する。
+必要に応じて patch、minor、major を更新し、handover と next-tasks に記録する。
+
+## コメント規約
+
+コメントは「なぜその処理が必要なのか」を書く。
+
+禁止:
+
+```javascript
+// 変数代入
+const name = '';
+```
+
+推奨:
+
+```javascript
+// kintone標準検索との競合を防ぐため
+const searchArea = ...
+```
+
+## 難読化規約
+
+修正対象は元ソースのみとする。
+`<プラグイン名>e` は直接修正しない。
+
+## 修正完了時チェック
+
+必ず以下を確認する。
+
+* 構文エラーなし
+* 未使用変数なし
+* console残置なし
+* APIエラーなし
+* PC確認
+* モバイル影響確認
+* 設定保存確認
+* 権限影響確認
+* サブテーブル影響確認
+* 添付ファイル影響確認
+
+## トークン節約ルール
+
+コード生成時は以下を守る。
+
+* 既存関数を再利用する。
+* 既存UIを再利用する。
+* 既存API処理を再利用する。
+* 必要最小限のコードのみ追加する。
+* 不要なリファクタリングを行わない。
