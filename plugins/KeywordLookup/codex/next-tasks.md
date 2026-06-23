@@ -2,6 +2,7 @@
 
 ## 未完了作業
 
+- 調査・解析ルールに従い、仕様書、過去履歴、manifest、対象イベント、対象関数の順に確認します。
 - ビルド手順を確認し、codex/work-instructions.md に具体的なコマンドを追記します。
 - 難読化手順を確認し、codex/work-instructions.md に具体的なコマンドを追記します。
 - ZIP作成手順を確認し、通常版/難読化版の出力先とコマンドを追記します。
@@ -9,6 +10,7 @@
 
 ## 保留事項
 
+- 不具合調査では全体読込を避け、原因候補を立ててから必要箇所のみ確認します。
 - 修正対象が指定された場合、作業前にAGENTS.md、specification.md、codex配下の運用文書を確認します。
 - REST API、モバイル、サブテーブル、添付ファイル、設定保存への影響範囲を修正計画に記録します。
 - 難読化済みファイルの生成手順と確認方法は未確定です。
@@ -23,8 +25,9 @@
 
 ## 次回優先タスク
 
-1. 修正対象がある場合、修正目的、原因、修正方針、変更対象、影響範囲を記録する。
-2. 元ソースのみを最小変更で修正する。
-3. 静的確認、REST API確認、Node.js確認、Playwright確認、ZIP構成確認、最終視覚確認の順で必要な確認を行う。
-4. ZIPを作成する場合は、通常版 `KeywordLookup-v<version>.zip` と難読化版 `KeywordLookup-ev<version>.zip` の作成要否を記録する。
-5. handover-YYYY-MM-DD.md と next-tasks.md を更新する。
+1. 調査結果は現象、原因、対象ファイル、対象関数、修正方針、影響範囲のみ簡潔に報告する。
+2. 修正対象がある場合、修正目的、原因、修正方針、変更対象、影響範囲を記録する。
+3. 元ソースのみを最小変更で修正する。
+4. 静的確認、REST API確認、Node.js確認、Playwright確認、ZIP構成確認、最終視覚確認の順で必要な確認を行う。
+5. ZIPを作成する場合は、通常版 `KeywordLookup-v<version>.zip` と難読化版 `KeywordLookup-ev<version>.zip` の作成要否を記録する。
+6. handover-YYYY-MM-DD.md と next-tasks.md を更新する。
