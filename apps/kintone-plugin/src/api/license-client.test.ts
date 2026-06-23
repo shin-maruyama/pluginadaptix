@@ -119,6 +119,49 @@ describe("createLicenseClient", () => {
     expect(url.searchParams.get("kintoneDomain")).toBe("example.cybozu.com");
   });
 
+  it("builds plugin version query parameters", async () => {
+    let calledUrl = "";
+    const fetcher: LicenseClientFetch = async (input) => {
+      calledUrl = input;
+      return {
+        ok: true,
+        status: 200,
+        async json(): Promise<unknown> {
+          return {
+            success: true,
+            code: "VERSION_CHECKED",
+            message: "ok",
+            data: {
+              pluginId: "plugin_001",
+              currentVersion: "0.1.0",
+              latestVersion: "0.2.0",
+              updateRequired: true,
+              forceUpdate: false,
+              releaseNote: "Bug fixes."
+            }
+          };
+        }
+      };
+    };
+    const client = createLicenseClient(
+      {
+        apiBaseUrl: "https://api.example.com/v1",
+        apiKey: "api-key"
+      },
+      fetcher
+    );
+
+    await client.getPluginVersion({
+      pluginId: "plugin_001",
+      currentVersion: "0.1.0"
+    });
+
+    const url = new URL(calledUrl);
+    expect(url.pathname).toBe("/v1/plugins/version");
+    expect(url.searchParams.get("pluginId")).toBe("plugin_001");
+    expect(url.searchParams.get("currentVersion")).toBe("0.1.0");
+  });
+
   it("throws common API errors", async () => {
     const fetcher: LicenseClientFetch = async () => ({
       ok: false,

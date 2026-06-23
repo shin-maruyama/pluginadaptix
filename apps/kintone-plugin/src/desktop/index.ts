@@ -1,14 +1,19 @@
-import type { LicenseStatusResponse } from "@pluginadaptix/shared";
+import type { LicenseStatusResponse, PluginVersionResponse } from "@pluginadaptix/shared";
 
 import { createLicenseClient, LicenseClientError, type LicenseClient } from "../api/license-client.js";
 
+const PLUGIN_VERSION = "0.1.0";
 const STATUS_ELEMENT_ID = "plugin-adaptix-license-status";
+const VERSION_ELEMENT_ID = "plugin-adaptix-version-status";
 
 export const DESKTOP_MESSAGES = {
   notConfigured: "License settings are not configured. Open the plugin settings page.",
   active: "License is active.",
   invalid: "License is not valid. Open the plugin settings page.",
-  failed: "License status check failed."
+  failed: "License status check failed.",
+  updateAvailable: "Plugin update is available.",
+  forceUpdate: "Plugin update is required.",
+  versionCheckFailed: "Plugin version check failed."
 } as const;
 
 export interface DesktopConfig {
@@ -16,21 +21,35 @@ export interface DesktopConfig {
   apiKey: string;
   licenseKey: string;
   pluginId: string;
+  kintoneDomain: string;
 }
 
 export interface CheckLicenseStatusInput {
   config: DesktopConfig;
-  kintoneDomain: string;
 }
 
 export interface CheckLicenseStatusDependencies {
   createClient(config: { apiBaseUrl: string; apiKey: string }): Pick<LicenseClient, "getStatus">;
 }
 
-export interface LicenseStatusView {
+export interface CheckPluginVersionInput {
+  config: DesktopConfig;
+}
+
+export interface CheckPluginVersionDependencies {
+  createClient(config: { apiBaseUrl: string; apiKey: string }): Pick<
+    LicenseClient,
+    "getPluginVersion"
+  >;
+}
+
+export interface DesktopNoticeView {
   level: "info" | "warning" | "error";
   message: string;
 }
+
+export type LicenseStatusView = DesktopNoticeView;
+export type PluginVersionView = DesktopNoticeView | undefined;
 
 function main(): void {
   const config = parseDesktopConfig(kintone.plugin.app.getConfig(kintone.$PLUGIN_ID));
@@ -45,13 +64,21 @@ function main(): void {
 
   void checkLicenseStatus(
     {
-      config,
-      kintoneDomain: window.location.hostname
+      config
     },
     {
       createClient: createLicenseClient
     }
   ).then(renderStatus);
+
+  void checkPluginVersion(
+    {
+      config
+    },
+    {
+      createClient: createLicenseClient
+    }
+  ).then(renderVersion);
 }
 
 export async function checkLicenseStatus(
@@ -67,7 +94,7 @@ export async function checkLicenseStatus(
     const result = await client.getStatus({
       licenseKey: input.config.licenseKey,
       pluginId: input.config.pluginId,
-      kintoneDomain: input.kintoneDomain
+      kintoneDomain: input.config.kintoneDomain
     });
 
     return createStatusView(result);
@@ -84,12 +111,14 @@ export function parseDesktopConfig(config: KintonePluginConfig): DesktopConfig |
   const apiKey = config.apiKey?.trim() ?? "";
   const licenseKey = config.licenseKey?.trim() ?? "";
   const pluginId = config.pluginId?.trim() ?? "";
+  const kintoneDomain = config.kintoneDomain?.trim() ?? "";
 
   if (
     apiBaseUrl.length === 0 ||
     apiKey.length === 0 ||
     licenseKey.length === 0 ||
-    pluginId.length === 0
+    pluginId.length === 0 ||
+    kintoneDomain.length === 0
   ) {
     return undefined;
   }
@@ -98,8 +127,33 @@ export function parseDesktopConfig(config: KintonePluginConfig): DesktopConfig |
     apiBaseUrl,
     apiKey,
     licenseKey,
-    pluginId
+    pluginId,
+    kintoneDomain
   };
+}
+
+export async function checkPluginVersion(
+  input: CheckPluginVersionInput,
+  dependencies: CheckPluginVersionDependencies
+): Promise<PluginVersionView> {
+  const client = dependencies.createClient({
+    apiBaseUrl: input.config.apiBaseUrl,
+    apiKey: input.config.apiKey
+  });
+
+  try {
+    const result = await client.getPluginVersion({
+      pluginId: input.config.pluginId,
+      currentVersion: PLUGIN_VERSION
+    });
+
+    return createPluginVersionView(result);
+  } catch (error) {
+    return {
+      level: "error",
+      message: error instanceof LicenseClientError ? error.message : DESKTOP_MESSAGES.versionCheckFailed
+    };
+  }
 }
 
 export function createStatusView(response: LicenseStatusResponse): LicenseStatusView {
@@ -116,22 +170,61 @@ export function createStatusView(response: LicenseStatusResponse): LicenseStatus
   };
 }
 
+export function createPluginVersionView(response: PluginVersionResponse): PluginVersionView {
+  if (!response.data.updateRequired) {
+    return undefined;
+  }
+
+  const message = createPluginVersionMessage(response);
+
+  return {
+    level: response.data.forceUpdate ? "error" : "warning",
+    message
+  };
+}
+
+function createPluginVersionMessage(response: PluginVersionResponse): string {
+  const baseMessage = response.data.forceUpdate
+    ? DESKTOP_MESSAGES.forceUpdate
+    : DESKTOP_MESSAGES.updateAvailable;
+  const versionMessage = `Current: ${response.data.currentVersion}, Latest: ${response.data.latestVersion}.`;
+  const releaseNote = response.data.releaseNote?.trim();
+
+  if (releaseNote === undefined || releaseNote.length === 0) {
+    return `${baseMessage} ${versionMessage}`;
+  }
+
+  return `${baseMessage} ${versionMessage} Release notes: ${releaseNote}`;
+}
+
 function isActiveStatus(status: string): boolean {
   return ["active", "ACTIVE", "有効"].includes(status);
 }
 
 function renderStatus(view: LicenseStatusView): void {
+  renderNotice(STATUS_ELEMENT_ID, view);
+}
+
+function renderVersion(view: PluginVersionView): void {
+  if (view === undefined) {
+    return;
+  }
+
+  renderNotice(VERSION_ELEMENT_ID, view);
+}
+
+function renderNotice(elementId: string, view: DesktopNoticeView): void {
   const headerSpace = document.querySelector(".gaia-argoui-app-toolbar-statusmenu");
 
   if (!(headerSpace instanceof HTMLElement)) {
     return;
   }
 
-  let statusElement = document.getElementById(STATUS_ELEMENT_ID);
+  let statusElement = document.getElementById(elementId);
 
   if (statusElement === null) {
     statusElement = document.createElement("span");
-    statusElement.id = STATUS_ELEMENT_ID;
+    statusElement.id = elementId;
     statusElement.style.marginLeft = "12px";
     statusElement.style.fontSize = "12px";
     statusElement.style.fontWeight = "700";

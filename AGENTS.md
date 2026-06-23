@@ -1,539 +1,108 @@
 # AGENTS.md
 
-# kintoneプラグイン認証システム
+このリポジトリで Codex / AI エージェントが作業する際の開発運用ルールです。
 
----
+## プロジェクト概要
 
-# 1. プロジェクト概要
+このリポジトリは、kintone プラグインのライセンス認証、契約状態確認、プラグイン配布、WordPress 連携、kintone 管理アプリ連携を扱います。
 
-本リポジトリは、
+主な構成は以下です。
 
-「kintoneプラグイン認証システム」
+- `apps/api-server`: Node.js / TypeScript / Express による API サーバー
+- `apps/kintone-plugin`: kintone プラグイン
+- `apps/wordpress-integration`: WordPress 連携
+- `packages/shared`: 共有型・定数
+- `packages/kintone-client`: kintone REST API クライアント
+- `docs`: 設計書・運用文書
 
-の開発を行うためのリポジトリです。
+## 作業対象の原則
 
-本システムは以下の機能を提供します。
+- 仕様や設計に迷う場合は、先に `docs/` 配下の設計書を確認する。
+- API 仕様は `docs/openapi.yaml` を優先する。
+- テーブル定義は `docs/05_table_definition.md` を優先する。
+- 重要な設計判断は `docs/decisions/` に記録する。
+- 次回作業や未完了事項は `docs/codex/next-tasks.md` に記録する。
+- 障害対応や調査結果は `docs/codex/troubleshooting.md` に記録する。
+- 作業終了時は `docs/codex/handover-YYYY-MM-DD.md` を作成または更新する。
 
-* kintoneプラグインライセンス認証
-* ライセンス状態確認
-* kintoneドメイン管理
-* プラグイン更新確認
-* プラグイン配布管理
-* WordPress会員サイト連携
-* kintoneによる管理DB
-* 認証ログ管理
+## 実装方針
 
----
+- REST API / Node.js / Playwright を優先して利用する。
+- kintone や外部サービスとの連携は、可能な限り REST API と Node.js スクリプトで実施する。
+- UI の自動確認やブラウザ操作が必要な場合は Playwright を優先する。
+- Computer Use は最終確認、視覚確認、または Playwright だけでは確認できないブラウザ上の状態確認が必要な場合に限って使用する。
+- 既存の構成、命名、責務分離に合わせる。
+- 不要なリファクタリングやスコープ外の修正を行わない。
+- アプリケーションコード、API 実装、テストコードを変更する場合は、依頼範囲に含まれることを確認する。
 
-# 2. 技術スタック
+## セキュリティと環境変数
 
-以下の技術を使用します。
+- `.env` は作成しない。
+- 環境変数の例は `.env.example` のみで管理する。
+- 秘密情報、API キー、トークン、ライセンスキー、Cookie、秘密鍵をリポジトリに追加しない。
+- ログやドキュメントに秘密情報を平文で記録しない。
+- `.env.example` には実値ではなく空値またはダミー値のみを書く。
 
-## バックエンド
+## ドキュメント運用
 
-* Node.js
-* TypeScript
-* Express
+### `docs/codex/`
 
-## フロントエンド
+Codex 作業の運用記録を置きます。
 
-* kintone Plugin
-* JavaScript
-* TypeScript
+- `docs/codex/next-tasks.md`: 次回作業、未完了事項、確認待ち事項
+- `docs/codex/troubleshooting.md`: 障害、原因、対応、再発防止
+- `docs/codex/handover-template.md`: 引き継ぎテンプレート
+- `docs/codex/handover-YYYY-MM-DD.md`: 作業日の引き継ぎ記録
 
-## CMS
+### `docs/decisions/`
 
-* WordPress
-* PHP
+重要な設計判断を記録します。
 
-## データ管理
+記録対象の例:
 
-* kintone REST API
+- API 仕様やエンドポイント構成の判断
+- データモデルや kintone アプリ定義の判断
+- 認証、認可、ライセンス検証方式の判断
+- 外部サービス連携方式の判断
+- 大きな技術選定や運用方針の変更
 
-## CI/CD
+判断を記録する際は、背景、選択肢、決定内容、影響範囲、日付を明記します。
 
-* GitHub Actions
+## TypeScript / API ルール
 
-## パッケージ管理
+- TypeScript は strict 前提で実装する。
+- `any` は原則使用しない。
+- 共通型や共通定数は `packages/shared` に配置する。
+- Controller はリクエスト受け取り、バリデーション、レスポンス返却に集中する。
+- Service は業務ロジックを担当する。
+- Repository は kintone など外部データアクセスを担当する。
+- Controller に業務ロジックを書かない。
+- Repository に業務ロジックを書かない。
 
-* pnpm workspace
+## 検証
 
----
-
-# 3. リポジトリ構成
-
-```text
-apps/
-├── api-server
-├── kintone-plugin
-└── wordpress-integration
-
-packages/
-├── shared
-└── kintone-client
-
-docs/
-
-kintone/
-
-infra/
-
-scripts/
-```
-
----
-
-# 4. 必ず参照する設計書
-
-実装前に以下を確認すること。
-
-```text
-docs/01_basic_design.md
-docs/02_screen_design.md
-docs/03_api_design.md
-docs/04_kintone_app_definition.md
-docs/05_table_definition.md
-docs/er-diagram.md
-docs/sequence-diagrams.md
-docs/openapi.yaml
-```
-
-設計書間で矛盾がある場合は以下を優先する。
-
-```text
-1. openapi.yaml
-2. テーブル定義書
-3. ER図
-4. API詳細設計書
-5. ソースコード
-```
-
----
-
-# 5. 実装ルール
-
-## 基本方針
-
-* 小さな変更単位で実装する
-* Issue単位でPull Requestを作成する
-* 不要なリファクタリングを行わない
-* 可読性を優先する
-* 必ずテストを追加する
-
----
-
-## TypeScriptルール
-
-### 禁止
-
-```ts
-any
-```
-
-### 必須
-
-* strictモード
-* export関数は戻り値型を定義
-* 共通型は shared に配置
-
----
-
-## API実装ルール
-
-API仕様は
-
-```text
-docs/openapi.yaml
-```
-
-に従うこと。
-
-レスポンス形式は必ず以下を利用する。
-
-```ts
-{
-  success: boolean;
-  code: string;
-  message: string;
-  data?: unknown;
-}
-```
-
----
-
-### Controller
-
-担当
-
-* Request受取
-* Validation
-* Response返却
-
-禁止
-
-* 業務ロジック
-
----
-
-### Service
-
-担当
-
-* 業務ロジック
-* 認証処理
-* 契約判定
-* ライセンス判定
-
----
-
-### Repository
-
-担当
-
-* kintoneアクセス
-* データ取得
-* データ更新
-
-禁止
-
-* 業務ロジック
-
----
-
-# 6. kintone実装ルール
-
-kintoneレコード番号を業務キーとして使用しない。
-
-必ず以下を使用する。
-
-```text
-customer_id
-contract_id
-license_id
-plugin_id
-version_id
-domain_id
-log_id
-```
-
----
-
-## フィールドコード
-
-フィールドコードは
-
-```text
-docs/05_table_definition.md
-```
-
-を参照すること。
-
-勝手に変更しない。
-
----
-
-## App ID
-
-App IDは環境変数から取得する。
-
-例
-
-```env
-KINTONE_APP_CUSTOMERS=100
-KINTONE_APP_CONTRACTS=101
-KINTONE_APP_LICENSES=102
-```
-
----
-
-# 7. セキュリティルール
-
-## 禁止事項
-
-ソースコードへ以下を記載しない。
-
-```text
-APIキー
-APIトークン
-ライセンス秘密鍵
-WordPress APIキー
-認証トークン
-Cookie
-```
-
----
-
-## 必須
-
-環境変数を利用する。
-
-例
-
-```env
-API_KEY=
-LICENSE_KEY_SECRET=
-DOWNLOAD_TOKEN_SECRET=
-```
-
----
-
-## ライセンスキー
-
-ログへ平文出力しない。
-
-NG
-
-```text
-LIC-XXXX-XXXX-XXXX
-```
-
-OK
-
-```text
-LIC-****-****-1234
-```
-
----
-
-# 8. 実装対象API
-
-実装対象は以下。
-
-```text
-GET  /v1/health
-
-POST /v1/licenses/authenticate
-
-GET  /v1/licenses/status
-
-POST /v1/licenses/deactivate
-
-GET  /v1/plugins/version
-
-GET  /v1/plugins
-
-POST /v1/plugins/download-token
-
-GET  /v1/contracts/status
-
-POST /v1/auth-logs
-```
-
----
-
-# 9. エラーコード
-
-必ず共通定数を使用する。
-
-```text
-OK
-
-INVALID_REQUEST
-
-INVALID_API_KEY
-
-LICENSE_NOT_FOUND
-
-INVALID_LICENSE_KEY
-
-LICENSE_EXPIRED
-
-LICENSE_SUSPENDED
-
-DOMAIN_MISMATCH
-
-DOMAIN_LIMIT_EXCEEDED
-
-PLUGIN_NOT_FOUND
-
-PLUGIN_MISMATCH
-
-PLUGIN_NOT_ALLOWED
-
-CONTRACT_NOT_FOUND
-
-CONTRACT_EXPIRED
-
-RATE_LIMIT_EXCEEDED
-
-INTERNAL_SERVER_ERROR
-```
-
-Controller内で文字列を直接記述しない。
-
----
-
-# 10. テストルール
-
-新規実装時は必ずテストを作成する。
-
-最低限必要なテスト
-
-* 正常系
-* バリデーションエラー
-* 認証エラー
-* NotFound
-* ライセンス期限切れ
-
----
-
-## 実行コマンド
+実装変更を行った場合は、影響範囲に応じて以下を実行します。
 
 ```bash
 pnpm lint
-
 pnpm typecheck
-
 pnpm test
-
 pnpm build
 ```
 
-全て成功させること。
+ドキュメントのみの変更では、必要に応じてファイル存在、リンク、記載内容を確認します。
 
----
+## Git 運用
 
-# 11. GitHubルール
+- ブランチ名は `feature/<issue>-<summary>`、`fix/<issue>-<summary>`、`docs/<issue>-<summary>`、`chore/<issue>-<summary>` を基本とする。
+- コミットメッセージは Conventional Commits を基本とする。
+- PR には概要、対応 Issue、変更内容、検証結果、影響範囲を記載する。
 
-## ブランチ
+## Definition of Done
 
-```text
-feature/<issue番号>-<概要>
-
-fix/<issue番号>-<概要>
-
-docs/<issue番号>-<概要>
-
-chore/<issue番号>-<概要>
-```
-
-例
-
-```text
-feature/6-license-auth
-
-feature/7-license-status
-
-fix/14-domain-check
-```
-
----
-
-## コミット
-
-Conventional Commitsを利用する。
-
-例
-
-```text
-feat: ライセンス認証APIを追加
-
-fix: ドメイン照合エラーを修正
-
-docs: OpenAPI仕様書を追加
-
-test: 認証サービスのテストを追加
-```
-
----
-
-# 12. Pull Requestルール
-
-PRには以下を記載する。
-
-```md
-## 概要
-
-## 対応Issue
-
-## 変更内容
-
-## テスト結果
-
-## 影響範囲
-
-## レビュー観点
-```
-
----
-
-# 13. Codex向け指示
-
-実装開始前に
-
-* AGENTS.md
-* OpenAPI
-* ER図
-* テーブル定義書
-
-を読むこと。
-
----
-
-## 実装手順
-
-1. 設計書確認
-2. 型定義確認
-3. 実装
-4. テスト追加
-5. lint実行
-6. build実行
-7. PR作成
-
----
-
-# 14. Definition of Done
-
-以下を満たしたら完了とする。
-
-* 設計書通りに実装されている
-* TypeScriptエラーなし
-* テスト成功
-* lint成功
-* build成功
-* 機密情報なし
-* PR説明あり
-
----
-
-# 15. 開発順序
-
-```text
-1. モノレポ作成
-
-2. shared作成
-
-3. kintone-client作成
-
-4. APIサーバー作成
-
-5. ライセンス認証API
-
-6. ライセンス状態確認API
-
-7. 更新確認API
-
-8. ダウンロードAPI
-
-9. kintoneプラグイン
-
-10. WordPress連携
-
-11. CI/CD
-```
-
----
-
-# 16. Codexへの最重要指示
-
-不明な仕様を推測して実装しない。
-
-判断に迷う場合は
-
-* docs/openapi.yaml
-* docs/05_table_definition.md
-* docs/er-diagram.md
-
-を優先して参照すること。
-
-設計書に存在しない仕様は実装せず、Issueへ質問を返すこと。
+- 依頼範囲の変更が完了している。
+- スコープ外のアプリケーションコード、API 実装、テストコードを変更していない。
+- 必要なドキュメントが更新されている。
+- `.env` を作成していない。
+- 秘密情報を追加していない。
+- 作業終了時の引き継ぎが `docs/codex/handover-YYYY-MM-DD.md` に記録されている。

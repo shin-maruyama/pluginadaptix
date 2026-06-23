@@ -3,6 +3,7 @@ interface KintonePluginConfig {
   apiKey?: string;
   licenseKey?: string;
   pluginId?: string;
+  kintoneDomain?: string;
 }
 
 interface KintonePluginAppApi {
