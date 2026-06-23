@@ -59,6 +59,56 @@ plugins/SubtableCopy/codex/next-tasks.md
 ## 影響範囲
 ```
 
+## 調査・解析ルール
+
+不具合調査、機能調査、改修前調査では、最初から全体を読まず、原因候補を特定してから必要箇所だけ確認します。
+
+調査優先順位:
+
+1. `plugins/SubtableCopy/specification.md` を確認する。
+2. `plugins/SubtableCopy/codex/troubleshooting.md`、`plugins/SubtableCopy/codex/handover-YYYY-MM-DD.md`、`plugins/SubtableCopy/codex/next-tasks.md` を確認する。
+3. manifest.json で読み込みJS、CSS、設定画面JS、モバイルJSを確認する。
+4. 対象イベントを特定する。
+5. 関数名、イベント名、フィールドコード、REST API名で検索して対象関数を特定する。
+6. 対象関数、周辺処理、呼び出し元、呼び出し先のみ確認する。
+
+優先して検索する語句:
+
+```text
+app.record.index.show
+app.record.detail.show
+app.record.create.show
+app.record.edit.show
+kintone.api(
+record["フィールドコード"]
+.value.forEach
+.value.length
+FILE
+attachment
+fileKey
+getLoginUser
+permission
+creator
+querySelector
+getElementById
+createElement
+kintone.app.getHeaderMenuSpaceElement
+```
+
+CSS調査は対象クラス名を検索し、CSS全体は読みません。
+難読化ファイルは参考のみとし、原因調査は元ソースを優先します。
+
+調査結果は以下のみ簡潔に報告します。
+
+```text
+現象
+原因
+対象ファイル
+対象関数
+修正方針
+影響範囲
+```
+
 ## 修正時の注意事項
 
 - まず仕様書、関連API、関連設定、対象ファイルの該当箇所を確認します。
