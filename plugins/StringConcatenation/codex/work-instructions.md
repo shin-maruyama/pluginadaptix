@@ -28,29 +28,141 @@ plugins/StringConcatenation/StringConcatenatione
 - 難読化版: `plugins/StringConcatenation/StringConcatenatione`
 - 難読化版は生成物として扱い、直接修正しません。
 
+## 修正前の必須確認
+
+コード変更前に以下を必ず確認します。
+
+```text
+AGENTS.md
+plugins/StringConcatenation/specification.md
+plugins/StringConcatenation/codex/work-instructions.md
+plugins/StringConcatenation/codex/test-plan.md
+plugins/StringConcatenation/codex/troubleshooting.md
+plugins/StringConcatenation/codex/next-tasks.md
+```
+
+確認後に修正方針を決定します。
+
+## 修正計画テンプレート
+
+コード変更前に以下を簡潔に記録します。
+
+```md
+## 修正目的
+
+## 原因
+
+## 修正方針
+
+## 変更対象
+
+## 影響範囲
+```
+
 ## 修正時の注意事項
 
-- 作業開始時にリポジトリ直下の AGENTS.md と、このファイル、specification.md を確認します。
-- まず REST API、Node.js、Playwright で確認します。
+- まず仕様書、関連API、関連設定、対象ファイルの該当箇所を確認します。
+- REST API、Node.js、Playwright を優先して確認します。
 - Computer Use は最終的な視覚確認が必要な場合のみ使用します。
-- 変更前に対象仕様、関連API、関連設定を確認します。
-- 変更後は実施したテストと結果を handover-2026-06-23.md または作業日の handover ファイルへ記録します。
+- 変更後は実施したテストと結果を作業日の handover ファイルへ記録します。
+- 変更範囲は最小にし、要求範囲外の整形やリファクタリングは行いません。
 
 ## 修正禁止事項
 
 - 難読化済みファイルの直接修正
-- 要求範囲外の整形、変数名変更、リファクタリング
-- 不要なライブラリ追加、ファイル移動
+- 無関係なコード修正
+- 無関係なリファクタリング
+- 不要な命名変更
+- 不要なファイル移動
+- 不要なライブラリ変更
 - .env の作成
 - APIキー、トークン、Cookie、秘密鍵などの実値記載
 
+## 変更ファイル記録テンプレート
+
+変更したファイルごとに以下を記録します。
+
+```md
+## 変更ファイル
+
+ファイル名
+
+### 修正理由
+
+### 修正内容
+
+### 影響範囲
+
+### テスト内容
+```
+
+## バグ修正時の記録
+
+バグ修正時は以下を必ず記録します。
+
+```md
+## 発生条件
+
+## 再現手順
+
+## 原因
+
+## 修正内容
+
+## 再発防止策
+```
+
+## 機能追加時の記録
+
+機能追加時は以下を必ず記録します。
+
+```md
+## 要求内容
+
+## 仕様変更内容
+
+## UI変更内容
+
+## 設定変更内容
+
+## API変更内容
+
+## テスト内容
+```
+
 ## 動作確認方法
 
-1. 静的確認: `rg` で対象関数、API、イベント、設定キーを検索します。
-2. Node.js確認: 既存スクリプトまたは最小限の検証スクリプトで確認します。
-3. REST API確認: 必要なAPIとレスポンスを確認します。
-4. Playwright確認: 必要最小回数で画面操作を検証します。
+1. 静的確認: 構文エラー、参照エラー、manifest整合性を確認します。
+2. REST API確認: APIエラー、レスポンス、権限を確認します。
+3. Node.js確認: ロジック、設定値、変換処理を確認します。
+4. Playwright確認: 画面動作を必要最小回数で確認します。
 5. 最終視覚確認: UI表示やレイアウト確認が必要な場合のみ実施します。
+
+## 完了時の更新
+
+作業完了時は以下を更新します。
+
+```text
+plugins/StringConcatenation/codex/handover-YYYY-MM-DD.md
+plugins/StringConcatenation/codex/next-tasks.md
+```
+
+必要な場合は以下も更新します。
+
+```text
+plugins/StringConcatenation/decisions/
+plugins/StringConcatenation/codex/troubleshooting.md
+```
+
+## レビュー観点
+
+- 既存機能を壊していないか
+- 権限処理に影響していないか
+- モバイルへ影響していないか
+- サブテーブルへ影響していないか
+- 添付ファイルへ影響していないか
+- REST APIへ影響していないか
+- 設定保存へ影響していないか
 
 ## ビルド手順
 
