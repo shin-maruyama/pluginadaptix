@@ -1,0 +1,56 @@
+# ConditionalElapsedTimeAutomaticCalculation 仕様書
+
+## プラグイン概要
+
+このファイルは ConditionalElapsedTimeAutomaticCalculation の仕様を継続的に記録するための初期テンプレートです。
+現時点では詳細仕様を推測せず、今後の調査時に元ソース、manifest.json、kintone実機動作を確認して追記します。
+
+## 利用目的
+
+- 要確認
+
+## 対応画面
+
+- 要確認
+
+## 設定画面仕様
+
+- 要確認
+
+## 保存設定
+
+- 要確認
+
+## 使用フィールド
+
+- 要確認
+
+## REST API利用内容
+
+- 要確認
+- REST APIを利用する場合は、API名、エンドポイント、HTTPメソッド、利用目的、必要権限を記録します。
+
+## JS構成
+
+- 要確認
+- 元ソース内のJavaScript構成、主要ファイル、責務を記録します。
+
+## CSS構成
+
+- 要確認
+- CSSファイル、適用対象、画面表示への影響を記録します。
+
+## manifest.json構成
+
+- 要確認
+- manifest.json のバージョン、desktop/mobile/config、アイコン、権限を記録します。
+
+## 制約事項
+
+- 難読化済みファイルは直接修正しません。
+- 不明な仕様は推測せず、確認事項として記録します。
+
+## 注意事項
+
+- コード変更前にこの仕様書と codex/work-instructions.md を確認します。
+- コード変更後は codex/handover-2026-06-23.md へテスト結果と変更内容を記録します。
