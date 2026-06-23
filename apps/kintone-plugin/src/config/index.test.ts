@@ -120,7 +120,10 @@ describe("authenticateConfig", () => {
       )
     ).resolves.toEqual({
       success: true,
-      config: configValues,
+      config: {
+        ...configValues,
+        kintoneDomain: "example.cybozu.com"
+      },
       response: authenticateResponse
     });
     expect(calls).toEqual([

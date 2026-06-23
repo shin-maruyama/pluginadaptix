@@ -72,7 +72,7 @@ export async function authenticateConfig(
 
     return {
       success: true,
-      config: createPersistedConfig(input.values),
+      config: createPersistedConfig(input),
       response
     };
   } catch (error) {
@@ -175,12 +175,13 @@ function readFormValues(elements: ConfigFormElements): ConfigValues | undefined 
   });
 }
 
-function createPersistedConfig(values: ConfigValues): Record<string, string> {
+function createPersistedConfig(input: AuthenticateConfigInput): Record<string, string> {
   return {
-    apiBaseUrl: values.apiBaseUrl,
-    apiKey: values.apiKey,
-    pluginId: values.pluginId,
-    licenseKey: values.licenseKey
+    apiBaseUrl: input.values.apiBaseUrl,
+    apiKey: input.values.apiKey,
+    pluginId: input.values.pluginId,
+    licenseKey: input.values.licenseKey,
+    kintoneDomain: input.kintoneDomain
   };
 }
 

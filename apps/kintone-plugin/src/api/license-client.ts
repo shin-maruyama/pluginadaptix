@@ -3,7 +3,9 @@ import type {
   LicenseAuthenticateRequest,
   LicenseAuthenticateResponse,
   LicenseStatusQuery,
-  LicenseStatusResponse
+  LicenseStatusResponse,
+  PluginVersionQuery,
+  PluginVersionResponse
 } from "@pluginadaptix/shared";
 
 export interface LicenseClientConfig {
@@ -14,6 +16,7 @@ export interface LicenseClientConfig {
 export interface LicenseClient {
   authenticate(request: LicenseAuthenticateRequest): Promise<LicenseAuthenticateResponse>;
   getStatus(query: LicenseStatusQuery): Promise<LicenseStatusResponse>;
+  getPluginVersion(query: PluginVersionQuery): Promise<PluginVersionResponse>;
 }
 
 export type LicenseClientFetch = (
@@ -72,6 +75,19 @@ export function createLicenseClient(
       });
 
       return parseSuccessResponse<LicenseStatusResponse>(response);
+    },
+
+    async getPluginVersion(query: PluginVersionQuery): Promise<PluginVersionResponse> {
+      const url = new URL(`${baseUrl}/plugins/version`);
+      url.searchParams.set("pluginId", query.pluginId);
+      url.searchParams.set("currentVersion", query.currentVersion);
+
+      const response = await fetcher(url.toString(), {
+        method: "GET",
+        headers: createHeaders(config.apiKey)
+      });
+
+      return parseSuccessResponse<PluginVersionResponse>(response);
     }
   };
 }
