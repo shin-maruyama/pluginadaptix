@@ -1196,7 +1196,6 @@ jQuery.noConflict();
           kintone.plugin.app.setConfig(saveConfig);
         })
         .catch((resp) => {
-          console.log(resp)
           var error = resp.message;
           if (error.match(/権限がありません/)) {
             displayAlert('エラー', '[エラー内容] <br> kintoneシステム管理者権限が無効なユーザーです。<br> [対処方法] <br> kintoneシステム管理者権限が有効なユーザーで実施してください。', 'error', 'OK')

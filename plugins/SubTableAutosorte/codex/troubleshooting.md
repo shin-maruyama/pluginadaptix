@@ -102,6 +102,34 @@ YYYY-MM-DD
 
 - 要記録
 
+## 2026-26-06 BUG ID: BUG-008
+
+### 発生事象
+
+mobile.jsの保存後ソート処理でdesktop APIのgetIdを使用している
+
+### 原因
+
+mobile.jsの保存後ソート処理でdesktop APIの `kintone.app.getId()` を使用していた。
+
+### 修正内容
+
+モバイル用appId取得関数を追加し、保存後ソート処理を含むmobile.js内のappId取得を共通化しました。
+
+### 修正ファイル
+
+- plugins/SubTableAutosorte/SubTableAutosort/contents/js/mobile.js
+
+### 確認結果
+
+node --check 成功。mobile appId取得の静的確認済み。kintone実機確認は未実施。
+
+### 再発防止策
+
+- mobile.jsでは mobile.app.record 系イベントと kintone.mobile.app 系APIを優先して確認する。
+- DOM、サブテーブル、設定値、API呼び出しは存在確認を行ってから参照する。
+- リリース前に対象ファイルの console 残置と構文エラーを確認する。
+
 ## 現在の記録
 
 - 2026-06-23: 初期テンプレート作成。障害対応記録はまだありません。

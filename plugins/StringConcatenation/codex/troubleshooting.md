@@ -102,6 +102,35 @@ YYYY-MM-DD
 
 - 要記録
 
+## 2026-26-06 BUG ID: BUG-021
+
+### 発生事象
+
+undefined除外のfilter条件が常にtrueになる
+
+### 原因
+
+`x !== undefined || x !== ...` が常にtrueになり、undefined相当値を除外できていなかった。
+
+### 修正内容
+
+undefined除外条件をORからANDへ修正し、文字列 `undefined` と既存 typo の `ndefined` も除外するようにしました。
+
+### 修正ファイル
+
+- plugins/StringConcatenation/StringConcatenation/contents/js/desktop.js
+- plugins/StringConcatenation/StringConcatenation/contents/js/mobile.js
+
+### 確認結果
+
+node --check 成功。filter条件の静的確認済み。kintone実機確認は未実施。
+
+### 再発防止策
+
+- mobile.jsでは mobile.app.record 系イベントと kintone.mobile.app 系APIを優先して確認する。
+- DOM、サブテーブル、設定値、API呼び出しは存在確認を行ってから参照する。
+- リリース前に対象ファイルの console 残置と構文エラーを確認する。
+
 ## 現在の記録
 
 - 2026-06-23: 初期テンプレート作成。障害対応記録はまだありません。

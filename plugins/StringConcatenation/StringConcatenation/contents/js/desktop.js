@@ -104,7 +104,7 @@ jQuery.noConflict();
         if (config.connectionField[i].split('　').length === 1) {
           if (record[config.connectionField[i]])
             record[config.connectionField[i]].value = fieldValueList
-              .filter((x) => x !== undefined || x !== 'ndefined')
+              .filter((x) => x !== undefined && x !== 'undefined' && x !== 'ndefined')
               .join(config.delimiter[i]);
         } else {
           const tableCode2 = config.connectionField[i].split('　')[0];
@@ -112,14 +112,14 @@ jQuery.noConflict();
           if (!record[tableCode2]) {
             if (record[fieldCode2]) {
               record[fieldCode2].value = fieldValueList
-                .filter((x) => x !== undefined || x !== 'ndefined')
+                .filter((x) => x !== undefined && x !== 'undefined' && x !== 'ndefined')
                 .join(config.delimiter[i]);
             }
           } else {
             if (!event.changes.row || !event.changes.row.value) return event;
             if (record[tableCode2].value[0].value[fieldCode2]) {
               event.changes.row.value[fieldCode2].value = fieldValueList
-                .filter((x) => x !== undefined || x !== 'ndefined')
+                .filter((x) => x !== undefined && x !== 'undefined' && x !== 'ndefined')
                 .join(config.delimiter[i]);
             }
           }

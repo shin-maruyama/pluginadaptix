@@ -22,9 +22,13 @@
 | 影響 | 未入力フィールドを含む結合時に、余分な区切りや想定外の値が混入する可能性がある。 |
 | 詳細 | `!== undefined \|\| !== "ndefined"` は常にtrueになり、undefined除外として機能しない。文字列も `undefined` ではなく `ndefined` になっている。 |
 | 推奨対応 | `&&` 条件にし、文字列 `undefined` も含めて除外条件を整理する。mobile.jsも同様確認。 |
-| ステータス | 未対応（修正保留） |
+| ステータス | 修正済み |
 | 関連ファイル解析状況 | 解析済み |
 | 原因候補 | コード上で確認済み: OR条件により undefined 除外条件が常にtrueになる可能性がある。 |
 | 修正準備状況 | 準備完了 |
+| 修正日 | 2026-26-06 |
+| 修正内容 | undefined除外条件をORからANDへ修正し、文字列 `undefined` と既存 typo の `ndefined` も除外するようにしました。 |
+| 修正ファイル | plugins/StringConcatenation/StringConcatenation/contents/js/desktop.js<br>plugins/StringConcatenation/StringConcatenation/contents/js/mobile.js |
+| 確認結果 | node --check 成功。filter条件の静的確認済み。kintone実機確認は未実施。 |
 
 ---

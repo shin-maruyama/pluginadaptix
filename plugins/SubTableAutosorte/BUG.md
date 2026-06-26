@@ -22,9 +22,13 @@
 | 影響 | モバイル保存後のサブテーブル自動ソートが失敗する可能性がある。 |
 | 詳細 | mobile.jsの保存成功・詳細表示・PUTソート処理で `kintone.app.getId()` を使用している。 |
 | 推奨対応 | mobile用のappId取得関数を共通化し、全箇所で利用する。 |
-| ステータス | 未対応（修正保留） |
+| ステータス | 修正済み |
 | 関連ファイル解析状況 | 解析済み |
 | 原因候補 | コード上で確認済み: mobile.jsの保存成功・詳細表示・PUTソート処理で `kintone.app.getId()` を使用している。<br>コード上で確認済み: mobile.js 内に desktop 用APIまたは desktop イベント名の利用候補がある。 |
 | 修正準備状況 | 準備完了 |
+| 修正日 | 2026-26-06 |
+| 修正内容 | モバイル用appId取得関数を追加し、保存後ソート処理を含むmobile.js内のappId取得を共通化しました。 |
+| 修正ファイル | plugins/SubTableAutosorte/SubTableAutosort/contents/js/mobile.js |
+| 確認結果 | node --check 成功。mobile appId取得の静的確認済み。kintone実機確認は未実施。 |
 
 ---

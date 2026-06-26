@@ -34,7 +34,6 @@ jQuery.noConflict();
     jsonParse: function () {
       try {
         obj.config.settings = JSON.parse(obj.config.settings);
-        console.log(obj.config);
       } catch (ignore) { }
     },
 
@@ -61,6 +60,7 @@ jQuery.noConflict();
       } else {
         const tableField = record[tableCode];
         const field = settingTipSettingFieldCodeName;
+          if (!tableField.value || !tableField.value.length) return true;
           const tipSettingField = tableField.value[0].value[field];
           if (!tipSettingField) return true;
           return false;

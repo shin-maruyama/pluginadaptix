@@ -6,7 +6,12 @@ jQuery.noConflict();
   'use strict';
 
   const config = kintone.plugin.app.getConfig(PLUGIN_ID);
-  const select = JSON.parse(config.elementArray);
+  let select = [];
+  try {
+    select = config.elementArray ? JSON.parse(config.elementArray) : [];
+  } catch (error) {
+    select = [];
+  }
 
   kintone.events.on(
     ['app.record.create.show', 'app.record.edit.show', 'app.record.detail.show'],
@@ -58,12 +63,14 @@ jQuery.noConflict();
             fieldWrap2 = document.querySelector(`.subtable-row-${target.id}`)
           }
 
+        if(!fieldWrap2) return;
         if(fieldWrap2.hasAttribute('dropdownplugin')){
           const getAttribute = fieldWrap2.getAttribute('dropdownplugin')
           const getAttributeParse = JSON.parse(getAttribute)
-          const option = fieldWrap2.querySelector('.control-value-gaia span').textContent;
+          const optionElement = fieldWrap2.querySelector('.control-value-gaia span');
+          const option = optionElement ? optionElement.textContent : '';
           const getAttributeTarget = getAttributeParse.find((x) => x.categoryName == option)
-          getAttributeTarget.fields.forEach((split) => kintone.app.record.setFieldShown(split, true))
+          if(getAttributeTarget && getAttributeTarget.fields) getAttributeTarget.fields.forEach((split) => kintone.app.record.setFieldShown(split, true))
         }
         if(fieldWrap2.hasAttribute('radioButtonPlugin')){
           const getAttribute = fieldWrap2.getAttribute('radioButtonPlugin')
@@ -73,10 +80,12 @@ jQuery.noConflict();
           if(querySelector != null){
             option = querySelector.textContent;
           }else{
-            option = fieldWrap2.querySelector('input[type="radio"]:checked').value
+            const checked = fieldWrap2.querySelector('input[type="radio"]:checked')
+            if(!checked) return;
+            option = checked.value
           }
           const getAttributeTarget = getAttributeParse.find((x) => x.categoryName == option)
-          getAttributeTarget.fields.forEach((split) => kintone.app.record.setFieldShown(split, true))
+          if(getAttributeTarget && getAttributeTarget.fields) getAttributeTarget.fields.forEach((split) => kintone.app.record.setFieldShown(split, true))
         }
       });
       resolve(newSelect);

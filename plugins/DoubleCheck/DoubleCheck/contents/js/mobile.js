@@ -78,7 +78,7 @@ jQuery.noConflict();
           let recordStr = [];
           //if (item.$id.value !== record.$id.value) {
           //debugger;
-          if (event.type === 'app.record.edit.submit') {
+          if (event.type === 'mobile.app.record.edit.submit') {
             if (item.$id.value === record.$id.value) {
               continue;
             }

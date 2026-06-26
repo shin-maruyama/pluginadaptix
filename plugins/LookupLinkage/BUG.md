@@ -22,10 +22,14 @@
 | 影響 | モバイルでルックアップ設定確認処理が失敗し、以降の連動処理にも影響する可能性がある。 |
 | 詳細 | mobile.js内で `kintone.app.getId()` を使用している。 |
 | 推奨対応 | `kintone.mobile.app.getId()` に置換する。 |
-| ステータス | 未対応（修正保留） |
+| ステータス | 修正済み |
 | 関連ファイル解析状況 | 解析済み |
 | 原因候補 | コード上で確認済み: mobile.js内で `kintone.app.getId()` を使用している。<br>コード上で確認済み: mobile.js 内に desktop 用APIまたは desktop イベント名の利用候補がある。 |
 | 修正準備状況 | 準備完了 |
+| 修正日 | 2026-26-06 |
+| 修正内容 | モバイル画面のフォームフィールド取得で `kintone.mobile.app.getId()` を使用するよう修正しました。 |
+| 修正ファイル | plugins/LookupLinkage/LookupLinkage/contents/js/mobile.js |
+| 確認結果 | node --check 成功。対象API呼び出しの静的確認済み。kintone実機確認は未実施。 |
 
 ---
 
@@ -43,9 +47,13 @@
 | 影響 | モバイルのchangeイベントで実行時エラーになり、値連動が止まる可能性が高い。 |
 | 詳細 | mobile.js内で `kintone.app.record.get()` を使用している。 |
 | 推奨対応 | event.recordを使用するか、mobile用APIへ置換する。 |
-| ステータス | 未対応（修正保留） |
+| ステータス | 修正済み |
 | 関連ファイル解析状況 | 解析済み |
 | 原因候補 | コード上で確認済み: mobile.js内で `kintone.app.record.get()` を使用している。<br>コード上で確認済み: mobile.js 内に desktop 用APIまたは desktop イベント名の利用候補がある。 |
 | 修正準備状況 | 準備完了 |
+| 修正日 | 2026-26-06 |
+| 修正内容 | mobile changeイベント内のdesktop用 `kintone.app.record.get()` 呼び出しを削除し、既存の `event.record` と取得済みレコード配列を使用する処理に整理しました。 |
+| 修正ファイル | plugins/LookupLinkage/LookupLinkage/contents/js/mobile.js |
+| 確認結果 | node --check 成功。desktop用record.get削除を静的確認済み。kintone実機確認は未実施。 |
 
 ---

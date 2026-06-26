@@ -321,7 +321,7 @@ jQuery.noConflict();
 
      try {
       const resp = await kintone.api(kintone.api.url('/k/v1/app/form/layout.json', true), 'GET', {
-        app: kintone.app.getId(),
+        app: kintone.mobile.app.getId(),
       });
       resp.layout.forEach((row) => {
         if (row.type === 'ROW') row.fields.forEach((field) => fieldList.push(field));

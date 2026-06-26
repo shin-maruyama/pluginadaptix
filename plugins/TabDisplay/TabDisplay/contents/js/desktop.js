@@ -79,6 +79,7 @@ jQuery.noConflict();
           }else{
             fieldWrap2 = document.querySelector(`.subtable-row-${field.id}`)
           }
+          if(!fieldWrap2) return;
           if(fieldWrap2.hasAttribute('dropdownplugin')){
             const hiddenField = fieldWrap2.getAttribute('dropdownplugin')
             const hiddenFieldParse = JSON.parse(hiddenField)

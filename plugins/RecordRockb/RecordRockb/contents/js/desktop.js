@@ -64,8 +64,7 @@ jQuery.noConflict();
 
       }
 
-      //[キャンセルボタンクリック時にレコード編集者フィールドの値リセット]
-      $('.gaia-ui-actionmenu-cancel').on('click', async function () {
+      const unlockRecord = async function () {
         const body = {
           app: e.appId,
           id: e.recordId,
@@ -76,7 +75,11 @@ jQuery.noConflict();
           },
         };
         await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', body);
-      });
+      };
+
+      //[キャンセルボタンクリック時にレコード編集者フィールドの値リセット]
+      $('.gaia-ui-actionmenu-cancel').on('click', unlockRecord);
+      window.addEventListener('pagehide', unlockRecord, { once: true });
 
       return e;
     });
