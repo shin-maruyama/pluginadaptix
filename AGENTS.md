@@ -1536,3 +1536,35 @@ const searchArea = ...
 * 既存API処理を再利用する。
 * 必要最小限のコードのみ追加する。
 * 不要なリファクタリングを行わない。
+
+---
+
+# 22. バグ管理CSV運用
+
+バグ一覧CSVは以下で管理する。
+
+```text
+bug-management/bug-management-list.csv
+```
+
+過去分は以下に保存する。
+
+```text
+bug-management/archive/
+```
+
+Codexがバグ調査・修正を行う場合は、まず `bug-management/bug-management-list.csv` を確認する。
+
+CSVの `プラグイン` 列をもとに、対象プラグインを特定する。
+
+対象プラグインごとに以下を更新する。
+
+```text
+plugins/<プラグイン名>/BUG.md
+plugins/<プラグイン名>/codex/bug-analysis.md
+plugins/<プラグイン名>/codex/fix-plan.md
+plugins/<プラグイン名>/codex/next-tasks.md
+```
+
+最新版として利用するCSVは `bug-management-list.csv` として保存する。
+履歴として残す場合は `bug-management/archive/bug-management-list-YYYY-MM-DD.csv` として保存する。
