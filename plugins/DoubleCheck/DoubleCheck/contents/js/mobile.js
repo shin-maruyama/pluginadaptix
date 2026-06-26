@@ -4,6 +4,24 @@ jQuery.noConflict();
 
 (async function ($, PLUGIN_ID) {
   'use strict';
+  function handleKintoneApiError(error) {
+    const message = error && error.message ? error.message : 'kintone REST APIの呼び出しに失敗しました。';
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        icon: 'error',
+        title: 'エラー',
+        text: message
+      });
+    } else if (typeof alert === 'function') {
+      alert(message);
+    }
+    throw error;
+  }
+
+  function callKintoneApi(...args) {
+    return kintone.api.apply(kintone, args).catch(handleKintoneApiError);
+  }
+
 
   if (!(await KNTP608210certification())) {
     return;
@@ -48,12 +66,12 @@ jQuery.noConflict();
 
       var recordList = [];
       //[カーソルID取得]
-      const cursor = await kintone.api(kintone.api.url('/k/v1/records/cursor', true), 'POST', body);
+      const cursor = await callKintoneApi(kintone.api.url('/k/v1/records/cursor', true), 'POST', body);
       try {
         //[レコード取得]
         let flg = true;
         while (flg) {
-          const resp = await kintone.api(kintone.api.url('/k/v1/records/cursor', true), 'GET', { id: cursor.id });
+          const resp = await callKintoneApi(kintone.api.url('/k/v1/records/cursor', true), 'GET', { id: cursor.id });
           recordList = recordList.concat(resp.records);
           flg = resp.next;
         }
@@ -233,7 +251,7 @@ jQuery.noConflict();
   obj.getFields = async function () {
     const fieldList = [];
     try {
-      const resp = await kintone.api(kintone.api.url('/k/v1/app/form/layout.json', true), 'GET', {
+      const resp = await callKintoneApi(kintone.api.url('/k/v1/app/form/layout.json', true), 'GET', {
         app: kintone.mobile.app.getId(),
       });
       resp.layout.forEach((row) => {

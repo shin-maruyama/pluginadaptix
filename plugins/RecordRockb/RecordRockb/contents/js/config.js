@@ -2,6 +2,24 @@ jQuery.noConflict();
 
 (async function ($, PLUGIN_ID) {
   'use strict';
+  function handleKintoneApiError(error) {
+    const message = error && error.message ? error.message : 'kintone REST APIの呼び出しに失敗しました。';
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        icon: 'error',
+        title: 'エラー',
+        text: message
+      });
+    } else if (typeof alert === 'function') {
+      alert(message);
+    }
+    throw error;
+  }
+
+  function callKintoneApi(...args) {
+    return kintone.api.apply(kintone, args).catch(handleKintoneApiError);
+  }
+
 
   /**
    * @param $submit       [保存ボタン要素]
@@ -76,7 +94,7 @@ jQuery.noConflict();
           },
         },
       };
-      return kintone.api(kintone.api.url('/k/v1/preview/app/form/fields.json', true), 'POST', body);
+      return callKintoneApi(kintone.api.url('/k/v1/preview/app/form/fields.json', true), 'POST', body);
     }
   };
 
