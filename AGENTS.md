@@ -1568,3 +1568,15 @@ plugins/<プラグイン名>/codex/next-tasks.md
 
 最新版として利用するCSVは `bug-management-list.csv` として保存する。
 履歴として残す場合は `bug-management/archive/bug-management-list-YYYY-MM-DD.csv` として保存する。
+
+## CSV出力ルール
+
+日本語を含むCSVは、Excelで文字化けしないように以下で保存する。
+
+- 文字コード: UTF-8 with BOM
+- 改行コード: CRLF
+- 全セルをダブルクォートで囲む
+
+CSV出力時は、Node.jsでは `\uFEFF` を先頭に付与し、Pythonでは `encoding="utf-8-sig"` を使用する。
+
+CSV作成後は、可能な範囲でBOM有無を確認する。
