@@ -33,3 +33,11 @@
 5. 静的確認、REST API確認、Node.js確認、Playwright確認、ZIP構成確認、最終視覚確認の順で必要な確認を行う。
 6. ZIPを作成する場合は、通常版 `InputHintSetting-v<version>.zip` と難読化版 `InputHintSetting-ev<version>.zip` の作成要否を記録する。
 7. handover-YYYY-MM-DD.md と next-tasks.md を更新する。
+
+## BUG解析後の次回作業（2026-06-26）
+
+- BUG.md、codex/bug-analysis.md、codex/fix-plan.md を確認してから修正に入ります。
+- 優先順位の高いBUGから、元ソースのみを最小変更で修正します。
+- 修正前に対象イベント、対象関数、設定値、REST API、DOM、サブテーブル、添付ファイルへの影響を再確認します。
+- 修正後は test-plan.md に従い、静的確認、コーディング規約確認、必要なAPI/Node.js/Playwright確認を行います。
+- bug-management-list.csv が提供された場合は、既存BUG.mdとの差分を照合します。

@@ -1,5 +1,11 @@
 # BUG.md
 
+## 解析メモ
+
+- 2026-06-26: bug-management-list.csv は未配置のため、既存 BUG.md のバグ情報を起点に関連ファイル解析と修正準備を実施しました。
+- 対象プラグイン配下のファイル一覧、manifest、JS/CSS/HTML、codex文書、難読化版の存在を確認しました。
+- 難読化済みファイルは参考扱いとし、修正対象候補は元ソース側に限定しています。
+
 ## バグ履歴
 
 ### No.1 2026-24-06 BUG-011 DOM取得失敗時にnullへhasAttributeを呼ぶ
@@ -17,6 +23,9 @@
 | 詳細 | `document.querySelector` の結果がnullでも `hasAttribute` を呼ぶ。 |
 | 推奨対応 | `if (!fieldWrap2) return;` を追加し、関連属性の存在確認を行う。 |
 | ステータス | 未対応（修正保留） |
+| 関連ファイル解析状況 | 解析済み |
+| 原因候補 | コード上で確認済み: `document.querySelector` の結果がnullでも `hasAttribute` を呼ぶ。<br>コード上で確認済み: DOM取得結果のnullチェック不足が対象行周辺にある。 |
+| 修正準備状況 | 準備完了 |
 
 ---
 
@@ -35,6 +44,9 @@
 | 詳細 | `find()` の戻り値を確認せず `getAttributeTarget.fields` を参照している。 |
 | 推奨対応 | `getAttributeTarget` と `fields` の存在確認を追加する。 |
 | ステータス | 未対応（修正保留） |
+| 関連ファイル解析状況 | 解析済み |
+| 原因候補 | コード上で確認済み: `find()` の戻り値を確認せず `getAttributeTarget.fields` を参照している。 |
+| 修正準備状況 | 準備完了 |
 
 ---
 
@@ -53,5 +65,8 @@
 | 詳細 | 設定値存在確認やtry/catchなしで `config.elementArray` をJSON.parseしている。 |
 | 推奨対応 | 設定存在チェックとJSON parse失敗時の安全なreturnを追加する。mobile.jsも同様確認。 |
 | ステータス | 未対応（修正保留） |
+| 関連ファイル解析状況 | 解析済み |
+| 原因候補 | コード上で確認済み: 設定値存在確認やtry/catchなしで `config.elementArray` をJSON.parseしている。<br>コード上で確認済み: 設定値の存在確認またはtry/catch前にJSON.parseが実行される可能性がある。 |
+| 修正準備状況 | 準備完了 |
 
 ---
