@@ -5,6 +5,24 @@ jQuery.noConflict();
 
 (async function ($, PLUGIN_ID) {
   'use strict';
+  function handleKintoneApiError(error) {
+    const message = error && error.message ? error.message : 'kintone REST APIの呼び出しに失敗しました。';
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        icon: 'error',
+        title: 'エラー',
+        text: message
+      });
+    } else if (typeof alert === 'function') {
+      alert(message);
+    }
+    throw error;
+  }
+
+  function callKintoneApi(...args) {
+    return kintone.api.apply(kintone, args).catch(handleKintoneApiError);
+  }
+
 
   if (!(await KNTP496810certification())) {
     return;
@@ -673,6 +691,7 @@ jQuery.noConflict();
   async function getNewFileKey(value) {
     const client = new KintoneRestAPIClient();
     const updateValue = [];
+    if (!Array.isArray(value) || !value.length) return updateValue;
 
     for (const f of value) {
       const blob = await client.file.downloadFile({
@@ -702,7 +721,7 @@ jQuery.noConflict();
       'limit': limit
     }
 
-    const resp = await kintone.api(kintone.api.url('/k/v1/apps', true), 'GET', params);
+    const resp = await callKintoneApi(kintone.api.url('/k/v1/apps', true), 'GET', params);
     apps = apps.concat(resp.apps);
     if (resp.apps.length === limit) {
       return await getAppList(offset + limit, limit, apps);
@@ -713,7 +732,7 @@ jQuery.noConflict();
   async function getFieldList(appId) {
     const fieldList = [];
     try {
-      const resp = await kintone.api('/k/v1/app/form/layout.json', 'GET', { app: appId });
+      const resp = await callKintoneApi('/k/v1/app/form/layout.json', 'GET', { app: appId });
       resp.layout.forEach(row => {
         if (row.type === 'ROW') row.fields.forEach(field => {
           if (field.type !== 'SPACER') {

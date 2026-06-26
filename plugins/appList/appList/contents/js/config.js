@@ -4,6 +4,24 @@ jQuery.noConflict();
 
 (async function ($, PLUGIN_ID) {
   'use strict';
+  function handleKintoneApiError(error) {
+    const message = error && error.message ? error.message : 'kintone REST APIの呼び出しに失敗しました。';
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        icon: 'error',
+        title: 'エラー',
+        text: message
+      });
+    } else if (typeof alert === 'function') {
+      alert(message);
+    }
+    throw error;
+  }
+
+  function callKintoneApi(...args) {
+    return kintone.api.apply(kintone, args).catch(handleKintoneApiError);
+  }
+
 
       if (!(await KNTP708010certification())) {
         return;
@@ -472,7 +490,7 @@ jQuery.noConflict();
         limit: limit,
       };
 
-      return kintone.api(kintone.api.url('/k/v1/apps'), 'GET', params).then((resp) => {
+      return callKintoneApi(kintone.api.url('/k/v1/apps'), 'GET', params).then((resp) => {
         allApp = allApp.concat(resp.apps);
         if (resp.apps.length === limit) {
           return getAppList(offset + limit, limit, allApp);
@@ -899,6 +917,7 @@ jQuery.noConflict();
     //ドロップダウンリストのオプション追加
     getAppList().then((allApp) => {
       let select = document.querySelector('[data-role="app-name"]');
+      if (!select) return;
       
       let nonoption = document.createElement('option');
         nonoption.setAttribute('value', null);
@@ -1083,7 +1102,7 @@ jQuery.noConflict();
             app: kintone.app.getId(),
             views: views,
           };
-          return kintone.api(kintone.api.url('/k/v1/preview/app/views', true), 'PUT', body2);
+          return callKintoneApi(kintone.api.url('/k/v1/preview/app/views', true), 'PUT', body2);
         })
         .then((resp) => {
 

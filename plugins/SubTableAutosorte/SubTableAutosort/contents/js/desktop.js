@@ -2,6 +2,24 @@ jQuery.noConflict();
 
 (async function ($, PLUGIN_ID) {
   'use strict';
+  function handleKintoneApiError(error) {
+    const message = error && error.message ? error.message : 'kintone REST APIの呼び出しに失敗しました。';
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        icon: 'error',
+        title: 'エラー',
+        text: message
+      });
+    } else if (typeof alert === 'function') {
+      alert(message);
+    }
+    throw error;
+  }
+
+  function callKintoneApi(...args) {
+    return kintone.api.apply(kintone, args).catch(handleKintoneApiError);
+  }
+
 
   if (!(await KNTP227410certification())) return;
 
@@ -18,7 +36,7 @@ jQuery.noConflict();
 
   async function getFieldsDef() {
     if (__FIELDS_DEF_CACHE) return __FIELDS_DEF_CACHE;
-    __FIELDS_DEF_CACHE = await kintone.api(
+    __FIELDS_DEF_CACHE = await callKintoneApi(
       kintone.api.url('/k/v1/app/form/fields.json', true),
       'GET',
       { app: kintone.app.getId() }
@@ -69,7 +87,7 @@ jQuery.noConflict();
 
     let fieldsDef;
     try {
-      fieldsDef = await kintone.api(
+      fieldsDef = await callKintoneApi(
         kintone.api.url('/k/v1/app/form/fields.json', true),
         'GET',
         { app: kintone.app.getId() }
@@ -201,7 +219,7 @@ jQuery.noConflict();
       if (!conf.length) return;
 
       // 最新レコード取得（添付ファイル含め確実）
-      const res = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', {
+      const res = await callKintoneApi(kintone.api.url('/k/v1/record.json', true), 'GET', {
         app: appId,
         id: recordId
       });
@@ -241,7 +259,7 @@ jQuery.noConflict();
       }
 
       if (changed) {
-        await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', {
+        await callKintoneApi(kintone.api.url('/k/v1/record.json', true), 'PUT', {
           app: appId,
           id: recordId,
           record: updateRecord

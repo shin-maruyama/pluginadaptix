@@ -4,6 +4,24 @@ jQuery.noConflict();
 
 (async function ($, PLUGIN_ID) {
   'use strict';
+  function handleKintoneApiError(error) {
+    const message = error && error.message ? error.message : 'kintone REST APIの呼び出しに失敗しました。';
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        icon: 'error',
+        title: 'エラー',
+        text: message
+      });
+    } else if (typeof alert === 'function') {
+      alert(message);
+    }
+    throw error;
+  }
+
+  function callKintoneApi(...args) {
+    return kintone.api.apply(kintone, args).catch(handleKintoneApiError);
+  }
+
 
   if (!(await KNTP183610certification())) {
     return;
@@ -117,7 +135,7 @@ jQuery.noConflict();
         const allApps = await obj.getAllApps()
         const allAppsId = allApps.map((x) => {return x.appId})
         config.settings = config.settings.filter((y) => {return allAppsId.includes(y.appId)})
-        const layout = await kintone.api('/k/v1/app/form/layout.json', 'GET', { app: kintone.app.getId() })
+        const layout = await callKintoneApi('/k/v1/app/form/layout.json', 'GET', { app: kintone.app.getId() })
         
         if (!config.settings || !config.settings.length) return event;
 
@@ -223,7 +241,7 @@ jQuery.noConflict();
     };
 
     try {
-      const resp = await kintone.api(kintone.api.url('/k/v1/records', true), 'GET', params);
+      const resp = await callKintoneApi(kintone.api.url('/k/v1/records', true), 'GET', params);
       if (resp.records.length > 0) {
         return resp.records[0];
       }
@@ -237,7 +255,7 @@ jQuery.noConflict();
   obj.getFieldList = async function (appId) {
     const fieldList = [];
     try {
-      const resp = await kintone.api('/k/v1/app/form/layout.json', 'GET', { app: appId });
+      const resp = await callKintoneApi('/k/v1/app/form/layout.json', 'GET', { app: appId });
       resp.layout.forEach(row => {
         if (row.type === 'SUBTABLE') {
           fieldList.push(row);

@@ -32,3 +32,13 @@
 | 確認結果 | node --check 成功。対象console.log削除を静的確認済み。 |
 
 ---
+
+## 2026-06-26 Medium潜在バグ修正
+
+| ID | 重大度 | 分類 | 不具合内容 | 対象ファイル | ステータス | 修正日 | 修正内容 | 確認結果 |
+|---|---|---|---|---|---|---|---|---|
+| PB-0001 | Medium | REST API | kintone REST API呼び出しのエラー処理が近傍で確認できない | plugins/appList/appList/contents/js/config.js | 修正済み・要確認 | 2026-06-26 | kintone REST API呼び出しをローカルのcallKintoneApiラッパー経由に変更し、API失敗時にエラー通知して再throwするようにした。 | 対象元ソースJSのnode --check成功。kintone実機/Playwright未実施。 |
+| PB-0002 | Medium | DOM | DOM取得失敗時のnull参照リスク | plugins/appList/appList/contents/js/config.js | 修正済み・要確認 | 2026-06-26 | DOM取得結果の存在確認を追加し、対象要素が存在しない場合にnull参照しないようにした。 | 対象元ソースJSのnode --check成功。kintone実機/Playwright未実施。 |
+| PB-0003 | Medium | REST API | kintone REST API呼び出しのエラー処理が近傍で確認できない | plugins/appList/appList/contents/js/config.js | 修正済み・要確認 | 2026-06-26 | kintone REST API呼び出しをローカルのcallKintoneApiラッパー経由に変更し、API失敗時にエラー通知して再throwするようにした。 | 対象元ソースJSのnode --check成功。kintone実機/Playwright未実施。 |
+| PB-0004 | Medium | DOM | DOM取得失敗時のnull参照リスク | plugins/appList/appList/contents/js/desktop.js | 修正済み・要確認 | 2026-06-26 | DOM取得結果の存在確認を追加し、対象要素が存在しない場合にnull参照しないようにした。 | 対象元ソースJSのnode --check成功。kintone実機/Playwright未実施。 |
+| PB-0005 | Medium | DOM | DOM取得失敗時のnull参照リスク | plugins/appList/appList/contents/js/mobile.js | 修正済み・要確認 | 2026-06-26 | DOM取得結果の存在確認を追加し、対象要素が存在しない場合にnull参照しないようにした。 | 対象元ソースJSのnode --check成功。kintone実機/Playwright未実施。 |
