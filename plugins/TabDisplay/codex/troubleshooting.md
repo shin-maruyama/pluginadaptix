@@ -102,6 +102,62 @@ YYYY-MM-DD
 
 - 要記録
 
+## 2026-26-06 BUG ID: BUG-007
+
+### 発生事象
+
+mobile.jsでdesktop用グループ開閉APIを使用している
+
+### 原因
+
+mobile.jsでdesktop用 `kintone.app.record.setGroupFieldOpen` を使用していた。
+
+### 修正内容
+
+モバイルではdesktop用グループ開閉APIを直接呼ばず、mobile側APIが存在する場合のみ実行するようにしました。
+
+### 修正ファイル
+
+- plugins/TabDisplay/TabDisplay/contents/js/mobile.js
+
+### 確認結果
+
+node --check 成功。desktop用API削除を静的確認済み。モバイルでのグループ表示挙動は実機確認が必要。
+
+### 再発防止策
+
+- mobile.jsでは mobile.app.record 系イベントと kintone.mobile.app 系APIを優先して確認する。
+- DOM、サブテーブル、設定値、API呼び出しは存在確認を行ってから参照する。
+- リリース前に対象ファイルの console 残置と構文エラーを確認する。
+
+## 2026-26-06 BUG ID: BUG-013
+
+### 発生事象
+
+desktop.jsでDOM取得結果のnullチェックが不足している
+
+### 原因
+
+DOM取得結果がnullでも `hasAttribute` を呼んでいた。
+
+### 修正内容
+
+DOM取得結果がnullの場合は関連属性判定をスキップするガードを追加しました。
+
+### 修正ファイル
+
+- plugins/TabDisplay/TabDisplay/contents/js/desktop.js
+
+### 確認結果
+
+node --check 成功。DOM nullガードの静的確認済み。kintone実機確認は未実施。
+
+### 再発防止策
+
+- mobile.jsでは mobile.app.record 系イベントと kintone.mobile.app 系APIを優先して確認する。
+- DOM、サブテーブル、設定値、API呼び出しは存在確認を行ってから参照する。
+- リリース前に対象ファイルの console 残置と構文エラーを確認する。
+
 ## 現在の記録
 
 - 2026-06-23: 初期テンプレート作成。障害対応記録はまだありません。

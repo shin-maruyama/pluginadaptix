@@ -22,9 +22,13 @@
 | 影響 | モバイル編集時、自レコードが重複チェック対象から除外されず、既存値のまま保存しても重複エラーになる可能性がある。 |
 | 詳細 | mobile submitイベント内でdesktopイベント名 `app.record.edit.submit` を比較している。 |
 | 推奨対応 | `mobile.app.record.edit.submit` を判定する。 |
-| ステータス | 未対応（修正保留） |
+| ステータス | 修正済み |
 | 関連ファイル解析状況 | 解析済み |
 | 原因候補 | コード上で確認済み: mobile submitイベント内でdesktopイベント名 `app.record.edit.submit` を比較している。<br>コード上で確認済み: mobile.js 内に desktop 用APIまたは desktop イベント名の利用候補がある。 |
 | 修正準備状況 | 準備完了 |
+| 修正日 | 2026-26-06 |
+| 修正内容 | モバイル編集保存イベントの自レコード除外判定を `mobile.app.record.edit.submit` に修正しました。 |
+| 修正ファイル | plugins/DoubleCheck/DoubleCheck/contents/js/mobile.js |
+| 確認結果 | node --check 成功。対象イベント名の静的確認済み。kintone実機確認は未実施。 |
 
 ---

@@ -89,7 +89,7 @@ jQuery.noConflict();
     });
     //対象ルックアップフィールドの、「ほかのフィールドのコピー」に設定がないときにエラーを表示する。
     kintone.events.on(['mobile.app.record.create.show','mobile.app.record.edit.show'],async function (event) {
-       const resp = await kintone.api(kintone.api.url('/k/v1/app/form/fields', true),'GET',{ app: kintone.app.getId()})
+       const resp = await kintone.api(kintone.api.url('/k/v1/app/form/fields', true),'GET',{ app: kintone.mobile.app.getId()})
       const fields = resp.properties;
       const arr = fields[config.lookupField.code].lookup.fieldMappings.filter(x => x.field == config.lookupField.copyField)
     
@@ -102,11 +102,6 @@ jQuery.noConflict();
     });
 
     kintone.events.on(that.events, function (event) {
-
-      setTimeout(function () {
-        const value = kintone.app.record.get().record[config.lookupField.code].value;
-        const allRecords = that.getAllRecords(config.lookupField.appId);
-      }, 500);
 
       if (that.isInTable(event.record, config.lookupField.code)) {
         const code = that.getCodePart(config.lookupField.code);

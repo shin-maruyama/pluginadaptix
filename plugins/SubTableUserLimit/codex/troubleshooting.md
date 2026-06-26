@@ -102,6 +102,34 @@ YYYY-MM-DD
 
 - 要記録
 
+## 2026-26-06 BUG ID: BUG-028
+
+### 発生事象
+
+設定画面にデバッグログが残っている
+
+### 原因
+
+設定画面のバリデーション処理にデバッグログが残っていた。
+
+### 修正内容
+
+設定画面のデバッグ `console.log` を削除しました。
+
+### 修正ファイル
+
+- plugins/SubTableUserLimit/SubTableUserLimit/contents/js/config.js
+
+### 確認結果
+
+node --check 成功。対象console.log削除を静的確認済み。
+
+### 再発防止策
+
+- mobile.jsでは mobile.app.record 系イベントと kintone.mobile.app 系APIを優先して確認する。
+- DOM、サブテーブル、設定値、API呼び出しは存在確認を行ってから参照する。
+- リリース前に対象ファイルの console 残置と構文エラーを確認する。
+
 ## 現在の記録
 
 - 2026-06-23: 初期テンプレート作成。障害対応記録はまだありません。

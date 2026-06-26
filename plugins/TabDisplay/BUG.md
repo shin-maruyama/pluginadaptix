@@ -22,10 +22,14 @@
 | 影響 | モバイルでグループを含む設定時に実行時エラーとなり、タブ表示全体が止まる可能性がある。 |
 | 詳細 | mobile.js内で `kintone.app.record.setGroupFieldOpen` を使用している。 |
 | 推奨対応 | mobileでサポートされるAPIの有無を確認し、未対応ならモバイルでは該当処理をスキップする。 |
-| ステータス | 未対応（修正保留） |
+| ステータス | 修正済み・要確認 |
 | 関連ファイル解析状況 | 解析済み |
 | 原因候補 | コード上で確認済み: mobile.js内で `kintone.app.record.setGroupFieldOpen` を使用している。<br>コード上で確認済み: mobile.js 内に desktop 用APIまたは desktop イベント名の利用候補がある。 |
 | 修正準備状況 | 準備完了 |
+| 修正日 | 2026-26-06 |
+| 修正内容 | モバイルではdesktop用グループ開閉APIを直接呼ばず、mobile側APIが存在する場合のみ実行するようにしました。 |
+| 修正ファイル | plugins/TabDisplay/TabDisplay/contents/js/mobile.js |
+| 確認結果 | node --check 成功。desktop用API削除を静的確認済み。モバイルでのグループ表示挙動は実機確認が必要。 |
 
 ---
 
@@ -43,9 +47,13 @@
 | 影響 | 対象フィールドDOMが存在しない条件でタブ表示処理が停止する。 |
 | 詳細 | `fieldWrap2` がnullの可能性があるまま `hasAttribute` を呼んでいる。 |
 | 推奨対応 | DOM取得結果のnullチェックを追加する。 |
-| ステータス | 未対応（修正保留） |
+| ステータス | 修正済み |
 | 関連ファイル解析状況 | 解析済み |
 | 原因候補 | コード上で確認済み: `fieldWrap2` がnullの可能性があるまま `hasAttribute` を呼んでいる。<br>コード上で確認済み: DOM取得結果のnullチェック不足が対象行周辺にある。 |
 | 修正準備状況 | 準備完了 |
+| 修正日 | 2026-26-06 |
+| 修正内容 | DOM取得結果がnullの場合は関連属性判定をスキップするガードを追加しました。 |
+| 修正ファイル | plugins/TabDisplay/TabDisplay/contents/js/desktop.js |
+| 確認結果 | node --check 成功。DOM nullガードの静的確認済み。kintone実機確認は未実施。 |
 
 ---

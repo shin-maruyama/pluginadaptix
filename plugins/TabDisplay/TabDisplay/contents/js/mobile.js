@@ -62,8 +62,9 @@ jQuery.noConflict();
       const fieldList2 = await obj.getFieldList2();
       const type = ['GROUP'];
       const filterFieldList = fieldList2.filter((x) => type.includes(x.type));
+      if (!kintone.mobile.app.record.setGroupFieldOpen) return;
       for (const field of filterFieldList) {
-        kintone.app.record.setGroupFieldOpen(field.code, true);
+        kintone.mobile.app.record.setGroupFieldOpen(field.code, true);
       }
       // 非表示にする
       $('.group-label-gaia').hide();

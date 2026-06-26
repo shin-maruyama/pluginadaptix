@@ -148,6 +148,7 @@ jQuery.noConflict();
         if (!field) return true;
 
       } else {
+        if (!tableField.value || !tableField.value.length) return true;
         const field = tableField.value[0].value[setting.userSelect.split('　')[1]];
         if (!field) return true;
       }
@@ -165,6 +166,7 @@ jQuery.noConflict();
         if (!field2) return true;
 
       } else {
+        if (!tableField.value || !tableField.value.length) return true;
         const field2 = tableField.value[0].value[setting.staffSelect.split('　')[1]];
         if (!field2) return true;
       }
@@ -180,7 +182,7 @@ jQuery.noConflict();
       const resp = await kintone.api(kintone.api.url('/v1/users.json'), 'GET', { offset });
       users = users.concat(resp.users);
       if (resp.users.length === 100) {
-        return getAllUsers(offset + 100, users);
+        return total.getAllUsers(offset + 100, users);
       }
     } catch { }
 

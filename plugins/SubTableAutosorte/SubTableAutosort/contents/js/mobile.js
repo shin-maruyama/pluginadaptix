@@ -12,6 +12,9 @@ jQuery.noConflict();
 
   const RUNKEY = (appId, recordId) => `SubTableAutosortRunning:${appId}:${recordId}`;
   const POSTKEY = (appId, recordId) => `SubTableAutosortPost:${appId}:${recordId}`;
+  const getMobileAppId = () => kintone.mobile && kintone.mobile.app && kintone.mobile.app.getId
+    ? kintone.mobile.app.getId()
+    : kintone.app.getId();
 
   // ===== フィールド定義キャッシュ（ルックアップ除外のため） =====
   let __FIELDS_DEF_CACHE = null;
@@ -21,7 +24,7 @@ jQuery.noConflict();
     __FIELDS_DEF_CACHE = await kintone.api(
       kintone.api.url('/k/v1/app/form/fields.json', true),
       'GET',
-      { app: kintone.app.getId() }
+      { app: getMobileAppId() }
     );
     return __FIELDS_DEF_CACHE;
   }
@@ -64,9 +67,7 @@ jQuery.noConflict();
     const conf = loadPluginConfig();
     if (!conf.length) return;
 
-    const appId = kintone.mobile && kintone.mobile.app && kintone.mobile.app.getId
-      ? kintone.mobile.app.getId()
-      : kintone.app.getId();
+    const appId = getMobileAppId();
 
     let fieldsDef;
     try {
@@ -181,7 +182,7 @@ jQuery.noConflict();
   }
 
   async function applySortByPut(recordId) {
-    const appId = kintone.app.getId();
+    const appId = getMobileAppId();
     const lockKey = RUNKEY(appId, recordId);
 
     const now = Date.now();
@@ -257,7 +258,7 @@ jQuery.noConflict();
   kintone.events.on(
     ['mobile.app.record.create.submit.success', 'mobile.app.record.edit.submit.success'],
     (event) => {
-      const appId = kintone.app.getId();
+      const appId = getMobileAppId();
       const recordId = event.recordId;
       if (recordId) {
         sessionStorage.setItem(POSTKEY(appId, recordId), '1');
@@ -268,7 +269,7 @@ jQuery.noConflict();
 
   // 2) 詳細画面表示時：フラグがあればPUTソート→詳細を再表示
   kintone.events.on('mobile.app.record.detail.show', async (event) => {
-    const appId = kintone.app.getId();
+    const appId = getMobileAppId();
     const recordId = event.recordId;
     if (!recordId) return event;
 

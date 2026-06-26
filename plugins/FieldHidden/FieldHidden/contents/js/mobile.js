@@ -6,7 +6,12 @@ jQuery.noConflict();
   'use strict';
 
   const config = kintone.plugin.app.getConfig(PLUGIN_ID);
-  const select = JSON.parse(config.elementArray);
+  let select = [];
+  try {
+    select = config.elementArray ? JSON.parse(config.elementArray) : [];
+  } catch (error) {
+    select = [];
+  }
 
   kintone.events.on(
     ['mobile.app.record.create.show', 'mobile.app.record.edit.show', 'mobile.app.record.detail.show'],

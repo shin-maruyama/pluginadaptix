@@ -102,6 +102,34 @@ YYYY-MM-DD
 
 - 要記録
 
+## 2026-26-06 BUG ID: BUG-003
+
+### 発生事象
+
+モバイル編集保存時に自レコード除外判定が効かない
+
+### 原因
+
+モバイルイベント内でdesktop用イベント名 `app.record.edit.submit` を判定していたため、自レコード除外処理が実行されなかった。
+
+### 修正内容
+
+モバイル編集保存イベントの自レコード除外判定を `mobile.app.record.edit.submit` に修正しました。
+
+### 修正ファイル
+
+- plugins/DoubleCheck/DoubleCheck/contents/js/mobile.js
+
+### 確認結果
+
+node --check 成功。対象イベント名の静的確認済み。kintone実機確認は未実施。
+
+### 再発防止策
+
+- mobile.jsでは mobile.app.record 系イベントと kintone.mobile.app 系APIを優先して確認する。
+- DOM、サブテーブル、設定値、API呼び出しは存在確認を行ってから参照する。
+- リリース前に対象ファイルの console 残置と構文エラーを確認する。
+
 ## 現在の記録
 
 - 2026-06-23: 初期テンプレート作成。障害対応記録はまだありません。

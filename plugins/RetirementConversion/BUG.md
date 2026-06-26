@@ -22,10 +22,14 @@
 | 影響 | ユーザー数が100件を超える環境で退職者チェックが途中で失敗する。 |
 | 詳細 | メソッド内で `getAllUsers` を直接呼んでいるが、関数スコープに定義されていない。 |
 | 推奨対応 | `return total.getAllUsers(offset + 100, users);` のようにメソッド経由で呼ぶ。mobile.jsも同様確認。 |
-| ステータス | 未対応（修正保留） |
+| ステータス | 修正済み |
 | 関連ファイル解析状況 | 解析済み |
 | 原因候補 | コード上で確認済み: メソッド内で `getAllUsers` を直接呼んでいるが、関数スコープに定義されていない。<br>コード上で確認済み: メソッド内再帰でオブジェクト修飾なしの関数名を呼び出している。 |
 | 修正準備状況 | 準備完了 |
+| 修正日 | 2026-26-06 |
+| 修正内容 | 100件超過時の再帰呼び出しを `total.getAllUsers(...)` に修正しました。 |
+| 修正ファイル | plugins/RetirementConversion/RetirementConversion/contents/js/desktop.js<br>plugins/RetirementConversion/RetirementConversion/contents/js/mobile.js |
+| 確認結果 | node --check 成功。再帰呼び出し先の静的確認済み。100件超ユーザー環境での実機確認は未実施。 |
 
 ---
 
@@ -43,9 +47,13 @@
 | 影響 | 空のサブテーブルを含む一覧で退職者チェック処理が落ちる可能性がある。 |
 | 詳細 | サブテーブルの先頭行 `value[0]` が存在する前提でユーザー選択フィールドを確認している。 |
 | 推奨対応 | 空行時の分岐を追加する。mobile.jsも同様確認。 |
-| ステータス | 未対応（修正保留） |
+| ステータス | 修正済み |
 | 関連ファイル解析状況 | 解析済み |
 | 原因候補 | コード上で確認済み: サブテーブルの先頭行 `value[0]` が存在する前提でユーザー選択フィールドを確認している。<br>コード上で確認済み: サブテーブルの行存在確認前に value[0] を参照している。 |
 | 修正準備状況 | 準備完了 |
+| 修正日 | 2026-26-06 |
+| 修正内容 | サブテーブルの値配列が空の場合は存在なしとして扱うガードを追加しました。 |
+| 修正ファイル | plugins/RetirementConversion/RetirementConversion/contents/js/desktop.js<br>plugins/RetirementConversion/RetirementConversion/contents/js/mobile.js |
+| 確認結果 | node --check 成功。空行ガードの静的確認済み。kintone実機確認は未実施。 |
 
 ---

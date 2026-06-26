@@ -423,7 +423,6 @@ jQuery.noConflict();
   limit.numberFieldValueCheck = function (){
     const that = this;
     $(document).on('blur', "[id ^='limitNumber']", function() {
-      console.log("エラー")
       const reg = /^[1-9][0-9]*$/;
       if($(this).val() && !reg.test($(this).val())){$(this).val("1");that.displayAlert('エラー', '１以上の整数を入力してください。', 'error', 'OK');}
     })

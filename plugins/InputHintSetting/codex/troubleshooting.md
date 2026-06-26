@@ -102,6 +102,63 @@ YYYY-MM-DD
 
 - 要記録
 
+## 2026-26-06 BUG ID: BUG-016
+
+### 発生事象
+
+空のサブテーブルで存在チェックがTypeErrorになる
+
+### 原因
+
+空のサブテーブルでも `tableField.value[0].value[...]` を参照していた。
+
+### 修正内容
+
+サブテーブルの値配列が空の場合は存在なしとして扱うガードを追加しました。関連するデバッグログも削除しました。
+
+### 修正ファイル
+
+- plugins/InputHintSetting/InputHintSetting/contents/js/desktop.js
+- plugins/InputHintSetting/InputHintSetting/contents/js/mobile.js
+
+### 確認結果
+
+node --check 成功。空行ガードの静的確認済み。kintone実機確認は未実施。
+
+### 再発防止策
+
+- mobile.jsでは mobile.app.record 系イベントと kintone.mobile.app 系APIを優先して確認する。
+- DOM、サブテーブル、設定値、API呼び出しは存在確認を行ってから参照する。
+- リリース前に対象ファイルの console 残置と構文エラーを確認する。
+
+## 2026-26-06 BUG ID: BUG-006
+
+### 発生事象
+
+mobile.jsのサブテーブル行追加イベントがdesktopイベント名になっている
+
+### 原因
+
+mobile.jsでdesktopイベント名 `app.record.*` を使用していた。
+
+### 修正内容
+
+モバイルのサブテーブル行追加イベントを `mobile.app.record.*` に修正しました。
+
+### 修正ファイル
+
+- plugins/InputHintSetting/InputHintSetting/contents/js/mobile.js
+
+### 確認結果
+
+node --check 成功。モバイルイベント名の静的確認済み。kintone実機確認は未実施。
+
+### 再発防止策
+
+- mobile.jsでは mobile.app.record 系イベントと kintone.mobile.app 系APIを優先して確認する。
+- DOM、サブテーブル、設定値、API呼び出しは存在確認を行ってから参照する。
+- リリース前に対象ファイルの console 残置と構文エラーを確認する。
+
 ## 現在の記録
 
 - 2026-06-23: 初期テンプレート作成。障害対応記録はまだありません。
