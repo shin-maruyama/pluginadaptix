@@ -19,6 +19,7 @@ jQuery.noConflict();
   const $submitButton = $('#submit');
   const $cancelButton = $('.js-cancel-button');
   const config = kintone.plugin.app.getConfig(PLUGIN_ID);
+  const legacyPluginIds = Array.from(new Set([PLUGIN_ID, 'acgdhcpcojijcmkcgkldmmelakjmlpno']));
 
   if (Object.keys(config).length) {
     //[JSON型に変換]
@@ -26,17 +27,20 @@ jQuery.noConflict();
   } else {
     // 旧バージョンの設定を取り込む
     try {
-      const config2 = kintone.plugin.app.getConfig('acgdhcpcojijcmkcgkldmmelakjmlpno');
-      if(config2.dateField) {
-        // 変換処理
-        config.settings = [];
-        const item = {
-          dateField : config2.dateField,
-          outputField: config2.outputField,
-        }
-        config.settings.push(item);
+      for (const legacyPluginId of legacyPluginIds) {
+        const config2 = kintone.plugin.app.getConfig(legacyPluginId);
+        if(config2.dateField) {
+          // 変換処理
+          config.settings = [];
+          const item = {
+            dateField : config2.dateField,
+            outputField: config2.outputField,
+          }
+          config.settings.push(item);
 
-        displayAlert('完了','旧バージョンの設定を読み込みました。','info','OK');
+          displayAlert('完了','旧バージョンの設定を読み込みました。','info','OK');
+          break;
+        }
       }
     } catch { }
   }

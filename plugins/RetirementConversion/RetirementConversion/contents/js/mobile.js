@@ -4,6 +4,24 @@ jQuery.noConflict();
 
 (async function ($, PLUGIN_ID) {
   'use strict';
+  function handleKintoneApiError(error) {
+    const message = error && error.message ? error.message : 'kintone REST APIの呼び出しに失敗しました。';
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        icon: 'error',
+        title: 'エラー',
+        text: message
+      });
+    } else if (typeof alert === 'function') {
+      alert(message);
+    }
+    throw error;
+  }
+
+  function callKintoneApi(...args) {
+    return kintone.api.apply(kintone, args).catch(handleKintoneApiError);
+  }
+
 
   if (!(await KNTP276110certification())) {
     return;
@@ -31,8 +49,8 @@ jQuery.noConflict();
       button.onclick = onClickButton;
 
       if (!document.getElementById('user_update_button')) {
-        var space = kintone.mobile.app.getHeaderSpaceElement();
-        space.appendChild(button);
+        const space = kintone.mobile.app.getHeaderSpaceElement();
+        if (space) space.appendChild(button);
       }
 
       const { records } = event;
@@ -123,7 +141,7 @@ jQuery.noConflict();
           body.records.push(recordObj);
         }
         try {
-          await kintone.api(kintone.api.url('/k/v1/records.json', true), 'PUT', body);
+          await callKintoneApi(kintone.api.url('/k/v1/records.json', true), 'PUT', body);
           location.reload();
         } catch {
 
@@ -148,6 +166,7 @@ jQuery.noConflict();
         if (!field) return true;
 
       } else {
+        if (!tableField.value || !tableField.value.length) return true;
         const field = tableField.value[0].value[setting.userSelect.split('　')[1]];
         if (!field) return true;
       }
@@ -165,6 +184,7 @@ jQuery.noConflict();
         if (!field2) return true;
 
       } else {
+        if (!tableField.value || !tableField.value.length) return true;
         const field2 = tableField.value[0].value[setting.staffSelect.split('　')[1]];
         if (!field2) return true;
       }
@@ -177,10 +197,10 @@ jQuery.noConflict();
   //全体ユーザーの取得
   total.getAllUsers = async function (offset = 0, users = []) {
     try {
-      const resp = await kintone.api(kintone.api.url('/v1/users.json'), 'GET', { offset });
+      const resp = await callKintoneApi(kintone.api.url('/v1/users.json'), 'GET', { offset });
       users = users.concat(resp.users);
       if (resp.users.length === 100) {
-        return getAllUsers(offset + 100, users);
+        return total.getAllUsers(offset + 100, users);
       }
     } catch { }
 
@@ -253,7 +273,7 @@ jQuery.noConflict();
     ];
 
     try {
-      const resp = await kintone.api(kintone.api.url('/k/v1/app/form/layout.json', true), 'GET', {
+      const resp = await callKintoneApi(kintone.api.url('/k/v1/app/form/layout.json', true), 'GET', {
         app: kintone.mobile.app.getId(),
       });
       resp.layout.forEach((row) => {

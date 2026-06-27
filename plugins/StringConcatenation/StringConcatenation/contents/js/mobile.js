@@ -4,6 +4,24 @@ jQuery.noConflict();
 
 (async function ($, PLUGIN_ID) {
   'use strict';
+  function handleKintoneApiError(error) {
+    const message = error && error.message ? error.message : 'kintone REST APIの呼び出しに失敗しました。';
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        icon: 'error',
+        title: 'エラー',
+        text: message
+      });
+    } else if (typeof alert === 'function') {
+      alert(message);
+    }
+    throw error;
+  }
+
+  function callKintoneApi(...args) {
+    return kintone.api.apply(kintone, args).catch(handleKintoneApiError);
+  }
+
 
   if (!(await KNTP217910certification())) {
     return;
@@ -104,7 +122,7 @@ jQuery.noConflict();
         if (config.connectionField[i].split('　').length === 1) {
           if (record[config.connectionField[i]])
             record[config.connectionField[i]].value = fieldValueList
-              .filter((x) => x !== undefined || x !== 'ndefined')
+              .filter((x) => x !== undefined && x !== 'undefined' && x !== 'ndefined')
               .join(config.delimiter[i]);
         } else {
           const tableCode2 = config.connectionField[i].split('　')[0];
@@ -112,14 +130,14 @@ jQuery.noConflict();
           if (!record[tableCode2]) {
             if (record[fieldCode2]) {
               record[fieldCode2].value = fieldValueList
-                .filter((x) => x !== undefined || x !== 'ndefined')
+                .filter((x) => x !== undefined && x !== 'undefined' && x !== 'ndefined')
                 .join(config.delimiter[i]);
             }
           } else {
             if (!event.changes.row || !event.changes.row.value) return event;
             if (record[tableCode2].value[0].value[fieldCode2]) {
               event.changes.row.value[fieldCode2].value = fieldValueList
-                .filter((x) => x !== undefined || x !== 'ndefined')
+                .filter((x) => x !== undefined && x !== 'undefined' && x !== 'ndefined')
                 .join(config.delimiter[i]);
             }
           }
@@ -186,7 +204,7 @@ jQuery.noConflict();
     ];
 
     try {
-      const resp = await kintone.api(kintone.api.url('/k/v1/app/form/layout.json', true), 'GET', {
+      const resp = await callKintoneApi(kintone.api.url('/k/v1/app/form/layout.json', true), 'GET', {
         app: kintone.mobile.app.getId(),
       });
       resp.layout.forEach((row) => {

@@ -4,6 +4,24 @@ jQuery.noConflict();
 
 (async function ($, PLUGIN_ID) {
     'use strict';
+  function handleKintoneApiError(error) {
+    const message = error && error.message ? error.message : 'kintone REST APIの呼び出しに失敗しました。';
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        icon: 'error',
+        title: 'エラー',
+        text: message
+      });
+    } else if (typeof alert === 'function') {
+      alert(message);
+    }
+    throw error;
+  }
+
+  function callKintoneApi(...args) {
+    return kintone.api.apply(kintone, args).catch(handleKintoneApiError);
+  }
+
 
     const obj = {
         config: kintone.plugin.app.getConfig(PLUGIN_ID),
@@ -34,7 +52,6 @@ jQuery.noConflict();
         jsonParse: function () {
             try {
                 obj.config.settings = JSON.parse(obj.config.settings);
-                console.log(obj.config);
             } catch (ignore) { }
         },
 
@@ -61,6 +78,7 @@ jQuery.noConflict();
             } else {
             const tableField = record[tableCode];
             const field = settingTipSettingFieldCodeName;
+              if (!tableField.value || !tableField.value.length) return true;
               const tipSettingField = tableField.value[0].value[field];
               if (!tipSettingField) return true;
               return false;
@@ -77,7 +95,7 @@ jQuery.noConflict();
                 const tableCode = setting.tipSettingField.code.split('　')[0];
                 if (event.record[tableCode]) {
                     kintone.events.on(
-                        [`app.record.create.change.${tableCode}`, `app.record.edit.change.${tableCode}`],
+                        [`mobile.app.record.create.change.${tableCode}`, `mobile.app.record.edit.change.${tableCode}`],
                         function (e) {
                             obj.tipSetting(setting, e);
                             return e;
@@ -171,7 +189,7 @@ jQuery.noConflict();
                 ...Object.values(cybozu.data.page.FORM_DATA.schema.subTable),
             ];
             try {
-                const resp = await kintone.api(kintone.api.url('/k/v1/app/form/layout.json', true), 'GET', {
+                const resp = await callKintoneApi(kintone.api.url('/k/v1/app/form/layout.json', true), 'GET', {
                     app: kintone.mobile.app.getId(),
                 });
                 resp.layout.forEach((row) => {

@@ -5,6 +5,24 @@ jQuery.noConflict();
 
 (function ($, PLUGIN_ID) {
   'use strict';
+  function handleKintoneApiError(error) {
+    const message = error && error.message ? error.message : 'kintone REST APIの呼び出しに失敗しました。';
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        icon: 'error',
+        title: 'エラー',
+        text: message
+      });
+    } else if (typeof alert === 'function') {
+      alert(message);
+    }
+    throw error;
+  }
+
+  function callKintoneApi(...args) {
+    return kintone.api.apply(kintone, args).catch(handleKintoneApiError);
+  }
+
 
   //[処理用オブジェクト]
   const obj = {
@@ -152,7 +170,7 @@ jQuery.noConflict();
       try {
         let resp;
         if (obj.resp === null){
-          resp = await kintone.api(kintone.api.url('/k/v1/app/form/layout.json', true), 'GET', { app: kintone.app.getId() });
+          resp = await callKintoneApi(kintone.api.url('/k/v1/app/form/layout.json', true), 'GET', { app: kintone.app.getId() });
           obj.resp = resp;
         } else {
           resp = obj.resp;
