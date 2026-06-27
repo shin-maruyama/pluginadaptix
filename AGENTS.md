@@ -1580,3 +1580,17 @@ plugins/<プラグイン名>/codex/next-tasks.md
 CSV出力時は、Node.jsでは `\uFEFF` を先頭に付与し、Pythonでは `encoding="utf-8-sig"` を使用する。
 
 CSV作成後は、可能な範囲でBOM有無を確認する。
+
+---
+
+## プラグインフォルダ命名規則
+
+plugins配下のフォルダ名は、日本語の正式なプラグイン名称を使用する。
+
+例
+
+plugins/サブテーブル自動ソート
+plugins/TAB表示
+plugins/アプリ一覧
+
+ソースコード・ZIPファイル名・設定キーは変更しない。
