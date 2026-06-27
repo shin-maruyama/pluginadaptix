@@ -4,6 +4,24 @@ jQuery.noConflict();
 
 (async function ($, PLUGIN_ID) {
   'use strict';
+  function handleKintoneApiError(error) {
+    const message = error && error.message ? error.message : 'kintone REST APIの呼び出しに失敗しました。';
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        icon: 'error',
+        title: 'エラー',
+        text: message
+      });
+    } else if (typeof alert === 'function') {
+      alert(message);
+    }
+    throw error;
+  }
+
+  function callKintoneApi(...args) {
+    return kintone.api.apply(kintone, args).catch(handleKintoneApiError);
+  }
+
 
   const obj = {
     config: kintone.plugin.app.getConfig(PLUGIN_ID),
@@ -62,8 +80,9 @@ jQuery.noConflict();
       const fieldList2 = await obj.getFieldList2();
       const type = ['GROUP'];
       const filterFieldList = fieldList2.filter((x) => type.includes(x.type));
+      if (!kintone.mobile.app.record.setGroupFieldOpen) return;
       for (const field of filterFieldList) {
-        kintone.app.record.setGroupFieldOpen(field.code, true);
+        kintone.mobile.app.record.setGroupFieldOpen(field.code, true);
       }
       // 非表示にする
       $('.group-label-gaia').hide();
@@ -175,7 +194,7 @@ jQuery.noConflict();
     getFieldList2: async function () {
       const fieldList = [];
       try {
-        const resp = await kintone.api('/k/v1/app/form/layout.json', 'GET', { app: kintone.mobile.app.getId() });
+        const resp = await callKintoneApi('/k/v1/app/form/layout.json', 'GET', { app: kintone.mobile.app.getId() });
         resp.layout.forEach(row => {
           if (row.type === 'ROW') row.fields.forEach((field) => fieldList.push({
             type: field.type,

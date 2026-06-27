@@ -5,6 +5,24 @@ jQuery.noConflict();
 
 (async function ($, PLUGIN_ID) {
   'use strict';
+  function handleKintoneApiError(error) {
+    const message = error && error.message ? error.message : 'kintone REST APIの呼び出しに失敗しました。';
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        icon: 'error',
+        title: 'エラー',
+        text: message
+      });
+    } else if (typeof alert === 'function') {
+      alert(message);
+    }
+    throw error;
+  }
+
+  function callKintoneApi(...args) {
+    return kintone.api.apply(kintone, args).catch(handleKintoneApiError);
+  }
+
 
   if (!(await KNTP436810certification())) {
     return;
@@ -422,7 +440,7 @@ jQuery.noConflict();
       getFieldList: async function () {
         const fieldList = [];
         try {
-          const resp = await kintone.api('/k/v1/app/form/layout.json', 'GET', { app: kintone.app.getId() });
+          const resp = await callKintoneApi('/k/v1/app/form/layout.json', 'GET', { app: kintone.app.getId() });
           resp.layout.forEach(row => {
             if (row.type === 'ROW') row.fields.forEach(field => fieldList.push(field));
             else if (row.type === 'SUBTABLE') {

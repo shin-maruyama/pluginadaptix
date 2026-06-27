@@ -241,7 +241,7 @@ jQuery.noConflict();
         ulParent = $('<ul>', { class: 'ul-parent' }); //ulタグ作成
 
         const root = document.querySelector(':root')
-        root.style.setProperty("--color", treeColor);
+        if (root) root.style.setProperty("--color", treeColor);
 
         // カテゴリ配列の数分ループ
         for (let element of elementsTree) {

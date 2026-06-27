@@ -2,6 +2,24 @@ jQuery.noConflict();
 
 (async function ($, PLUGIN_ID) {
   'use strict';
+  function handleKintoneApiError(error) {
+    const message = error && error.message ? error.message : 'kintone REST APIの呼び出しに失敗しました。';
+    if (typeof Swal !== 'undefined') {
+      Swal.fire({
+        icon: 'error',
+        title: 'エラー',
+        text: message
+      });
+    } else if (typeof alert === 'function') {
+      alert(message);
+    }
+    throw error;
+  }
+
+  function callKintoneApi(...args) {
+    return kintone.api.apply(kintone, args).catch(handleKintoneApiError);
+  }
+
 
 
 
@@ -33,7 +51,7 @@ jQuery.noConflict();
 
       //[レコード情報取得]
       try {
-        const r = await kintone.api(kintone.api.url('/k/v1/record.json', true), 'GET', { app: e.appId, id: e.recordId });
+        const r = await callKintoneApi(kintone.api.url('/k/v1/record.json', true), 'GET', { app: e.appId, id: e.recordId });
 
         //[編集しているユーザーがいる場合、エラーを表示]
         if (r.record[config.fieldCode].value.length) {
@@ -56,7 +74,7 @@ jQuery.noConflict();
               },
             },
           };
-          await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', body).then(function () {
+          await callKintoneApi(kintone.api.url('/k/v1/record.json', true), 'PUT', body).then(function () {
             location.reload();
           });
         }
@@ -64,8 +82,7 @@ jQuery.noConflict();
 
       }
 
-      //[キャンセルボタンクリック時にレコード編集者フィールドの値リセット]
-      $('.gaia-ui-actionmenu-cancel').on('click', async function () {
+      const unlockRecord = async function () {
         const body = {
           app: e.appId,
           id: e.recordId,
@@ -75,8 +92,12 @@ jQuery.noConflict();
             },
           },
         };
-        await kintone.api(kintone.api.url('/k/v1/record.json', true), 'PUT', body);
-      });
+        await callKintoneApi(kintone.api.url('/k/v1/record.json', true), 'PUT', body);
+      };
+
+      //[キャンセルボタンクリック時にレコード編集者フィールドの値リセット]
+      $('.gaia-ui-actionmenu-cancel').on('click', unlockRecord);
+      window.addEventListener('pagehide', unlockRecord, { once: true });
 
       return e;
     });
@@ -86,7 +107,7 @@ jQuery.noConflict();
     kintone.events.on('app.record.index.show', async function (e) {
       if (!(await KNTP177310certification())) return e;
 
-      const fieldList = await kintone.api(
+      const fieldList = await callKintoneApi(
         kintone.api.url('/k/v1/app/form/fields.json', true),
         'GET',
         {
