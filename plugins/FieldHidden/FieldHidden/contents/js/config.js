@@ -18,20 +18,19 @@ jQuery.noConflict();
   const $submit = $('#submit');
   const $cancelButton = $('.js-cancel-button');
   const config = kintone.plugin.app.getConfig(PLUGIN_ID);
-  //console.log(config);
+  const savedElementArray = parseElementArray(config.elementArray);
 
   let fieldList = await getFieldList();
-  fieldList = filterField(fieldList, false, 'LABEL', 'HR', 'SPACER');
+  fieldList = filterSelectableFields(fieldList);
 
   //ドロップダウンにオプション追加
   //createOption(fieldList, $('.field-select'));
 
   //設定保持
-  if (Object.keys(config).length) {
+  if (savedElementArray.length) {
     //設定したドロップダウンリストのvalueリスト
-    const dropList = JSON.parse(config.elementArray);
-    // console.log(dropList);
-    const width = config.width;
+    const dropList = savedElementArray;
+    const width = config.width || '290px';
     //保存した設定個数分ドロップダウンを増やす
     for (let i = 1, len = dropList.length; i < len; i++) {
       const clone = $('.main-contents:first').clone(true);
@@ -45,8 +44,9 @@ jQuery.noConflict();
       $('.main-contents').find('.field-select').eq(i).val(dropList[i]);
     }
 
-    let dis = 260 + parseInt(width) - 290;
-    let pWidth = 370 + parseInt(width) - 290;
+    const numericWidth = parseInt(width, 10) || 290;
+    let dis = 260 + numericWidth - 290;
+    let pWidth = 370 + numericWidth - 290;
     $('.kintoneplugin-table-td-operation').css('margin-left', width);
     $('#parent').css('width', pWidth + 'px');
     search(width, dis + 'px');
@@ -56,36 +56,44 @@ jQuery.noConflict();
     search('290px', '260px');
   }
 
+  updateDeleteButtonVisibility();
+
   //追加ボタン
   $(document).on('click', '.add-button', async function () {
-    const width = $('.select2-selection--single').css('width');
-    $('.field-select').select2('destroy');
+    const width = $('.select2-selection--single').css('width') || '290px';
+    destroySelect2();
 
     const clone = $('.main-contents:first').clone(true);
+    clone.find('.field-select').val('');
 
     $(this).closest('.main-contents').after(clone);
-    //await createNewOption();
-    const dis = 260 + parseInt(width) - 290;
+    await createNewOption();
+    const dis = 260 + (parseInt(width, 10) || 290) - 290;
     search(width, dis + 'px');
-    await createNewOption();//search関数によるCSS成形の前にawait関数があると、異常表示されるため移動した。
+    updateDeleteButtonVisibility();
   });
 
   //削除ボタン
   $(document).on('click', '.delete-button',async function () {
     if ($('.main-contents').length > 1) {
+      destroySelect2();
       $(this).closest('.main-contents').remove();
+    } else {
+      updateDeleteButtonVisibility();
+      return;
     }
-    const width = $('.select2-selection--single').css('width');
+    const width = $('.select2-selection--single').css('width') || '290px';
     await createNewOption();
-    const dis = 260 + parseInt(width) - 290;
+    const dis = 260 + (parseInt(width, 10) || 290) - 290;
     search(width, dis + 'px');
+    updateDeleteButtonVisibility();
   });
 
   $(document).on('change', '.field-select', async function () {
     var scrollPosition = window.scrollY;
-    let width = $('.select2-selection--single').css('width');
-    width = parseInt(width);
+    let width = parseInt($('.select2-selection--single').css('width'), 10) || 290;
 
+    destroySelect2();
     await createNewOption();
 
     let maxWidth = 0;
@@ -99,7 +107,6 @@ jQuery.noConflict();
 
     });
 
-    $('.field-select').select2('destroy');
     let newWidth = maxWidth * 17 + 20;
 
     if (width !== newWidth) {
@@ -121,8 +128,50 @@ jQuery.noConflict();
       $('#parent').css('width', pWidth + 'px');
       search(width + 'px', dis + 'px');
     }
+    updateDeleteButtonVisibility();
     window.scrollTo(0, scrollPosition);
   });
+
+  function parseElementArray(value) {
+    if (!value) return [];
+
+    const textValue = String(value).trim();
+    if (!textValue) return [];
+
+    if (textValue[0] !== '[' && textValue[0] !== '{') {
+      return normalizeElementArray([textValue]);
+    }
+
+    try {
+      const parsed = JSON.parse(textValue);
+      if (!Array.isArray(parsed)) {
+        displayAlert('エラー', '保存形式が不正です。<br>初期状態で表示します。', 'error', 'OK');
+        return [];
+      }
+      return normalizeElementArray(parsed);
+    } catch (error) {
+      console.error('[FieldHiddenPlugin] Failed to parse plugin config.', error);
+      displayAlert('エラー', '保存形式が不正です。<br>初期状態で表示します。', 'error', 'OK');
+      return [];
+    }
+  }
+
+  function normalizeElementArray(value) {
+    return value.filter((item) => typeof item === 'string' && item !== '' && item !== 'none');
+  }
+
+  function destroySelect2() {
+    $('.field-select').each(function () {
+      const $fieldSelect = $(this);
+      if ($fieldSelect.data('select2')) {
+        $fieldSelect.select2('destroy');
+      }
+    });
+  }
+
+  function updateDeleteButtonVisibility() {
+    $('.delete-button').toggle($('.main-contents').length > 1);
+  }
 
   async function createNewOption() {
     //let fieldList = await getFieldList();
@@ -160,6 +209,11 @@ jQuery.noConflict();
     e.preventDefault();
     const elementArray = [];
 
+    if (!$('.field-select').length) {
+      displayAlert('エラー', '設定枠が存在しません。', 'error', 'OK');
+      return false;
+    }
+
     for (let i = 0; i < $('.field-select').length; i++) {
       elementArray.push($('.field-select').eq(i).val() ? $('.field-select').eq(i).val() : 'none');
     }
@@ -174,7 +228,7 @@ jQuery.noConflict();
       return false;
     }
 
-    const width = $('.select2-selection--single').css('width');
+    const width = $('.select2-selection--single').css('width') || '290px';
 
     const config = { elementArray: JSON.stringify(elementArray), width: width };
     kintone.plugin.app.setConfig(config);
@@ -234,63 +288,78 @@ jQuery.noConflict();
           inField.label = inTarget.label;
         });
       });
-    } catch {
-
+    } catch (error) {
+      console.error('[FieldHiddenPlugin] Failed to get form fields.', error);
+      displayAlert('エラー', 'フィールド情報の取得に失敗しました。<br>フォーム設定を確認してください。', 'error', 'OK');
     }
     return fieldList;
   }
 
   /************************************************
-   * [指定したフィールドを抽出する関数]
-   * @param {Array} フィルターをかけるフィールドリスト
-   * @param {boolean} 指定したフィールドタイプを抽出 true   以外を抽出 false
-   * @param {Array} 抽出するフィールドタイプリスト
+   * [非表示対象として選択できるフィールドを抽出する関数]
+   * @param {Array} fieldList [フォームのフィールドリスト]
    * @returns [抽出したフィールドリスト]
    ************************************************/
-  function filterField(fieldList, flg, ...limitFieldType) {
-    if (!limitFieldType.length) return fieldList;
-    let filteredFieldList = [];
+  function filterSelectableFields(fieldList) {
+    const selectableTypes = [
+      'SINGLE_LINE_TEXT',
+      'MULTI_LINE_TEXT',
+      'RICH_TEXT',
+      'NUMBER',
+      'CALC',
+      'RADIO_BUTTON',
+      'CHECK_BOX',
+      'MULTI_SELECT',
+      'DROP_DOWN',
+      'DATE',
+      'TIME',
+      'DATETIME',
+      'FILE',
+      'LINK',
+      'USER_SELECT',
+      'ORGANIZATION_SELECT',
+      'GROUP_SELECT',
+      'REFERENCE_TABLE',
+    ];
+    const filteredFieldList = [];
+    const isSelectable = (field) => selectableTypes.includes(field.type);
 
-    if (!flg) {
-      fieldList.forEach((row) => {
-        if (row.type === 'GROUP') {
-          filteredFieldList.push({
-            fieldName: row.code,
-            code: row.code
-          });
-          row.layout.forEach((childRow) => {
-            childRow.fields.forEach((field) => {
-              if (!limitFieldType.includes(field.type)) {
-                filteredFieldList.push({
-                  fieldName: (row.code ? row.code : row.label) + ' ' + field.code,
-                  code: field.code
-                });
-              }
-            });
-          });
-        } else if (row.type === 'SUBTABLE') {
-          filteredFieldList.push({
-            fieldName: row.code,
-            code: row.code
-          });
-          row.fields.forEach((subField) => {
-            if (!limitFieldType.includes(subField.type)) {
+    fieldList.forEach((row) => {
+      if (row.type === 'GROUP') {
+        filteredFieldList.push({
+          fieldName: row.code,
+          code: row.code,
+        });
+        row.layout.forEach((childRow) => {
+          childRow.fields.forEach((field) => {
+            if (isSelectable(field)) {
               filteredFieldList.push({
-                fieldName: (row.code ? row.code : row.label) + ' ' + subField.code,
-                code: subField.code
+                fieldName: (row.code ? row.code : row.label) + ' ' + field.code,
+                code: field.code,
               });
             }
           });
-        } else {
-          if (!limitFieldType.includes(row.type)) {
+        });
+      } else if (row.type === 'SUBTABLE') {
+        filteredFieldList.push({
+          fieldName: row.code,
+          code: row.code,
+        });
+        row.fields.forEach((subField) => {
+          if (isSelectable(subField)) {
             filteredFieldList.push({
-              fieldName: row.code,
-              code: row.code
+              fieldName: (row.code ? row.code : row.label) + ' ' + subField.code,
+              code: subField.code,
             });
           }
-        }
-      });
-    }
+        });
+      } else if (isSelectable(row)) {
+        filteredFieldList.push({
+          fieldName: row.code,
+          code: row.code,
+        });
+      }
+    });
 
     return filteredFieldList;
   }
@@ -299,6 +368,9 @@ jQuery.noConflict();
    * [ドロップダウンに検索機能を追加・CSS追加]
    ****************************************/
   function search(selectWidth, arrowDis) {
+    const fieldWidth = typeof selectWidth === 'number' ? selectWidth + 'px' : (selectWidth || '290px');
+    const arrowLeft = typeof arrowDis === 'number' ? arrowDis + 'px' : (arrowDis || '260px');
+
     $('.select2').select2({
     }).on('select2:open', function (e) {
       setTimeout(function () {
@@ -340,7 +412,7 @@ jQuery.noConflict();
     });
 
     $('.select2-selection--single').css({
-      width: '290px',
+      width: fieldWidth,
       height: '55px',
       border: '1px solid #e3e7e8',
       'background-color': '#f7f9fa',
@@ -357,7 +429,7 @@ jQuery.noConflict();
 
     $('.select2-selection__arrow').css({
       top: '11px',
-      left: '260px',
+      left: arrowLeft,
     });
 
     $('.select2-container--default .select2-selection--single .select2-selection__arrow b').css({

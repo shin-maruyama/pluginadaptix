@@ -6,7 +6,7 @@ jQuery.noConflict();
   'use strict';
 
   const config = kintone.plugin.app.getConfig(PLUGIN_ID);
-  const select = JSON.parse(config.elementArray);
+  const select = parseElementArray(config.elementArray);
 
   kintone.events.on(
     ['app.record.create.show', 'app.record.edit.show', 'app.record.detail.show'],
@@ -16,92 +16,15 @@ jQuery.noConflict();
       if (!(await KNTP932510certification())) return event;
       if (!select || !select.length) return event;
 
-      const resp = await kintone.api(kintone.api.url('/k/v1/app/form/layout.json', true), 'GET', {
-        app: kintone.app.getId(),
-      });
-
-      //ドロップダウンプラグイン、ラジオボタンプラグインの設定で、関連付けられたフィールドを属性をもとに取得する。
-      const newSelect = await relatedFieldsGet(select)
-
-      newSelect.forEach(async function (val) {
-        if (!val) return event;
-
-        const parts = val.split(' ');
-        const fieldCode = parts.length === 1 ? parts[0] : parts[1];
-
-        kintone.app.record.setFieldShown(fieldCode, false);
-
-        markFieldByCode(fieldCode)
+      select.forEach(function (val) {
+        const fieldCode = getFieldCode(val);
+        if (!fieldCode) return;
+        hideField(fieldCode);
       });
 
       return event;
     }
   );
-
-  async function relatedFieldsGet(select){
-    return new Promise((resolve) => {
-      const fieldList2 = [
-      ...Object.values(cybozu.data.page.FORM_DATA.schema.table.fieldList),
-      ...Object.values(cybozu.data.page.FORM_DATA.schema.subTable)
-    ];
-
-    setTimeout(() => {
-      const newSelect = [...select];
-      select.forEach((x) => {
-        const target = fieldList2.find((y) => y.var === x);
-        if (!target) return;
-
-        let fieldWrap2 = null
-        if(target.type != undefined){
-            fieldWrap2 = document.querySelector(`.field-${target.id}`);
-          }else{
-            fieldWrap2 = document.querySelector(`.subtable-row-${target.id}`)
-          }
-
-        if(fieldWrap2.hasAttribute('dropdownplugin')){
-          const getAttribute = fieldWrap2.getAttribute('dropdownplugin')
-          const getAttributeParse = JSON.parse(getAttribute)
-          const option = fieldWrap2.querySelector('.control-value-gaia span').textContent;
-          const getAttributeTarget = getAttributeParse.find((x) => x.categoryName == option)
-          getAttributeTarget.fields.forEach((split) => kintone.app.record.setFieldShown(split, true))
-        }
-        if(fieldWrap2.hasAttribute('radioButtonPlugin')){
-          const getAttribute = fieldWrap2.getAttribute('radioButtonPlugin')
-          const getAttributeParse = JSON.parse(getAttribute)
-          const querySelector = kintone.app.record.getFieldElement(target.var)
-          let option = null;
-          if(querySelector != null){
-            option = querySelector.textContent;
-          }else{
-            option = fieldWrap2.querySelector('input[type="radio"]:checked').value
-          }
-          const getAttributeTarget = getAttributeParse.find((x) => x.categoryName == option)
-          getAttributeTarget.fields.forEach((split) => kintone.app.record.setFieldShown(split, true))
-        }
-      });
-      resolve(newSelect);
-    }, 100)
-  });
-  }
-
-  async function markFieldByCode(fieldorigin){
-    if(!fieldorigin || fieldorigin == "undefined") {return;}
-    const filedSplit = fieldorigin.split(' ')
-    const fieldCode = filedSplit.length == 2 ? filedSplit[1] : filedSplit[0]
-    let fieldList2 = Object.values(cybozu.data.page.FORM_DATA.schema.table.fieldList);
-    fieldList2 = [...fieldList2, ...Object.values(cybozu.data.page.FORM_DATA.schema.subTable)];
-    const target = fieldList2.find((x) => x.var === fieldCode);
-    if(!target) {return;}
-    setTimeout(() => {
-      if(target.type != undefined){
-        const fieldWrap2 = document.querySelector(`.field-${target.id}`);
-        fieldWrap2.setAttribute('field-hidden-by', 'FieldHiddenPlugin');
-      }else{
-        const fieldWrap2 = document.querySelector(`.subtable-row-${target.id}`);
-        fieldWrap2.setAttribute('field-hidden-by', 'FieldHiddenPlugin');
-      }
-    }, 100);
-  }
 
   /******************************************
    * [一覧画面表示時の設定済みフィールド存在チェック]
@@ -140,10 +63,8 @@ jQuery.noConflict();
     // 不存在フィールドがある場合のみ警告表示
     if (uniqueMissingFields.length > 0) {
 
-      const imageUrl = 'https://allin-one.cybozu.com/k/api/record/download.do/-/%E3%82%A4%E3%83%B3%E3%83%95%E3%82%A9.png?app=4215&thumbnail=true&field=6630014&detectType=true&record=6&row=1613353&id=247948&hash=f1024070e9eab225a306f666ea7b1c567b4bb325&revision=1&.png&w=150&h=150&flag=SHRINK';
-
       const fieldHtml = uniqueMissingFields
-        .map((code) => `・${code}`)
+        .map((code) => `・${escapeHtml(code)}`)
         .join('<br>');
 
       displayAlert(
@@ -152,7 +73,7 @@ jQuery.noConflict();
         '対象フィールドコード：<br>' +
         fieldHtml +
         '<br><br>プラグイン設定を修正してください。',
-        imageUrl,
+        'warning',
         'OK'
       );
     }
@@ -188,7 +109,9 @@ jQuery.noConflict();
           inField.label = inTarget.label;
         });
       });
-    } catch { }
+    } catch (error) {
+      console.error('[FieldHiddenPlugin] Failed to get form fields.', error);
+    }
 
     let filteredFieldList = [];
     fieldList.forEach((row) => {
@@ -222,11 +145,55 @@ jQuery.noConflict();
     return filteredFieldList;
   }
 
+  function parseElementArray(value) {
+    if (!value) return [];
+
+    const textValue = String(value).trim();
+    if (!textValue) return [];
+
+    if (textValue[0] !== '[' && textValue[0] !== '{') {
+      return [textValue];
+    }
+
+    try {
+      const parsed = JSON.parse(textValue);
+      return Array.isArray(parsed)
+        ? parsed.filter((item) => typeof item === 'string' && item !== '' && item !== 'none')
+        : [];
+    } catch (error) {
+      console.error('[FieldHiddenPlugin] Failed to parse plugin config.', error);
+      return [];
+    }
+  }
+
+  function getFieldCode(value) {
+    if (!value || value === 'none') return '';
+    const parts = value.split(' ');
+    return parts[parts.length - 1];
+  }
+
+  function hideField(fieldCode) {
+    try {
+      kintone.app.record.setFieldShown(fieldCode, false);
+    } catch (error) {
+      console.error('[FieldHiddenPlugin] Failed to hide field: ' + fieldCode, error);
+    }
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   function displayAlert(title, text, type, button) {
     swal.fire({
       title: title,
       html: text,
-      imageUrl: type,
+      icon: type,
       confirmButtonText: button,
       customClass: {
         popup: 'my-popup-class',

@@ -6,7 +6,7 @@ jQuery.noConflict();
   'use strict';
 
   const config = kintone.plugin.app.getConfig(PLUGIN_ID);
-  const select = JSON.parse(config.elementArray);
+  const select = parseElementArray(config.elementArray);
 
   kintone.events.on(
     ['mobile.app.record.create.show', 'mobile.app.record.edit.show', 'mobile.app.record.detail.show'],
@@ -15,18 +15,9 @@ jQuery.noConflict();
       if (!select || !select.length) return event;
 
       select.forEach((val) => {
-        if (!val) return event;
-
-        if (val.split(' ').length === 1) {
-          //[グループまたはテーブル内フィールドではない場合]
-          kintone.mobile.app.record.setFieldShown(val, false);
-        } else {
-          //[テーブル内、グループ内フィールドの場合]
-          const fieldName = val.split(' ')[1];
-          if (!fieldName) return event;
-
-          kintone.mobile.app.record.setFieldShown(fieldName, false);
-        }
+        const fieldCode = getFieldCode(val);
+        if (!fieldCode) return;
+        hideField(fieldCode);
       });
 
       return event;
@@ -72,10 +63,8 @@ jQuery.noConflict();
     // 不存在フィールドがある場合のみ警告表示
     if (uniqueMissingFields.length > 0) {
 
-      const imageUrl = 'https://allin-one.cybozu.com/k/api/record/download.do/-/%E3%82%A4%E3%83%B3%E3%83%95%E3%82%A9.png?app=4215&thumbnail=true&field=6630014&detectType=true&record=6&row=1613353&id=247948&hash=f1024070e9eab225a306f666ea7b1c567b4bb325&revision=1&.png&w=150&h=150&flag=SHRINK';
-
       const fieldHtml = uniqueMissingFields
-        .map((code) => `・${code}`)
+        .map((code) => `・${escapeHtml(code)}`)
         .join('<br>');
 
       displayAlert(
@@ -84,7 +73,7 @@ jQuery.noConflict();
         '対象フィールドコード：<br>' +
         fieldHtml +
         '<br><br>プラグイン設定を修正してください。',
-        imageUrl,
+        'warning',
         'OK'
       );
     }
@@ -159,8 +148,7 @@ jQuery.noConflict();
 
     } catch(error) {
 
-      console.log(error);
-
+      console.error('[FieldHiddenPlugin] Failed to get form fields.', error);
     }
 
     let filteredFieldList = [];
@@ -214,12 +202,56 @@ jQuery.noConflict();
     return filteredFieldList;
   }
 
+  function parseElementArray(value) {
+    if (!value) return [];
+
+    const textValue = String(value).trim();
+    if (!textValue) return [];
+
+    if (textValue[0] !== '[' && textValue[0] !== '{') {
+      return [textValue];
+    }
+
+    try {
+      const parsed = JSON.parse(textValue);
+      return Array.isArray(parsed)
+        ? parsed.filter((item) => typeof item === 'string' && item !== '' && item !== 'none')
+        : [];
+    } catch (error) {
+      console.error('[FieldHiddenPlugin] Failed to parse plugin config.', error);
+      return [];
+    }
+  }
+
+  function getFieldCode(value) {
+    if (!value || value === 'none') return '';
+    const parts = value.split(' ');
+    return parts[parts.length - 1];
+  }
+
+  function hideField(fieldCode) {
+    try {
+      kintone.mobile.app.record.setFieldShown(fieldCode, false);
+    } catch (error) {
+      console.error('[FieldHiddenPlugin] Failed to hide field: ' + fieldCode, error);
+    }
+  }
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   function displayAlert(title, text, type, button) {
 
     swal.fire({
       title: title,
       html: text,
-      imageUrl: type,
+      icon: type,
       confirmButtonText: button,
       customClass: {
         popup: 'my-popup-class',
