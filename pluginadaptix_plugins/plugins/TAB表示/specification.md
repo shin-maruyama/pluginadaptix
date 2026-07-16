@@ -59,7 +59,7 @@
 - `plugins/TAB表示/codex/work-instructions.md`
 - `plugins/TAB表示/decisions/README.md`
 - `plugins/TAB表示/specification.md`
-- `plugins/TAB表示/TabDisplay.ppk`
+- `_repository_split_pending/plugins/TAB表示/TabDisplay.ppk`（親ワークスペースの隔離領域。秘密鍵のため本リポジトリへ含めない）
 
 ## 3. manifest.json仕様
 

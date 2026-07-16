@@ -2,7 +2,10 @@
 
 | ファイルパス | 判断できない理由 | 想定される分類先 | 確認が必要な内容 |
 |---|---|---|---|
-| `_repository_split_pending/plugins/TAB表示/TabDisplay.ppk` | 用途はTAB表示プラグイン署名用と推定できるが、PEM RSA秘密鍵であり新しい管理対象へ移管できない | Git管理外の安全な秘密情報保管先 | 鍵の所有者、有効性、失効・ローテーション要否、Git履歴からの除去方針 |
 | `_repository_split_pending/os-generated/**/.DS_Store` | OS生成ファイルであり開発目的に属さない | 移管対象外 | 独立リポジトリ作成前に削除してよいか |
 
-秘密鍵の内容は調査・報告へ転記していません。保留領域は独立リポジトリへコピーしないでください。
+## 解決済み
+
+`_repository_split_pending/plugins/TAB表示/TabDisplay.ppk` は、難読化版 `TabDisplaye` に対応する秘密鍵と確認した。`TabDisplaye` は顧客および本番環境へ未配布であり、秘密鍵は2026-07-16にGit indexから除去してローカルファイルも削除した。秘密鍵の内容は調査・報告へ転記していない。
+
+Git全履歴とリモートからの除去状況は `SECURITY_KEY_REMEDIATION.md` を参照すること。保留領域は独立リポジトリへコピーしないこと。

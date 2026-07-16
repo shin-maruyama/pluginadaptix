@@ -8,3 +8,5 @@
 - `_repository_split_pending`: 新しい管理対象へ含めない保留・隔離ファイル
 
 分類根拠は `REPOSITORY_SPLIT_PLAN.md`、作業結果は `REPOSITORY_SPLIT_REPORT.md`、保留理由は `REPOSITORY_SPLIT_PENDING.md` を参照してください。
+
+TAB表示プラグインの隔離済み秘密鍵に関する監査結果と対応順序は `SECURITY_KEY_REMEDIATION.md` を参照してください。

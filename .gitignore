@@ -8,3 +8,6 @@ test-results/
 .DS_Store
 private.ppk
 apps/kintone-plugin/private.ppk
+*.ppk
+*.pem
+*.key

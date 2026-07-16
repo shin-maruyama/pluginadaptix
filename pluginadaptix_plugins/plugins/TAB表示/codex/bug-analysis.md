@@ -14,7 +14,7 @@
 
 - plugins/TAB表示/BUG.md
 - plugins/TAB表示/Manual.md
-- plugins/TAB表示/TabDisplay.ppk
+- `_repository_split_pending/plugins/TAB表示/TabDisplay.ppk`（親ワークスペースの隔離領域。プラグイン管理対象外）
 - plugins/TAB表示/TabDisplay/PUBKEY
 - plugins/TAB表示/TabDisplay/SIGNATURE
 - plugins/TAB表示/TabDisplay/contents/css/51-modern-default.css
