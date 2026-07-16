@@ -1,5 +1,7 @@
 # AGENTS.md
 
+> 2026-07-16のリポジトリ分割後、このファイルは親ワークスペース共通規約として保持する。認証実装は `pluginadaptix_plugin-authentication/`、各プラグインは `pluginadaptix_plugins/`、パッケージングは `pluginadaptix_packages/` を基準パスとする。各管理単位直下の `AGENTS.md` も併せて参照すること。
+
 # kintoneプラグイン認証システム
 
 ---
@@ -63,16 +65,16 @@
 # 3. リポジトリ構成
 
 ```text
-apps/
+pluginadaptix_plugin-authentication/apps/
 ├── api-server
 ├── kintone-plugin
 └── wordpress-integration
 
-packages/
+pluginadaptix_plugin-authentication/packages/
 ├── shared
 └── kintone-client
 
-docs/
+pluginadaptix_plugin-authentication/docs/
 
 kintone/
 
@@ -88,14 +90,14 @@ scripts/
 実装前に以下を確認すること。
 
 ```text
-docs/01_basic_design.md
-docs/02_screen_design.md
-docs/03_api_design.md
-docs/04_kintone_app_definition.md
-docs/05_table_definition.md
-docs/er-diagram.md
-docs/sequence-diagrams.md
-docs/openapi.yaml
+pluginadaptix_plugin-authentication/docs/01_basic_design.md
+pluginadaptix_plugin-authentication/docs/02_screen_design.md
+pluginadaptix_plugin-authentication/docs/03_api_design.md
+pluginadaptix_plugin-authentication/docs/04_kintone_app_definition.md
+pluginadaptix_plugin-authentication/docs/05_table_definition.md
+pluginadaptix_plugin-authentication/docs/er-diagram.md
+pluginadaptix_plugin-authentication/docs/sequence-diagrams.md
+pluginadaptix_plugin-authentication/docs/openapi.yaml
 ```
 
 設計書間で矛盾がある場合は以下を優先する。
@@ -143,7 +145,7 @@ any
 API仕様は
 
 ```text
-docs/openapi.yaml
+pluginadaptix_plugin-authentication/docs/openapi.yaml
 ```
 
 に従うこと。
@@ -223,7 +225,7 @@ log_id
 フィールドコードは
 
 ```text
-docs/05_table_definition.md
+pluginadaptix_plugin-authentication/docs/05_table_definition.md
 ```
 
 を参照すること。
@@ -530,9 +532,9 @@ PRには以下を記載する。
 
 判断に迷う場合は
 
-* docs/openapi.yaml
-* docs/05_table_definition.md
-* docs/er-diagram.md
+* pluginadaptix_plugin-authentication/docs/openapi.yaml
+* pluginadaptix_plugin-authentication/docs/05_table_definition.md
+* pluginadaptix_plugin-authentication/docs/er-diagram.md
 
 を優先して参照すること。
 
@@ -556,25 +558,25 @@ PRには以下を記載する。
 各プラグインは以下に配置する。
 
 ```text
-plugins/<プラグイン名>
+pluginadaptix_plugins/plugins/<プラグイン名>
 ```
 
 各プラグインの元ソースは以下を基本とする。
 
 ```text
-plugins/<プラグイン名>/<プラグイン名>
+pluginadaptix_plugins/plugins/<プラグイン名>/<プラグイン名>
 ```
 
 各プラグインの難読化済み版は以下を基本とする。
 
 ```text
-plugins/<プラグイン名>/<プラグイン名>e
+pluginadaptix_plugins/plugins/<プラグイン名>/<プラグイン名>e
 ```
 
 個別プラグインを指定する場合は、以下を対象範囲とする。
 
 ```text
-plugins/<プラグイン名>
+pluginadaptix_plugins/plugins/<プラグイン名>
 ```
 
 ## ドキュメント運用
@@ -583,38 +585,38 @@ plugins/<プラグイン名>
 
 ```text
 AGENTS.md
-plugins/<プラグイン名>/specification.md
-plugins/<プラグイン名>/codex/work-instructions.md
+pluginadaptix_plugins/plugins/<プラグイン名>/specification.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/work-instructions.md
 ```
 
 作業終了時は必ず以下を更新する。
 
 ```text
-plugins/<プラグイン名>/codex/handover-YYYY-MM-DD.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/handover-YYYY-MM-DD.md
 ```
 
 重要な設計判断は以下へ記録する。
 
 ```text
-plugins/<プラグイン名>/decisions/
+pluginadaptix_plugins/plugins/<プラグイン名>/decisions/
 ```
 
 障害対応は以下へ記録する。
 
 ```text
-plugins/<プラグイン名>/codex/troubleshooting.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/troubleshooting.md
 ```
 
 次回作業内容は以下へ記録する。
 
 ```text
-plugins/<プラグイン名>/codex/next-tasks.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/next-tasks.md
 ```
 
 対象プラグイン直下には以下の構成を維持する。
 
 ```text
-plugins/<プラグイン名>/
+pluginadaptix_plugins/plugins/<プラグイン名>/
 ├── specification.md
 ├── codex/
 │   ├── work-instructions.md
@@ -678,11 +680,11 @@ APIキー、APIトークン、ライセンス秘密鍵、WordPress APIキー、�
 
 ```text
 AGENTS.md
-plugins/<プラグイン名>/specification.md
-plugins/<プラグイン名>/codex/work-instructions.md
-plugins/<プラグイン名>/codex/test-plan.md
-plugins/<プラグイン名>/codex/troubleshooting.md
-plugins/<プラグイン名>/codex/next-tasks.md
+pluginadaptix_plugins/plugins/<プラグイン名>/specification.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/work-instructions.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/test-plan.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/troubleshooting.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/next-tasks.md
 ```
 
 確認後に修正方針を決定する。
@@ -784,7 +786,7 @@ plugins/<プラグイン名>/codex/next-tasks.md
 以下は直接修正しない。
 
 ```text
-plugins/<プラグイン名>/<プラグイン名>e
+pluginadaptix_plugins/plugins/<プラグイン名>/<プラグイン名>e
 ```
 
 難読化済みファイルは生成物として扱う。
@@ -794,15 +796,15 @@ plugins/<プラグイン名>/<プラグイン名>e
 作業完了時は以下を更新する。
 
 ```text
-plugins/<プラグイン名>/codex/handover-YYYY-MM-DD.md
-plugins/<プラグイン名>/codex/next-tasks.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/handover-YYYY-MM-DD.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/next-tasks.md
 ```
 
 必要な場合は以下も更新する。
 
 ```text
-plugins/<プラグイン名>/decisions/
-plugins/<プラグイン名>/codex/troubleshooting.md
+pluginadaptix_plugins/plugins/<プラグイン名>/decisions/
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/troubleshooting.md
 ```
 
 ## レビュー観点
@@ -844,19 +846,19 @@ kintoneプラグインの修正後に、元ソースから難読化済みファ�
 各プラグインは以下に配置する。
 
 ```text
-plugins/<プラグイン名>
+pluginadaptix_plugins/plugins/<プラグイン名>
 ```
 
 元ソースは以下を基本とする。
 
 ```text
-plugins/<プラグイン名>/<プラグイン名>
+pluginadaptix_plugins/plugins/<プラグイン名>/<プラグイン名>
 ```
 
 難読化済みファイルは以下を基本とする。
 
 ```text
-plugins/<プラグイン名>/<プラグイン名>e
+pluginadaptix_plugins/plugins/<プラグイン名>/<プラグイン名>e
 ```
 
 ## 禁止事項
@@ -880,9 +882,9 @@ ZIP化前に以下を確認する。
 
 ```text
 AGENTS.md
-plugins/<プラグイン名>/specification.md
-plugins/<プラグイン名>/codex/work-instructions.md
-plugins/<プラグイン名>/codex/test-plan.md
+pluginadaptix_plugins/plugins/<プラグイン名>/specification.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/work-instructions.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/test-plan.md
 ```
 
 確認項目:
@@ -974,8 +976,8 @@ ZIP化前に必ず以下を確認する。
 バージョン更新時は以下にも記録する。
 
 ```text
-plugins/<プラグイン名>/codex/handover-YYYY-MM-DD.md
-plugins/<プラグイン名>/codex/next-tasks.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/handover-YYYY-MM-DD.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/next-tasks.md
 ```
 
 ## ZIPファイル名
@@ -1043,15 +1045,15 @@ dist/
 作業完了時は以下を更新する。
 
 ```text
-plugins/<プラグイン名>/codex/handover-YYYY-MM-DD.md
-plugins/<プラグイン名>/codex/next-tasks.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/handover-YYYY-MM-DD.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/next-tasks.md
 ```
 
 必要に応じて以下も更新する。
 
 ```text
-plugins/<プラグイン名>/decisions/
-plugins/<プラグイン名>/codex/troubleshooting.md
+pluginadaptix_plugins/plugins/<プラグイン名>/decisions/
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/troubleshooting.md
 ```
 
 ## 作業完了報告
@@ -1544,30 +1546,30 @@ const searchArea = ...
 バグ一覧CSVは以下で管理する。
 
 ```text
-bug-management/bug-management-list.csv
+pluginadaptix_plugins/bug-management/bug-management-list.csv
 ```
 
 過去分は以下に保存する。
 
 ```text
-bug-management/archive/
+pluginadaptix_plugins/bug-management/archive/
 ```
 
-Codexがバグ調査・修正を行う場合は、まず `bug-management/bug-management-list.csv` を確認する。
+Codexがバグ調査・修正を行う場合は、まず `pluginadaptix_plugins/bug-management/bug-management-list.csv` を確認する。
 
 CSVの `プラグイン` 列をもとに、対象プラグインを特定する。
 
 対象プラグインごとに以下を更新する。
 
 ```text
-plugins/<プラグイン名>/BUG.md
-plugins/<プラグイン名>/codex/bug-analysis.md
-plugins/<プラグイン名>/codex/fix-plan.md
-plugins/<プラグイン名>/codex/next-tasks.md
+pluginadaptix_plugins/plugins/<プラグイン名>/BUG.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/bug-analysis.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/fix-plan.md
+pluginadaptix_plugins/plugins/<プラグイン名>/codex/next-tasks.md
 ```
 
 最新版として利用するCSVは `bug-management-list.csv` として保存する。
-履歴として残す場合は `bug-management/archive/bug-management-list-YYYY-MM-DD.csv` として保存する。
+履歴として残す場合は `pluginadaptix_plugins/bug-management/archive/bug-management-list-YYYY-MM-DD.csv` として保存する。
 
 ## CSV出力ルール
 
@@ -1589,8 +1591,8 @@ plugins配下のフォルダ名は、日本語の正式なプラグイン名称�
 
 例
 
-plugins/サブテーブル自動ソート
-plugins/TAB表示
-plugins/アプリ一覧
+pluginadaptix_plugins/plugins/サブテーブル自動ソート
+pluginadaptix_plugins/plugins/TAB表示
+pluginadaptix_plugins/plugins/アプリ一覧
 
 ソースコード・ZIPファイル名・設定キーは変更しない。

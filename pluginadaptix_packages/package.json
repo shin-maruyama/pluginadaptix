@@ -1,0 +1,10 @@
+{
+  "name": "pluginadaptix_packages",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "package:authentication-plugin": "node scripts/build-authentication-plugin-zip.mjs",
+    "test": "node scripts/build-authentication-plugin-zip.mjs --help"
+  }
+}

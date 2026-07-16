@@ -1,10 +1,27 @@
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 
-const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const outputDir = path.join(rootDir, "dist");
-const zipPath = path.join(outputDir, "plugin.zip");
+const sourceArgument = process.argv[2];
+
+if (!sourceArgument || sourceArgument === "--help") {
+  const message = [
+    "Usage:",
+    "  node scripts/build-authentication-plugin-zip.mjs <source-directory> [output-zip]",
+    "",
+    "Example:",
+    "  node scripts/build-authentication-plugin-zip.mjs ../pluginadaptix_plugin-authentication/apps/kintone-plugin dist/plugin.zip"
+  ].join("\n");
+
+  console.log(message);
+  process.exit(sourceArgument === "--help" ? 0 : 1);
+}
+
+const rootDir = path.resolve(process.cwd(), sourceArgument);
+const zipPath = path.resolve(
+  process.cwd(),
+  process.argv[3] ?? path.join(rootDir, "dist", "plugin.zip")
+);
+const outputDir = path.dirname(zipPath);
 
 const entries = [
   ["manifest.json", "manifest.json"],
